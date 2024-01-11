@@ -41,11 +41,11 @@ public class NettyWebSocketServer {
     @PostConstruct
     public void start() throws InterruptedException {
         run();
-        log.info("启动WebSocket服务，port:{}  context:{}",port,context);
+        log.info("启动WebSocket服务，port:{}  context:{}", port, context);
     }
 
     @PreDestroy
-    public void  destory() {
+    public void destory() {
         log.info("关闭WebSocket服务");
     }
 
