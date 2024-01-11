@@ -3,6 +3,7 @@ server:
 
 websocket:
   port: 8201
+  context: /
 
 logging:
   pattern:

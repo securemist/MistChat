@@ -1,12 +1,27 @@
 package cc.xmist.websocket;
 
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.NettyRuntime;
+import io.netty.util.concurrent.Future;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.logging.LogLevel;
 import org.springframework.context.annotation.Configuration;
-
-import java.nio.channels.SocketChannel;
 
 @Configuration
 @Slf4j
@@ -15,12 +30,26 @@ public class NettyWebSocketServer {
     @Value("${websocket.port}")
     private String port;
 
-    @PostConstruct
-    public void start() {
+    @Value("${websocket.context}")
+    private String context;
 
+    //    public static final NettyWebSocketServerHandler NETTY_WEB_SOCKET_SERVER_HANDLER = new NettyWebSocketServerHandler();
+    // 创建线程池执行器
+    private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+    private EventLoopGroup workerGroup = new NioEventLoopGroup(NettyRuntime.availableProcessors());
+
+    @PostConstruct
+    public void start() throws InterruptedException {
+        run();
+        log.info("启动WebSocket服务，port:{}  context:{}",port,context);
     }
 
-    public void run() {
+    @PreDestroy
+    public void  destory() {
+        log.info("关闭WebSocket服务");
+    }
+
+    public void run() throws InterruptedException {
         // 服务器启动引导对象
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup)
@@ -54,13 +83,13 @@ public class NettyWebSocketServer {
                          *  4. WebSocketServerProtocolHandler 核心功能是把 http协议升级为 ws 协议，保持长连接；
                          *      是通过一个状态码 101 来切换的
                          */
-                        pipeline.addLast(new WebSocketServerProtocolHandler("/"));
+                        pipeline.addLast(new WebSocketServerProtocolHandler(context));
                         // 自定义handler ，处理业务逻辑
-                        pipeline.addLast(NETTY_WEB_SOCKET_SERVER_HANDLER);
+                        pipeline.addLast(new NettyWebSocketServerHandler());
                     }
                 });
         // 启动服务器，监听端口，阻塞直到启动成功
-        serverBootstrap.bind(WEB_SOCKET_PORT).sync();
+        serverBootstrap.bind(Integer.parseInt(port)).sync();
     }
 
 }
