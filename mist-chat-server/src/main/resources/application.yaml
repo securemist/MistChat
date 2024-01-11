@@ -1,0 +1,9 @@
+server:
+  port: 8200
+
+websocket:
+  port: 8201
+
+logging:
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss
