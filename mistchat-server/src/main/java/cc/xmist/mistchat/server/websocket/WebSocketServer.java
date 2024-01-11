@@ -1,4 +1,4 @@
-package cc.xmist.websocket;
+package cc.xmist.mistchat.server.websocket;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;

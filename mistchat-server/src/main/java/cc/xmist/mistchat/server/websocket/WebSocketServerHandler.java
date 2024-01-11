@@ -1,7 +1,7 @@
-package cc.xmist.websocket;
+package cc.xmist.mistchat.server.websocket;
 
-import cc.xmist.websocket.enums.WSRequestType;
-import cc.xmist.websocket.req.WSBaseRequest;
+import cc.xmist.mistchat.server.websocket.req.WSBaseRequest;
+import cc.xmist.mistchat.server.websocket.enums.WSRequestType;
 import com.google.gson.Gson;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

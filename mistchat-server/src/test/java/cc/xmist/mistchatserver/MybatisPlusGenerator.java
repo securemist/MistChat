@@ -22,8 +22,8 @@ import java.util.List;
 
 public class MybatisPlusGenerator {
     @Test
-    public void generate() {
-//代码生成器
+    public void gen() {
+        //代码生成器
         AutoGenerator autoGenerator = new AutoGenerator();
 
         //数据源配置
@@ -39,15 +39,14 @@ public class MybatisPlusGenerator {
         //todo 要改输出路径
         globalConfig.setOutputDir(System.getProperty("user.dir") + "/mistchat-server/src/main/java");
         //设置作者名字
-        globalConfig.setAuthor("<a href=\"https://github.com/zongzibinbin\">abin</a>");
         //去掉service的I前缀,一般只需要设置service就行
         globalConfig.setServiceImplName("%sDao");
         autoGenerator.setGlobalConfig(globalConfig);
 
         //包配置
         PackageConfig packageConfig = new PackageConfig();
-        packageConfig.setParent("com.abin.mallchat.common.user");//自定义包的路径
-        packageConfig.setEntity("domain.entity");
+        packageConfig.setParent("cc.xmist.mistchat.server.user");//自定义包的路径
+        packageConfig.setEntity("entity");
         packageConfig.setMapper("mapper");
         packageConfig.setController("controller");
         packageConfig.setServiceImpl("dao");
@@ -87,4 +86,5 @@ public class MybatisPlusGenerator {
         dataSourceConfig.setPassword("root");
         dataSourceConfig.setUrl("jdbc:mysql://127.0.0.1:3306/mistchat?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC");
     }
+
 }

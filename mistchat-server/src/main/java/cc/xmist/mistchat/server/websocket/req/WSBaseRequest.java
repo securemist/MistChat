@@ -1,5 +1,6 @@
-package cc.xmist.websocket.req;
+package cc.xmist.mistchat.server.websocket.req;
 
+import cc.xmist.mistchat.server.websocket.enums.WSRequestType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import lombok.Data;
 @Builder
 public class WSBaseRequest {
     /**
-     * @see cc.xmist.websocket.enums.WSRequestType
+     * @see WSRequestType
      */
     private Integer type;
     private String data;

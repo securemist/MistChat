@@ -1,4 +1,4 @@
-package cc.xmist.websocket.enums;
+package cc.xmist.mistchat.server.websocket.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
