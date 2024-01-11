@@ -16,7 +16,6 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.NettyRuntime;
-import io.netty.util.concurrent.Future;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
-public class NettyWebSocketServer {
+public class WebSocketServer {
 
     @Value("${websocket.port}")
     private String port;
@@ -74,7 +73,7 @@ public class NettyWebSocketServer {
                          */
                         pipeline.addLast(new HttpObjectAggregator(8192));
                         //保存用户ip
-                        pipeline.addLast(new HttpHeadersHandler());
+//                        pipeline.addLast(new HttpHeadersHandler());
                         /**
                          * 说明：
                          *  1. 对于 WebSocket，它的数据是以帧frame 的形式传递的；
@@ -85,7 +84,7 @@ public class NettyWebSocketServer {
                          */
                         pipeline.addLast(new WebSocketServerProtocolHandler(context));
                         // 自定义handler ，处理业务逻辑
-                        pipeline.addLast(new NettyWebSocketServerHandler());
+                        pipeline.addLast(new WebSocketServerHandler());
                     }
                 });
         // 启动服务器，监听端口，阻塞直到启动成功

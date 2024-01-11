@@ -11,7 +11,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
         WSBaseRequest wsRequest = new Gson().fromJson(msg.text(), WSBaseRequest.class);
