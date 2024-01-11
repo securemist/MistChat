@@ -3,9 +3,13 @@ package cc.xmist.mistchat.server.user.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,7 +31,7 @@ public class User implements Serializable {
     /**
      * 用户id
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -35,6 +39,18 @@ public class User implements Serializable {
      */
     @TableField("name")
     private String name;
+
+    /**
+     * 登陆用户名
+     */
+    @TableField("username")
+    private String username;
+
+    /**
+     * 密码
+     */
+    @TableField("password")
+    private String password;
 
     /**
      * 用户头像
