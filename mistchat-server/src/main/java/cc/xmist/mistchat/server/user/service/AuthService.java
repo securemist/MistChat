@@ -38,6 +38,7 @@ public class AuthService {
         if (expireDays < TOKEN_REFRESH_DAYS_LIMIT) {
             RedisUtil.set(formatTokenKey(uid), token, TOKEN_EXPIRE_DAYS, TimeUnit.DAYS);
         }
+
     }
 
 
