@@ -1,5 +1,7 @@
 server:
   port: 8200
+  servlet:
+    context-path: /api/v1
 
 websocket:
   port: 8201
@@ -8,3 +10,20 @@ websocket:
 logging:
   pattern:
     dateformat: yyyy-MM-dd HH:mm:ss
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    map-underscore-to-camel-case: true
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mistchat
+    username: root
+    password: root
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: securemist
