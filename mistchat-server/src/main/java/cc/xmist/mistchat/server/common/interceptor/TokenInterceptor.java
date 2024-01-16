@@ -6,6 +6,7 @@ import cc.xmist.mistchat.server.user.service.AuthService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,11 +21,17 @@ public class TokenInterceptor implements HandlerInterceptor {
     private static final String AUTHORIZATION = "Authorization";
     public static final String AUTHORIZATION_PREFIX = "Bearer ";
 
+    @Value("${springdoc.api-docs.path}")
+    private String docPath;
     @Resource
     private AuthService authService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (isDocURI(request)) {
+            return true;
+        }
+
         String token = getToken(request);
         Long uid = authService.verify(token);
         // 用户未登陆并且是非公共接口，抛出异常
@@ -47,5 +54,10 @@ public class TokenInterceptor implements HandlerInterceptor {
                 .filter(h -> h.startsWith(AUTHORIZATION_PREFIX))
                 .map(h -> h.replaceFirst(AUTHORIZATION_PREFIX, ""))
                 .orElse(null);
+    }
+
+    private boolean isDocURI(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        return uri.contains("/webjars") || uri.contains(docPath) || uri.contains("doc.html");
     }
 }

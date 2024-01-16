@@ -2,8 +2,11 @@ package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.jwt.JwtUtil;
+import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.entity.User;
+import cc.xmist.mistchat.server.user.model.enums.ItemType;
+import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,8 @@ public class UserService {
     private JwtUtil jwtUtil;
     @Resource
     private AuthService authService;
-
+    @Resource
+    private UserBackpackDao userBackpackDao;
     public void register(String username, String password, String name) {
         User user = userDao.getUser(username);
         if (user != null) {
@@ -43,5 +47,17 @@ public class UserService {
 
 
         return user;
+    }
+
+    public UserInfoResponse getUserInfo(Long uid) {
+        User user = userDao.getUser(uid);
+        Long modifyNameCount = userBackpackDao.getItemCount(uid, ItemType.MODIFY_NAME_CARD);
+
+        return UserInfoResponse.builder()
+                .id(user.getId())
+                .sex(user.getSex())
+                .avatar(user.getAvatar())
+                .name(user.getName())
+                .modifyNameChance(modifyNameCount).build();
     }
 }

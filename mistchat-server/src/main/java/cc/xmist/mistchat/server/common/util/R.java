@@ -3,13 +3,13 @@ package cc.xmist.mistchat.server.common.util;
 import lombok.Data;
 
 @Data
-public class R {
+public class R<T> {
     private Boolean success;
     private Integer errCode;
     private String errMsg;
-    private Object data;
+    private T data;
 
-    private R(Object data) {
+    private R(T data) {
         this.success = true;
         this.data = data;
     }

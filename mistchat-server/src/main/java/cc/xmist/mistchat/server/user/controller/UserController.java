@@ -6,7 +6,10 @@ import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.model.req.LoginReq;
 import cc.xmist.mistchat.server.user.model.req.RegisterReq;
+import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import cc.xmist.mistchat.server.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,17 +21,20 @@ import org.springframework.web.bind.annotation.*;
  * @since 2024-01-11
  */
 @RestController
+@Tag(name = "用户接口")
 @RequestMapping("/user")
 public class UserController {
 
     @Resource
     private UserService userService;
 
+    @Operation(summary = "获取用户信息")
     @GetMapping("/userInfo")
-    public R getUserInfo() {
+    public R<UserInfoResponse> getUserInfo() {
         Long uid = RequestContext.getUid();
         String ip = RequestContext.getIp();
-        return R.ok(null);
+        UserInfoResponse userInfo = userService.getUserInfo(uid);
+        return R.ok(userInfo);
     }
 
     @PostMapping("/public/register")

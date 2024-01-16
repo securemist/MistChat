@@ -27,3 +27,13 @@ spring:
       host: 127.0.0.1
       port: 6379
       password: securemist
+
+
+# springdoc-openapi项目配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: cc.xmist.mistchat
