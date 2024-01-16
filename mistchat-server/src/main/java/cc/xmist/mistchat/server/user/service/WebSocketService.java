@@ -17,6 +17,8 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 @Component
 @Slf4j
 public class WebSocketService {
@@ -29,6 +31,8 @@ public class WebSocketService {
 
     @Resource
     public UserDao userDao;
+
+    private static ConcurrentHashMap<Channel,Long> ONLINE_WS_MAP = new ConcurrentHashMap<>();
 
     /**
      * 用户登陆请求
@@ -56,7 +60,7 @@ public class WebSocketService {
 
     /**
      * 认证请求
-     * 只携带token的登陆请求
+     * 认证携带token的登陆请求
      *
      * @param channel
      * @param token
@@ -85,5 +89,13 @@ public class WebSocketService {
     private void returnJsonData(Channel channel, Object json) {
         String res = JsonUtil.toJson(json);
         channel.writeAndFlush(new TextWebSocketFrame(res));
+    }
+
+    /**
+     * 用户下线
+     * @param channel
+     */
+    public void userOffLine(Channel channel) {
+
     }
 }

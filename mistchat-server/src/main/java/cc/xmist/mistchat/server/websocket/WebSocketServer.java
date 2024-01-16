@@ -85,6 +85,8 @@ public class WebSocketServer {
                         pipeline.addLast(new WebSocketServerProtocolHandler(context));
                         // 自定义handler ，处理业务逻辑
                         pipeline.addLast(new WebSocketServerHandler());
+
+                        pipeline.addLast(new HttpRequestHandler());
                     }
                 });
         // 启动服务器，监听端口，阻塞直到启动成功
