@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public enum WSRequestTypeEnum {
+public enum WSRequestType {
 
     LOGIN(1, "请求登陆"),
     HEARTBEAT(2, "心跳"),
@@ -20,13 +20,13 @@ public enum WSRequestTypeEnum {
     Integer type;
     String desc;
 
-    private static Map<Integer, WSRequestTypeEnum> map;
+    private static Map<Integer, WSRequestType> map;
 
     static {
-        map = Arrays.stream(WSRequestTypeEnum.values()).collect(Collectors.toMap(WSRequestTypeEnum::getType, Function.identity()));
+        map = Arrays.stream(WSRequestType.values()).collect(Collectors.toMap(WSRequestType::getType, Function.identity()));
     }
 
-    public static WSRequestTypeEnum of(Integer type) {
+    public static WSRequestType of(Integer type) {
         return map.get(type);
     }
 }

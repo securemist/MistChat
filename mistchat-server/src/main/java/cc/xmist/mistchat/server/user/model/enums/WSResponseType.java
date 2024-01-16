@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public enum WSResponseTypeEnum {
+public enum WSResponseType {
     SERVER_FAILED(0,"服务端异常",null),
 //        LOGIN_URL(1, "登录二维码返回", WSLoginUrl.class),
     LOGIN_SCAN_SUCCESS(2, "用户扫描成功等待授权", null),
@@ -30,13 +30,13 @@ public enum WSResponseTypeEnum {
     private final String desc;
     private final Class dataClass;
 
-    private static Map<Integer, WSResponseTypeEnum> cache;
+    private static Map<Integer, WSResponseType> cache;
 
     static {
-        cache = Arrays.stream(WSResponseTypeEnum.values()).collect(Collectors.toMap(WSResponseTypeEnum::getType, Function.identity()));
+        cache = Arrays.stream(WSResponseType.values()).collect(Collectors.toMap(WSResponseType::getType, Function.identity()));
     }
 
-    public static WSResponseTypeEnum of(Integer type) {
+    public static WSResponseType of(Integer type) {
         return cache.get(type);
     }
 }
