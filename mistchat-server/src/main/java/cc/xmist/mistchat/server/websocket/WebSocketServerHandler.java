@@ -2,7 +2,7 @@ package cc.xmist.mistchat.server.websocket;
 
 import cc.xmist.mistchat.server.common.util.JsonUtil;
 import cc.xmist.mistchat.server.user.model.req.WSBaseRequest;
-import cc.xmist.mistchat.server.user.model.enums.WSRequestTypeEnum;
+import cc.xmist.mistchat.server.user.model.enums.WSRequestType;
 import cc.xmist.mistchat.server.user.service.WebSocketService;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -13,7 +13,6 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,7 +29,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         WSBaseRequest wsRequest = JsonUtil.toObj(msg.text(), WSBaseRequest.class);
         // 收到消息，处理业务
         String text = msg.text();
-        switch (WSRequestTypeEnum.of(wsRequest.getType())) {
+        switch (WSRequestType.of(wsRequest.getType())) {
             case LOGIN -> {
                 webSocketService.handleLoginReq(ctx.channel(), wsRequest.getData());
             }

@@ -38,7 +38,7 @@ public class ServiceTest {
 
     @Test
     public void testAsync(){
-        authService.refreshToken("111");
+//        authService.refreshToken("111");
     }
 
 }

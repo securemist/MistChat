@@ -24,11 +24,11 @@ public class R {
         return new R(data);
     }
 
-    public static R error(ErrorEnum errorEnum) {
-        return new R(errorEnum.getErrorCode(), errorEnum.getErrorMsg());
+    public static R error(ErrorType errorType) {
+        return new R(errorType.code, errorType.msg);
     }
 
     public static R commonError(String errMsg) {
-        return new R(1001, errMsg);
+        return new R(ErrorType.UNKNOWN_FAILED.code, errMsg);
     }
 }

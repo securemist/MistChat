@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.common.exception;
 
+import cc.xmist.mistchat.server.common.util.ErrorType;
 import cc.xmist.mistchat.server.common.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,6 +21,12 @@ public class ExceptionHandle {
     public R handleException(Exception e) {
         log.error(e.getMessage());
         return R.commonError(e.getMessage());
+    }
+
+    @ExceptionHandler(value = NotLoginException.class)
+    @ResponseBody
+    public R notLogin(NotLoginException e) {
+        return R.error(ErrorType.NOT_LOGIN);
     }
 
 }

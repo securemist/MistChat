@@ -26,6 +26,7 @@ public class AuthService {
 
     /**
      * token续期
+     *
      * @param token
      */
     @Async
@@ -68,17 +69,20 @@ public class AuthService {
      * @return
      */
     public Long verify(String token) {
-        Long uid = jwtUtil.getUid(token);
-        if (uid == null) {
+        try {
+            Long uid = jwtUtil.getUid(token);
+            if (uid == null) {
+                return null;
+            }
+            // 如果redis中存的token过期，也返回null
+            String oldToken = RedisUtil.getStr(formatTokenKey(uid));
+            if (StrUtil.isBlank(oldToken)) {
+                return null;
+            }
+            return oldToken.equals(token) ? uid : null;
+        } catch (Exception e) {
             return null;
         }
-        // 如果redis中存的token过期，也返回null
-        String oldToken = RedisUtil.getStr(formatTokenKey(uid));
-        if (StrUtil.isBlank(oldToken)) {
-            return null;
-        }
-
-        return oldToken.equals(token) ? uid : null;
     }
 
     private static String formatTokenKey(Long uid) {

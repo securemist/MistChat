@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.user.controller;
 
 
 import cc.xmist.mistchat.server.common.util.R;
+import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.model.req.LoginReq;
 import cc.xmist.mistchat.server.user.model.req.RegisterReq;
@@ -22,6 +23,13 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @GetMapping("/userInfo")
+    public R getUserInfo() {
+        Long uid = RequestContext.getUid();
+        String ip = RequestContext.getIp();
+        return R.ok(null);
+    }
 
     @PostMapping("/public/register")
     public R register(@RequestBody RegisterReq registerReq) {

@@ -32,8 +32,6 @@ import java.util.List;
 public class MybatisPlusGenerator {
     @Test
     public void generate() {
-
-
         FastAutoGenerator.create(new DataSourceConfig.Builder("jdbc:mysql://127.0.0.1:3306/mistchat", "root", "root"))
                 .globalConfig(builder -> {
                     builder.author("securemist")
