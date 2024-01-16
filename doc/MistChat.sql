@@ -45,6 +45,8 @@ INSERT INTO `item_config` VALUES (4, 2, 'https://cdn-icons-png.flaticon.com/512/
 INSERT INTO `item_config` VALUES (5, 2, 'https://cdn-icons-png.flaticon.com/128/2909/2909937.png', '抹茶知识星球成员的专属徽章', '2023-05-07 17:50:31.109', '2023-05-07 17:56:36.059');
 INSERT INTO `item_config` VALUES (6, 2, 'https://minio.mallchat.cn/mallchat/%E8%B4%A1%E7%8C%AE%E8%80%85.png', '抹茶项目contributor专属徽章', '2023-05-07 17:50:31.109', '2023-05-07 17:56:36.059');
 
+
+
 DROP TABLE IF EXISTS `user_backpack`;
 CREATE TABLE `user_backpack`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
