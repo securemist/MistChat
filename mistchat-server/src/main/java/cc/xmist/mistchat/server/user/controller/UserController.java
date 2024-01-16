@@ -2,13 +2,12 @@ package cc.xmist.mistchat.server.user.controller;
 
 
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.user.model.LoginReq;
-import cc.xmist.mistchat.server.user.model.RegisterReq;
+import cc.xmist.mistchat.server.user.entity.User;
+import cc.xmist.mistchat.server.user.model.req.LoginReq;
+import cc.xmist.mistchat.server.user.model.req.RegisterReq;
 import cc.xmist.mistchat.server.user.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.stereotype.Controller;
 
 /**
  * <p>
@@ -32,8 +31,8 @@ public class UserController {
 
     @PostMapping("/public/login")
     public R login(@RequestBody LoginReq loginReq) {
-        String token = userService.login(loginReq.getUsername(), loginReq.getPassword());
-        return R.ok(token);
+        User user = userService.login(loginReq.getUsername(), loginReq.getPassword());
+        return R.ok(null);
     }
 }
 

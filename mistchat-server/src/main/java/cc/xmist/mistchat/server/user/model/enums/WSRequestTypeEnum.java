@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.websocket.enums;
+package cc.xmist.mistchat.server.user.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public enum WSRequestType {
+public enum WSRequestTypeEnum {
 
-    LOGIN(1, "请求登陆二维码"),
+    LOGIN(1, "请求登陆"),
     HEARTBEAT(2, "心跳"),
     AUTHORIZE(3, "登陆认证"),
     ;
@@ -20,13 +20,13 @@ public enum WSRequestType {
     Integer type;
     String desc;
 
-    private static Map<Integer, WSRequestType> map;
+    private static Map<Integer, WSRequestTypeEnum> map;
 
     static {
-        map = Arrays.stream(WSRequestType.values()).collect(Collectors.toMap(WSRequestType::getType, Function.identity()));
+        map = Arrays.stream(WSRequestTypeEnum.values()).collect(Collectors.toMap(WSRequestTypeEnum::getType, Function.identity()));
     }
 
-    public static WSRequestType of(Integer type) {
+    public static WSRequestTypeEnum of(Integer type) {
         return map.get(type);
     }
 }

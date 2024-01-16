@@ -1,8 +1,10 @@
 package cc.xmist.mistchat.server.websocket;
 
-import cc.xmist.mistchat.server.websocket.req.WSBaseRequest;
-import cc.xmist.mistchat.server.websocket.enums.WSRequestType;
-import com.google.gson.Gson;
+import cc.xmist.mistchat.server.common.util.JsonUtil;
+import cc.xmist.mistchat.server.user.model.req.WSBaseRequest;
+import cc.xmist.mistchat.server.user.model.enums.WSRequestTypeEnum;
+import cc.xmist.mistchat.server.user.service.WebSocketService;
+import cn.hutool.extra.spring.SpringUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -12,18 +14,24 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+
+    private static WebSocketService webSocketService;
+
+    static {
+        webSocketService = SpringUtil.getBean(WebSocketService.class);
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
-        WSBaseRequest wsRequest = new Gson().fromJson(msg.text(), WSBaseRequest.class);
+        WSBaseRequest wsRequest = JsonUtil.toObj(msg.text(), WSBaseRequest.class);
         // 收到消息，处理业务
-        String test = msg.text();
-        switch (WSRequestType.of(wsRequest.getType())) {
+        String text = msg.text();
+        switch (WSRequestTypeEnum.of(wsRequest.getType())) {
             case LOGIN -> {
-                log.info("请求登陆");
-                ctx.channel().writeAndFlush(new TextWebSocketFrame("这是你的二维码"));
+                webSocketService.handleLoginReq(ctx.channel(), wsRequest.getData());
             }
             case AUTHORIZE -> {
-
+                webSocketService.handleAuthorize(ctx.channel(), wsRequest.getData());
             }
             case HEARTBEAT -> {
 
@@ -33,9 +41,9 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if(evt instanceof IdleStateEvent) {
+        if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
-            if(event.state() == IdleState.READER_IDLE) {
+            if (event.state() == IdleState.READER_IDLE) {
                 log.info("用户下线");
                 ctx.channel().close();
             }

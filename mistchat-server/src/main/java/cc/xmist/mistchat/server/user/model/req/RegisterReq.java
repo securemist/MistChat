@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.model;
+package cc.xmist.mistchat.server.user.model.req;
 
 import lombok.Data;
 

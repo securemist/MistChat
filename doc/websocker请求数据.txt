@@ -1,0 +1,13 @@
+ {
+    "type" : 3,
+     "data" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIwMDAwLCJjcmVhdGVUaW1lIjoxNzA1MzY5ODQ1fQ.rhv1QyqiqhCmJG3JzGTVeNAYOnaSykbFx1b4u00LziE"
+ }
+
+ {
+    "type" : 1,
+    "data" : "{
+        \"username\": \"18115168320\",
+        \"password\": \"12345\"
+    }"
+}
+

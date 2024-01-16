@@ -31,4 +31,8 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .build();
         user.insert();
     }
+
+    public User getUser(Long uid) {
+        return getById(uid);
+    }
 }

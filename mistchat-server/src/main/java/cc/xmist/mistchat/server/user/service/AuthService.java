@@ -3,6 +3,7 @@ package cc.xmist.mistchat.server.user.service;
 import cc.xmist.mistchat.server.common.constant.RedisKey;
 import cc.xmist.mistchat.server.common.jwt.JwtUtil;
 import cc.xmist.mistchat.server.common.util.RedisUtil;
+import cc.xmist.mistchat.server.user.dao.UserDao;
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.val;
@@ -20,9 +21,15 @@ public class AuthService {
     @Resource
     private JwtUtil jwtUtil;
 
+    @Resource
+    private UserDao userDao;
 
+    /**
+     * token续期
+     * @param token
+     */
     @Async
-    public void refreshToken(String token) {
+    public void renewalToken(String token) {
         Long uid = verify(token);
         if (uid == null) {
             return;
@@ -66,7 +73,7 @@ public class AuthService {
             return null;
         }
         // 如果redis中存的token过期，也返回null
-        String oldToken = RedisUtil.get(formatTokenKey(uid));
+        String oldToken = RedisUtil.getStr(formatTokenKey(uid));
         if (StrUtil.isBlank(oldToken)) {
             return null;
         }
