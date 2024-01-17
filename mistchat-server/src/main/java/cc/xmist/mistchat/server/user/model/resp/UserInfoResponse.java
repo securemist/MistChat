@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Builder
 @Data
-@Tag(name = "用户信息")
+@Schema(description = "用户信息")
 public class UserInfoResponse {
     @Schema(description = "用户id")
     private Long id;

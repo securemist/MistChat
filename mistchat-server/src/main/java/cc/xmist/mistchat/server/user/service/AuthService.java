@@ -1,21 +1,19 @@
 package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.constant.RedisKey;
-import cc.xmist.mistchat.server.common.jwt.JwtUtil;
+import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.common.util.RedisUtil;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
-import lombok.val;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class AuthService {
-    private static final long TOKEN_EXPIRE_DAYS = 3;
+    private static final long TOKEN_EXPIRE_DAYS = 7;
     private static final long TOKEN_REFRESH_DAYS_LIMIT = 1;
 
     @Resource

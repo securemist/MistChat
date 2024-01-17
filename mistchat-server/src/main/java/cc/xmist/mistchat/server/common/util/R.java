@@ -24,8 +24,20 @@ public class R<T> {
         return new R(data);
     }
 
+    public static R ok() {
+        return new R(null);
+    }
+
     public static R error(ErrorType errorType) {
         return new R(errorType.code, errorType.msg);
+    }
+
+    public static R paramError() {
+        return new R(ErrorType.PARAM_ERROR.code, ErrorType.PARAM_ERROR.msg);
+    }
+
+    public static R paramError(String message) {
+        return new R(ErrorType.PARAM_ERROR.code, message);
     }
 
     public static R commonError(String errMsg) {

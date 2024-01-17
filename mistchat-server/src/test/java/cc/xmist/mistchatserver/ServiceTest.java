@@ -1,6 +1,6 @@
 package cc.xmist.mistchatserver;
 
-import cc.xmist.mistchat.server.common.jwt.JwtUtil;
+import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import jakarta.annotation.Resource;
 import org.junit.Test;

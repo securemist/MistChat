@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.common.jwt;
+package cc.xmist.mistchat.server.common.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

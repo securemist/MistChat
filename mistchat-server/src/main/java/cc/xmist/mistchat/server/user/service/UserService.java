@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.exception.BusinessException;
-import cc.xmist.mistchat.server.common.jwt.JwtUtil;
+import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.entity.User;
@@ -59,5 +59,14 @@ public class UserService {
                 .avatar(user.getAvatar())
                 .name(user.getName())
                 .modifyNameChance(modifyNameCount).build();
+    }
+
+    /**
+     * 修改用户用户名
+     * @param uid
+     * @param name 新用户名
+     */
+    public void modifyName(Long uid, String name) {
+
     }
 }
