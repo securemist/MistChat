@@ -26,10 +26,10 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class WebSocketServer {
 
-    @Value("${websocket.port}")
+    @Value("${ws.port}")
     private String port;
 
-    @Value("${websocket.context}")
+    @Value("${ws.context}")
     private String context;
 
     //    public static final NettyWebSocketServerHandler NETTY_WEB_SOCKET_SERVER_HANDLER = new NettyWebSocketServerHandler();
@@ -39,13 +39,13 @@ public class WebSocketServer {
 
     @PostConstruct
     public void start() throws InterruptedException {
-        run();
-        log.info("启动WebSocket服务，port:{}  context:{}", port, context);
+//        run();
+//        log.info("启动WebSocket服务，port:{}  context:{}", port, context);
     }
 
     @PreDestroy
     public void destory() {
-        log.info("关闭WebSocket服务");
+//        log.info("关闭WebSocket服务");
     }
 
     public void run() throws InterruptedException {

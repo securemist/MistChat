@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<script src="socket.io/socket.io.js"></script>
+<script>
+    const socket = new io("ws://127.0.0.1:8201?token=123");
+    socket.connect()
+
+    function connect() {
+    }
+
+    function send() {
+        socket.emit("join", {name: 11})
+    }
+
+</script>
+<body>
+
+
+<button onclick="connect()">connect</button>
+<br>
+<button onclick="send()">send</button>
+<br>
+
+</body>
+</html>
