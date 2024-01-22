@@ -19,9 +19,13 @@ public class SocketIoRunner implements CommandLineRunner {
     @Value("${ws.port}")
     private String port;
 
+    @Value("${ws.enabled}")
+    private Boolean enabled;
+
     @Override
     public void run(String... args) throws Exception {
-        socketIOServer.start();
-        log.info("websocket 服务启动成功，端口：{}", port);
+        if (enabled) {
+            socketIOServer.start();
+        }
     }
 }

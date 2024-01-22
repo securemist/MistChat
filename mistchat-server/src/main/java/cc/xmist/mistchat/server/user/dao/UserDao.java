@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDao extends ServiceImpl<UserMapper, User> {
 
-    public User getUser(String username) {
+    public User getByName(String name) {
         return lambdaQuery()
-                .eq(User::getUsername, username)
+                .eq(User::getName, name)
                 .one();
     }
 
@@ -32,7 +32,19 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
         user.insert();
     }
 
+    public User getByUsername(String username){
+           return lambdaQuery()
+                .eq(User::getUsername, username)
+                .one();
+    }
     public User getUser(Long uid) {
         return getById(uid);
+    }
+
+    public void modifyName(Long uid, String name) {
+        lambdaUpdate()
+                .eq(User::getId, uid)
+                .set(User::getName, name)
+                .update();
     }
 }

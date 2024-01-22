@@ -4,6 +4,7 @@ server:
     context-path: /api/v1
 
 ws:
+  enabled: false
   port: 8201
   context: /
 

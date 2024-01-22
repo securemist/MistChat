@@ -1,6 +1,7 @@
 package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.exception.BusinessException;
+import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
@@ -22,8 +23,9 @@ public class UserService {
     private AuthService authService;
     @Resource
     private UserBackpackDao userBackpackDao;
+
     public void register(String username, String password, String name) {
-        User user = userDao.getUser(username);
+        User user = userDao.getByUsername(username);
         if (user != null) {
             throw new RuntimeException("该用户已注册");
         }
@@ -33,7 +35,7 @@ public class UserService {
     }
 
     public User login(String username, String password) {
-        User user = userDao.getUser(username);
+        User user = userDao.getByUsername(username);
         if (user == null) {
             throw new BusinessException("用户名不存在");
         }
@@ -43,7 +45,7 @@ public class UserService {
         }
 
         String token = authService.login(user.getId());
-        log.info("用户 {} 登陆成功",user.getName());
+        log.info("用户 {} 登陆成功", user.getName());
 
         return user;
     }
@@ -62,10 +64,22 @@ public class UserService {
 
     /**
      * 修改用户用户名
+     *
      * @param uid
      * @param name 新用户名
      */
     public void modifyName(Long uid, String name) {
+        // uid不存在
+        if (userDao.getUser(uid) == null) {
+            throw new ParamException();
+        }
 
+        // 校验用户名
+        User user = userDao.getByName(name);
+        if (user != null) {
+            throw new BusinessException("该用户名已存在");
+        }
+
+        userDao.modifyName(uid, name);
     }
 }

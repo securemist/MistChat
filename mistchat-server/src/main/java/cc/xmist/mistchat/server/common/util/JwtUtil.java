@@ -24,7 +24,7 @@ public class JwtUtil {
     public String createToken(Long uid) {
         String token = JWT.create()
                 .withClaim(UID, uid)
-                .withClaim("createTime", new Date())
+//                .withClaim("createTime", new Date())
                 .sign(Algorithm.HMAC256(secret));
         return token;
     }

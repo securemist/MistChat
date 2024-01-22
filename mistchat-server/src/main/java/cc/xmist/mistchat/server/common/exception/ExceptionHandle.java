@@ -4,7 +4,6 @@ import cc.xmist.mistchat.server.common.util.ErrorType;
 import cc.xmist.mistchat.server.common.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -32,5 +31,10 @@ public class ExceptionHandle {
     public R handleException(Exception e) {
         log.error(e.getMessage());
         return R.commonError(e.getMessage());
+    }
+
+    @ExceptionHandler(value = ParamException.class)
+    public R paramException(ParamException e){
+        return R.paramError(e.getMessage());
     }
 }
