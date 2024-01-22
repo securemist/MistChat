@@ -2,15 +2,18 @@ package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
+import cc.xmist.mistchat.server.common.util.AssertUtil;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.entity.User;
+import cc.xmist.mistchat.server.user.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -62,12 +65,14 @@ public class UserService {
                 .modifyNameChance(modifyNameCount).build();
     }
 
+
     /**
      * 修改用户用户名
      *
      * @param uid
      * @param name 新用户名
      */
+    @Transactional(rollbackFor = Exception.class)
     public void modifyName(Long uid, String name) {
         // uid不存在
         if (userDao.getUser(uid) == null) {
@@ -80,6 +85,14 @@ public class UserService {
             throw new BusinessException("该用户名已存在");
         }
 
+        // 获取用户最新的一张改名卡
+        UserBackpack renameItem = userBackpackDao.getLastItem(uid, ItemType.MODIFY_NAME_CARD);
+        if (renameItem == null) {
+            throw new BusinessException("改名卡数量不足");
+        }
+
+        // 消耗改名卡改名
+        userBackpackDao.useItem(renameItem.getId());
         userDao.modifyName(uid, name);
     }
 }

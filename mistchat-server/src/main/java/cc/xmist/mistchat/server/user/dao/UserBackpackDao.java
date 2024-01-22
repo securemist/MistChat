@@ -32,4 +32,34 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
                 .eq(UserBackpack::getStatus, StatusType.NO).count();
         return count;
     }
+
+    /**
+     * 消耗物品
+     *
+     * @param uid
+     * @return
+     */
+    public boolean useItem(Long id) {
+        return lambdaUpdate()
+                .eq(UserBackpack::getId, id)
+                .eq(UserBackpack::getStatus,StatusType.NO.status)
+                .set(UserBackpack::getStatus, StatusType.YES.status)
+                .update();
+    }
+
+    /**
+     * 获取用户最新的物品
+     * @param uid
+     * @param itemType
+     * @return
+     */
+    public UserBackpack getLastItem(Long uid, ItemType itemType) {
+        return lambdaQuery()
+                .eq(UserBackpack::getUid,uid)
+                .eq(UserBackpack::getItemId,itemType.getId())
+                .eq(UserBackpack::getStatus,StatusType.NO.status)
+                .orderByAsc(UserBackpack::getCreateTime)
+                .last("limit 1")
+                .one();
+    }
 }

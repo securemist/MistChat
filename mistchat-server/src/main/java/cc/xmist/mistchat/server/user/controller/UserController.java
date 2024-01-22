@@ -31,7 +31,6 @@ public class UserController {
     @GetMapping("/userInfo")
     public R<UserInfoResponse> getUserInfo() {
         Long uid = RequestContext.getUid();
-        String ip = RequestContext.getIp();
         UserInfoResponse userInfo = userService.getUserInfo(uid);
         return R.ok(userInfo);
     }

@@ -9,6 +9,6 @@ public enum ErrorType {
     NOT_LOGIN(4001, "登陆失效，请重新登陆"),
     PARAM_ERROR(4002, "请求参数异常");
 
-    Integer code;
-    String msg;
+     Integer code;
+     String msg;
 }

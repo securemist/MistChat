@@ -3,7 +3,6 @@ package cc.xmist.mistchat.server.user.dao;
 import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,8 +40,8 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
         return getById(uid);
     }
 
-    public void modifyName(Long uid, String name) {
-        lambdaUpdate()
+    public boolean modifyName(Long uid, String name) {
+        return lambdaUpdate()
                 .eq(User::getId, uid)
                 .set(User::getName, name)
                 .update();

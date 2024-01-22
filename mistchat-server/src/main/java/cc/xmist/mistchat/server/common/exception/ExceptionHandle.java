@@ -22,14 +22,14 @@ public class ExceptionHandle {
         return R.error(ErrorType.NOT_LOGIN);
     }
 
-    @ResponseBody
+      @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public R parameterException(MethodArgumentNotValidException e) {
         return R.paramError(e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
     @ExceptionHandler(value = Exception.class)
     public R handleException(Exception e) {
-        log.error(e.getMessage());
+        log.error("{}",e);
         return R.commonError(e.getMessage());
     }
 

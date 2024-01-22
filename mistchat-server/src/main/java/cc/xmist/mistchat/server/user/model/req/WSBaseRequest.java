@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.user.model.req;
 
-import cc.xmist.mistchat.server.user.model.enums.WSRequestType;
 import lombok.Builder;
 import lombok.Data;
 
