@@ -12,13 +12,22 @@
     const socket = new io("ws://127.0.0.1:8201?token=123");
     socket.connect()
 
-    function connect() {
-    }
-
+    let token = ""
     function send() {
-        socket.emit("join", {name: 11})
+        socket.emit("login", {
+            username: 18115168320,
+            password: 12345
+        }, function (data) {
+            token = data.data
+            console.log("token:" + token)
+        })
     }
 
+    function verifyToken() {
+        socket.emit("verifyToken",token,function (data) {
+            console.log(data)
+        })
+    }
 </script>
 <body>
 
@@ -26,6 +35,7 @@
 <button onclick="connect()">connect</button>
 <br>
 <button onclick="send()">send</button>
+<button onclick="verifyToken()">token</button>
 <br>
 
 </body>

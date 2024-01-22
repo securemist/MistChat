@@ -45,7 +45,6 @@ public class UserService {
         String token = authService.login(user.getId());
         log.info("用户 {} 登陆成功",user.getName());
 
-
         return user;
     }
 

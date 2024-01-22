@@ -24,13 +24,13 @@ public class SocketConfig {
 
         // 用于身份验证
         //  http://localhost:8081?token=xxxxxxx可以获取token
-        config.setAuthorizationListener(data -> {
-            String token = data.getSingleUrlParam("token");
-            if (StrUtil.isNotBlank(token)) {
-                log.info("登陆token：{}", token);
-            }
-            return new AuthorizationResult(true);
-        });
+//        config.setAuthorizationListener(data -> {
+//            String token = data.getSingleUrlParam("token");
+//            if (StrUtil.isNotBlank(token)) {
+//                log.info("登陆token：{}", token);
+//            }
+//            return new AuthorizationResult(true);
+//        });
 
         return new SocketIOServer(config);
     }

@@ -24,6 +24,4 @@ public class SocketIoRunner implements CommandLineRunner {
         socketIOServer.start();
         log.info("websocket 服务启动成功，端口：{}", port);
     }
-
-
 }
