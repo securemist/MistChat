@@ -7,6 +7,7 @@ import cc.xmist.mistchat.server.user.service.BadgeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class BadgeController {
     }
 
     @Operation(summary = "佩戴徽章")
-    @PutMapping("/badge/{badgeId}")
+    @PostMapping("/badge/wear/{badgeId}")
     public R wearBadge(@PathVariable Long badgeId) {
         Long uid = RequestContext.getUid();
         badgeService.wearBadge(uid, badgeId);

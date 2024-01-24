@@ -31,7 +31,7 @@ public class UserController {
     private AuthService authService;
 
     @Operation(summary = "获取用户信息")
-    @GetMapping("/userInfo")
+    @GetMapping("/info")
     public R<UserInfoResponse> getUserInfo() {
         Long uid = RequestContext.getUid();
         UserInfoResponse userInfo = userService.getUserInfo(uid);
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @Operation(summary = "修改用户名称")
-    @PutMapping("/name")
+    @PostMapping("/name/modify")
     public R<Void> modifyName(@RequestBody @Valid ModifyNameReq modifyNameReq) {
         Long uid = RequestContext.getUid();
         userService.modifyName(uid, modifyNameReq.getName());
