@@ -1,11 +1,10 @@
 package cc.xmist.mistchat.server.user.model.enums;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -33,5 +32,18 @@ public enum ItemType {
 
     public static ItemType of(Long type) {
         return cache.get(type);
+    }
+
+    private static List<Long> BadgeItemIds = Arrays.stream(ItemType.values())
+            .filter(item -> item.getTypeEnum().equals(ItemTypeEnum.BADGE))
+            .map(ItemType::getId)
+            .collect(Collectors.toList());
+
+    /**
+     * 获取所有徽章物品id
+     * @return
+     */
+    public static List<Long> getBadgeItemIdList() {
+        return BadgeItemIds;
     }
 }

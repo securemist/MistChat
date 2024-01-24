@@ -4,8 +4,11 @@ import cc.xmist.mistchat.server.common.constant.StatusType;
 import cc.xmist.mistchat.server.user.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.mapper.UserBackpackMapper;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
+import cc.xmist.mistchat.server.user.model.enums.ItemTypeEnum;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -61,5 +64,19 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
                 .orderByAsc(UserBackpack::getCreateTime)
                 .last("limit 1")
                 .one();
+    }
+
+
+    /**
+     * 获取所有id列表中的物品
+     * @param uid 用户id
+     * @param itemIdList 物品id列表
+     * @return
+     */
+    public List<UserBackpack> getItemList(Long uid, List<Long> itemIdList) {
+        return lambdaQuery()
+                .eq(UserBackpack::getUid,uid)
+                .in(UserBackpack::getItemId,itemIdList)
+                .list();
     }
 }

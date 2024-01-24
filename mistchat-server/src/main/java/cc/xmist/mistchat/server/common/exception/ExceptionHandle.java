@@ -30,7 +30,7 @@ public class ExceptionHandle {
     @ExceptionHandler(value = Exception.class)
     public R handleException(Exception e) {
         log.error("{}",e);
-        return R.commonError(e.getMessage());
+        return R.commonError();
     }
 
     @ExceptionHandler(value = ParamException.class)

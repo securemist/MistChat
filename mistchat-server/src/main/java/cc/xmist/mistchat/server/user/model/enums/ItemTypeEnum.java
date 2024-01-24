@@ -15,13 +15,13 @@ public enum ItemTypeEnum {
     BADGE(2, "徽章"),
     ;
 
-    private final Integer type;
-    private final String desc;
+    final Integer key;
+    final String desc;
 
     private static Map<Integer, ItemTypeEnum> cache;
 
     static {
-        cache = Arrays.stream(ItemTypeEnum.values()).collect(Collectors.toMap(ItemTypeEnum::getType, Function.identity()));
+        cache = Arrays.stream(ItemTypeEnum.values()).collect(Collectors.toMap(ItemTypeEnum::getKey, Function.identity()));
     }
 
     public static ItemTypeEnum of(Integer type) {

@@ -1,19 +1,27 @@
 package cc.xmist.mistchat.server.user.service;
 
+import cc.xmist.mistchat.server.common.constant.StatusType;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
-import cc.xmist.mistchat.server.common.util.AssertUtil;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
+import cc.xmist.mistchat.server.user.UserAdapter;
+import cc.xmist.mistchat.server.user.dao.ItemConfigDao;
 import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
+import cc.xmist.mistchat.server.user.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
+import cc.xmist.mistchat.server.user.model.resp.BadgesResponse;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -26,6 +34,9 @@ public class UserService {
     private AuthService authService;
     @Resource
     private UserBackpackDao userBackpackDao;
+    @Resource
+    private ItemConfigDao itemConfigDao;
+
 
     public void register(String username, String password, String name) {
         User user = userDao.getByUsername(username);
@@ -95,4 +106,26 @@ public class UserService {
         userBackpackDao.useItem(renameItem.getId());
         userDao.modifyName(uid, name);
     }
+
+    /**
+     * 获取徽章列表
+     *
+     * @param uid
+     * @return
+     */
+    public BadgesResponse getBadgeList(Long uid) {
+        // 所有徽章物品id
+        List<Long> badgeIdList = ItemType.getBadgeItemIdList();
+        // 徽章详细信息
+        List<ItemConfig> allBadges = itemConfigDao.getBadges(badgeIdList);
+        // 用户徽章列表
+        List<UserBackpack> userBadges = userBackpackDao.getItemList(uid, badgeIdList);
+
+        // 用户已经佩戴了的徽章id
+        User user = userDao.getUser(uid);
+        Long usedItemId = user.getItemId();
+
+        return UserAdapter.buildBadgeResponse(uid, usedItemId, allBadges, userBadges);
+    }
+
 }

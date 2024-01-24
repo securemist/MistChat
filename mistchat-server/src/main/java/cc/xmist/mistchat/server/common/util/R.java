@@ -43,4 +43,8 @@ public class R<T> {
     public static R commonError(String errMsg) {
         return new R(ErrorType.UNKNOWN_FAILED.code, errMsg);
     }
+
+    public static R commonError() {
+        return new R(ErrorType.UNKNOWN_FAILED.code, ErrorType.UNKNOWN_FAILED.msg);
+    }
 }

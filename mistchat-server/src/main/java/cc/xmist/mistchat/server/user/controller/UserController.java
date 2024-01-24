@@ -7,17 +7,17 @@ import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.model.req.LoginReq;
 import cc.xmist.mistchat.server.user.model.req.ModifyNameReq;
 import cc.xmist.mistchat.server.user.model.req.RegisterReq;
+import cc.xmist.mistchat.server.user.model.resp.BadgesResponse;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
+import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Tag(name = "用户接口")
@@ -26,7 +26,8 @@ public class UserController {
 
     @Resource
     private UserService userService;
-
+    @Resource
+    private AuthService authService;
     @Operation(summary = "获取用户信息")
     @GetMapping("/userInfo")
     public R<UserInfoResponse> getUserInfo() {
@@ -37,10 +38,17 @@ public class UserController {
 
     @Operation(summary = "修改用户名称")
     @PutMapping("/name")
-    public R<Void> modifyName(@RequestBody @Valid  ModifyNameReq modifyNameReq) {
+    public R<Void> modifyName(@RequestBody @Valid ModifyNameReq modifyNameReq) {
         Long uid = RequestContext.getUid();
         userService.modifyName(uid, modifyNameReq.getName());
         return R.ok();
+    }
+
+    @Operation(summary = "获取用户徽章列表")
+    @GetMapping("/badges")
+    public R<List<BadgesResponse>> getBadges() {
+        Long uid = RequestContext.getUid();
+        return R.ok(userService.getBadgeList(uid));
     }
 
     @PostMapping("/public/register")
@@ -52,7 +60,9 @@ public class UserController {
     @PostMapping("/public/login")
     public R login(@RequestBody LoginReq loginReq) {
         User user = userService.login(loginReq.getUsername(), loginReq.getPassword());
-        return R.ok(null);
+         // 签发token
+        String token = authService.login(user.getId());
+        return R.ok(token);
     }
 }
 
