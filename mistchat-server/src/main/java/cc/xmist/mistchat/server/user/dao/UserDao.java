@@ -31,11 +31,12 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
         user.insert();
     }
 
-    public User getByUsername(String username){
-           return lambdaQuery()
+    public User getByUsername(String username) {
+        return lambdaQuery()
                 .eq(User::getUsername, username)
                 .one();
     }
+
     public User getUser(Long uid) {
         return getById(uid);
     }
@@ -44,6 +45,13 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
         return lambdaUpdate()
                 .eq(User::getId, uid)
                 .set(User::getName, name)
+                .update();
+    }
+
+    public void wearBadge(Long uid, Long badgeId) {
+        lambdaUpdate()
+                .set(User::getItemId, badgeId)
+                .eq(User::getId, uid)
                 .update();
     }
 }

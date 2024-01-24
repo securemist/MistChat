@@ -43,7 +43,7 @@ public enum ItemType {
      * 获取所有徽章物品id
      * @return
      */
-    public static List<Long> getBadgeItemIdList() {
+    public static List<Long> getBadgesId() {
         return BadgeItemIds;
     }
 }

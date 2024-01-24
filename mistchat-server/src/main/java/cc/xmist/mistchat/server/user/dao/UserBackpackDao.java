@@ -4,7 +4,6 @@ import cc.xmist.mistchat.server.common.constant.StatusType;
 import cc.xmist.mistchat.server.user.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.mapper.UserBackpackMapper;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
-import cc.xmist.mistchat.server.user.model.enums.ItemTypeEnum;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -45,22 +44,23 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
     public boolean useItem(Long id) {
         return lambdaUpdate()
                 .eq(UserBackpack::getId, id)
-                .eq(UserBackpack::getStatus,StatusType.NO.status)
+                .eq(UserBackpack::getStatus, StatusType.NO.status)
                 .set(UserBackpack::getStatus, StatusType.YES.status)
                 .update();
     }
 
     /**
      * 获取用户最新的物品
+     *
      * @param uid
      * @param itemType
      * @return
      */
     public UserBackpack getLastItem(Long uid, ItemType itemType) {
         return lambdaQuery()
-                .eq(UserBackpack::getUid,uid)
-                .eq(UserBackpack::getItemId,itemType.getId())
-                .eq(UserBackpack::getStatus,StatusType.NO.status)
+                .eq(UserBackpack::getUid, uid)
+                .eq(UserBackpack::getItemId, itemType.getId())
+                .eq(UserBackpack::getStatus, StatusType.NO.status)
                 .orderByAsc(UserBackpack::getCreateTime)
                 .last("limit 1")
                 .one();
@@ -69,14 +69,27 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
 
     /**
      * 获取所有id列表中的物品
-     * @param uid 用户id
+     *
+     * @param uid        用户id
      * @param itemIdList 物品id列表
      * @return
      */
     public List<UserBackpack> getItemList(Long uid, List<Long> itemIdList) {
         return lambdaQuery()
-                .eq(UserBackpack::getUid,uid)
-                .in(UserBackpack::getItemId,itemIdList)
+                .eq(UserBackpack::getUid, uid)
+                .in(UserBackpack::getItemId, itemIdList)
+                .list();
+    }
+
+    /**
+     * 获取用户所有的徽章列表
+     * @param uid
+     * @return
+     */
+    public List<UserBackpack> getBadges(Long uid) {
+        return lambdaQuery()
+                .eq(UserBackpack::getUid, uid)
+                .in(UserBackpack::getItemId, ItemType.getBadgesId())
                 .list();
     }
 }

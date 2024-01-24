@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class UserService {
+public class UserService extends UserServiceSupport{
     @Resource
     private UserDao userDao;
     @Resource
@@ -104,25 +104,6 @@ public class UserService {
         userDao.modifyName(uid, name);
     }
 
-    /**
-     * 获取徽章列表
-     *
-     * @param uid
-     * @return
-     */
-    public List<BadgeVo> getBadgeList(Long uid) {
-        // 所有徽章物品id
-        List<Long> badgeIdList = ItemType.getBadgeItemIdList();
-        // 徽章详细信息
-        List<ItemConfig> allBadges = itemConfigDao.getBadges(badgeIdList);
-        // 用户徽章列表
-        List<UserBackpack> userBadges = userBackpackDao.getItemList(uid, badgeIdList);
 
-        // 用户已经佩戴了的徽章id
-        User user = userDao.getUser(uid);
-        Long usedItemId = user.getItemId();
-
-        return UserAdapter.buildBadgeResponse(uid, usedItemId, allBadges, userBadges);
-    }
 
 }

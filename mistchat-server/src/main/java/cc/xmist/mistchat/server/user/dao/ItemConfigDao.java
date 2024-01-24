@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.user.dao;
 
 import cc.xmist.mistchat.server.user.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.mapper.ItemConfigMapper;
+import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class ItemConfigDao extends ServiceImpl<ItemConfigMapper, ItemConfig> {
      * @return
      */
     public List<ItemConfig> getAllBadgeList() {
-        return lambdaQuery().ne(ItemConfig::getId,0).list();
+        return lambdaQuery().ne(ItemConfig::getId, 0).list();
     }
 
     /**
@@ -35,7 +36,18 @@ public class ItemConfigDao extends ServiceImpl<ItemConfigMapper, ItemConfig> {
      */
     public List<ItemConfig> getBadges(List<Long> badgeIdList) {
         return lambdaQuery()
-                .in(ItemConfig::getId,badgeIdList)
+                .in(ItemConfig::getId, badgeIdList)
+                .list();
+    }
+
+    /**
+     * 获取所有徽章详细信息
+     *
+     * @return
+     */
+    public List<ItemConfig> getAllBadges() {
+        return lambdaQuery()
+                .in(ItemConfig::getId, ItemType.getBadgesId())
                 .list();
     }
 }

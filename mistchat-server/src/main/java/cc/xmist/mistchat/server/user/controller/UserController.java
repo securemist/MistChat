@@ -10,6 +10,7 @@ import cc.xmist.mistchat.server.user.model.req.RegisterReq;
 import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import cc.xmist.mistchat.server.user.service.AuthService;
+import cc.xmist.mistchat.server.user.service.BadgeService;
 import cc.xmist.mistchat.server.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,6 +29,7 @@ public class UserController {
     private UserService userService;
     @Resource
     private AuthService authService;
+
     @Operation(summary = "获取用户信息")
     @GetMapping("/userInfo")
     public R<UserInfoResponse> getUserInfo() {
@@ -44,13 +46,6 @@ public class UserController {
         return R.ok();
     }
 
-    @Operation(summary = "获取用户徽章列表")
-    @GetMapping("/badges")
-    public R<List<BadgeVo>> getBadges() {
-        Long uid = RequestContext.getUid();
-        return R.ok(userService.getBadgeList(uid));
-    }
-
     @PostMapping("/public/register")
     public R register(@RequestBody RegisterReq registerReq) {
         userService.register(registerReq.getUsername(), registerReq.getPassword(), registerReq.getName());
@@ -60,7 +55,7 @@ public class UserController {
     @PostMapping("/public/login")
     public R login(@RequestBody LoginReq loginReq) {
         User user = userService.login(loginReq.getUsername(), loginReq.getPassword());
-         // 签发token
+        // 签发token
         String token = authService.login(user.getId());
         return R.ok(token);
     }
