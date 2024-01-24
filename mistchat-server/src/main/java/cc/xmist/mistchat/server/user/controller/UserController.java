@@ -7,7 +7,7 @@ import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.model.req.LoginReq;
 import cc.xmist.mistchat.server.user.model.req.ModifyNameReq;
 import cc.xmist.mistchat.server.user.model.req.RegisterReq;
-import cc.xmist.mistchat.server.user.model.resp.BadgesResponse;
+import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.UserService;
@@ -46,7 +46,7 @@ public class UserController {
 
     @Operation(summary = "获取用户徽章列表")
     @GetMapping("/badges")
-    public R<List<BadgesResponse>> getBadges() {
+    public R<List<BadgeVo>> getBadges() {
         Long uid = RequestContext.getUid();
         return R.ok(userService.getBadgeList(uid));
     }

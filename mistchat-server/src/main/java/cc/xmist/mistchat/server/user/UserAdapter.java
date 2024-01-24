@@ -2,16 +2,14 @@ package cc.xmist.mistchat.server.user;
 
 import cc.xmist.mistchat.server.user.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.entity.UserBackpack;
-import cc.xmist.mistchat.server.user.model.resp.BadgesResponse;
+import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserAdapter {
-    public static BadgesResponse buildBadgeResponse(Long uid, Long usedItemId, List<ItemConfig> allBadges, List<UserBackpack> userBadges) {
-        BadgesResponse badgesResponse = new BadgesResponse();
-        badgesResponse.setUid(uid);
-        badgesResponse.setUsedBadgeId(usedItemId);
+    public static List<BadgeVo> buildBadgeResponse(Long uid, Long usedItemId, List<ItemConfig> allBadges, List<UserBackpack> userBadges) {
 
         // 用户徽章id列表
         List<Long> userBadgeIds = userBadges
@@ -19,19 +17,25 @@ public class UserAdapter {
                 .map(userBackpack -> userBackpack.getItemId())
                 .collect(Collectors.toList());
 
-        List<BadgesResponse.Badge> badges = allBadges
+        /**
+         * 排序逻辑，佩戴的 > 拥有的 > 未拥有的 > id 顺序
+         */
+        List<BadgeVo> badges = allBadges
                 .stream()
                 .map(badge -> {
                     boolean own = userBadgeIds.contains(badge.getId());
-                    return BadgesResponse.Badge.builder()
+                    return BadgeVo.builder()
                             .own(own)
                             .id(badge.getId())
                             .img(badge.getImg())
                             .description(badge.getDescription())
+                            .wearing(usedItemId == badge.getId())
                             .build();
-                }).collect(Collectors.toList());
+                })
+                .sorted(Comparator.comparing(BadgeVo::getWearing, Comparator.reverseOrder())
+                        .thenComparing(BadgeVo::getOwn, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
 
-        badgesResponse.setBadges(badges);
-        return badgesResponse;
+        return badges;
     }
 }

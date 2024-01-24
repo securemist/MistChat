@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.user.service;
 
-import cc.xmist.mistchat.server.common.constant.StatusType;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
@@ -12,16 +11,14 @@ import cc.xmist.mistchat.server.user.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
-import cc.xmist.mistchat.server.user.model.resp.BadgesResponse;
+import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -113,7 +110,7 @@ public class UserService {
      * @param uid
      * @return
      */
-    public BadgesResponse getBadgeList(Long uid) {
+    public List<BadgeVo> getBadgeList(Long uid) {
         // 所有徽章物品id
         List<Long> badgeIdList = ItemType.getBadgeItemIdList();
         // 徽章详细信息
