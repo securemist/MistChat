@@ -22,13 +22,14 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .one();
     }
 
-    public void addUser(String username, String password, String name) {
+    public User addUser(String username, String password, String name) {
         User user = User.builder()
                 .username(username)
                 .password(password)
                 .name(name)
                 .build();
         user.insert();
+        return user;
     }
 
     public User getByUsername(String username) {

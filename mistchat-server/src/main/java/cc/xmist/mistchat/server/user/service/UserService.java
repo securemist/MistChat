@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.user.service;
 
+import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
@@ -15,6 +16,7 @@ import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,16 +24,23 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class UserService extends UserServiceSupport{
+public class UserService extends UserServiceSupport {
 
+    @Resource
+    ApplicationEventPublisher eventPublisher;
 
+    @Transactional(rollbackFor = Exception.class)
     public void register(String username, String password, String name) {
-        User user = userDao.getByUsername(username);
-        if (user != null) {
-            throw new RuntimeException("该用户已注册");
+        if (userDao.getByUsername(username) != null) {
+            throw new BusinessException("该用户已注册");
         }
 
-        userDao.addUser(username, password, name);
+        if (userDao.getByName(name) != null) {
+            throw new BusinessException("该用户名已存在");
+        }
+
+        User user = userDao.addUser(username, password, name);
+        eventPublisher.publishEvent(new UserRegisterEvent(this, user));
         log.info("{}用户完成注册，username：{}", name, username);
     }
 
@@ -93,7 +102,6 @@ public class UserService extends UserServiceSupport{
         userBackpackDao.useItem(renameItem.getId());
         userDao.modifyName(uid, name);
     }
-
 
 
 }

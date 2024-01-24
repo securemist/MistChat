@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public enum ItemType {
     MODIFY_NAME_CARD(1L, ItemTypeEnum.MODIFY_NAME_CARD, "改名卡"),
     LIKE_BADGE(2L, ItemTypeEnum.BADGE, "爆赞徽章"),
-    REG_TOP10_BADGE(3L, ItemTypeEnum.BADGE, "前十注册徽章"),
+    REG_TOP10_BADGE(3L, ItemTypeEnum.BADGE, "前10注册徽章"),
     REG_TOP100_BADGE(4L, ItemTypeEnum.BADGE, "前100注册徽章"),
     PLANET(5L, ItemTypeEnum.BADGE, "知识星球"),
     CONTRIBUTOR(6L, ItemTypeEnum.BADGE, "代码贡献者"),
