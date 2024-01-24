@@ -7,18 +7,14 @@ import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.model.req.LoginReq;
 import cc.xmist.mistchat.server.user.model.req.ModifyNameReq;
 import cc.xmist.mistchat.server.user.model.req.RegisterReq;
-import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
 import cc.xmist.mistchat.server.user.service.AuthService;
-import cc.xmist.mistchat.server.user.service.BadgeService;
 import cc.xmist.mistchat.server.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Tag(name = "用户接口")

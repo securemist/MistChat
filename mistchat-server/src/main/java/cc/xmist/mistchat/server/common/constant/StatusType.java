@@ -8,5 +8,5 @@ public enum StatusType {
     NO(0),
     YES(1);
 
-    public Integer status;
+    public Integer key;
 }

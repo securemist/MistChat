@@ -44,8 +44,8 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
     public boolean useItem(Long id) {
         return lambdaUpdate()
                 .eq(UserBackpack::getId, id)
-                .eq(UserBackpack::getStatus, StatusType.NO.status)
-                .set(UserBackpack::getStatus, StatusType.YES.status)
+                .eq(UserBackpack::getStatus, StatusType.NO.key)
+                .set(UserBackpack::getStatus, StatusType.YES.key)
                 .update();
     }
 
@@ -60,7 +60,7 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
         return lambdaQuery()
                 .eq(UserBackpack::getUid, uid)
                 .eq(UserBackpack::getItemId, itemType.getId())
-                .eq(UserBackpack::getStatus, StatusType.NO.status)
+                .eq(UserBackpack::getStatus, StatusType.NO.key)
                 .orderByAsc(UserBackpack::getCreateTime)
                 .last("limit 1")
                 .one();
@@ -91,5 +91,17 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
                 .eq(UserBackpack::getUid, uid)
                 .in(UserBackpack::getItemId, ItemType.getBadgesId())
                 .list();
+    }
+
+    /**
+     * 根据幂等号获取物品
+     *
+     * @param idempotent
+     * @return
+     */
+    public UserBackpack getItem(String idempotent) {
+        return lambdaQuery()
+                .eq(UserBackpack::getIdempotent,idempotent)
+                .one();
     }
 }

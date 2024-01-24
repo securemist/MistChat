@@ -1,7 +1,10 @@
 package cc.xmist.mistchatserver;
 
 import cc.xmist.mistchat.server.common.util.JwtUtil;
+import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
+import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import cc.xmist.mistchat.server.user.service.AuthService;
+import cc.xmist.mistchat.server.user.service.ItemService;
 import jakarta.annotation.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ServiceTest {
 
     @Resource
-    private AuthService authService;
+    AuthService authService;
+    @Resource
+    ItemService itemService;
 
     @Test
     public void testAuth() {
@@ -23,7 +28,7 @@ public class ServiceTest {
     }
 
 
-        @Resource
+    @Resource
     private JwtUtil jwtUtil;
 
     @Test
@@ -37,8 +42,14 @@ public class ServiceTest {
 
 
     @Test
-    public void testAsync(){
+    public void testAsync() {
 //        authService.refreshToken("111");
+    }
+
+    @Test
+    public void testAcquireItem() {
+        Long uid = 20001L;
+        itemService.acquireItem(uid, ItemType.MODIFY_NAME_CARD, IdempotentType.UID, "123");
     }
 
 }

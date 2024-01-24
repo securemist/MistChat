@@ -20,19 +20,9 @@ public enum ItemType {
     CONTRIBUTOR(6L, ItemTypeEnum.BADGE, "代码贡献者"),
     ;
 
-    final Long id;
-    final ItemTypeEnum typeEnum;
-    final String desc;
-
-    private static Map<Long, ItemType> cache;
-
-    static {
-        cache = Arrays.stream(ItemType.values()).collect(Collectors.toMap(ItemType::getId, Function.identity()));
-    }
-
-    public static ItemType of(Long type) {
-        return cache.get(type);
-    }
+    public Long id;
+    public ItemTypeEnum typeEnum;
+    public String desc;
 
     private static List<Long> BadgeItemIds = Arrays.stream(ItemType.values())
             .filter(item -> item.getTypeEnum().equals(ItemTypeEnum.BADGE))

@@ -23,16 +23,6 @@ import java.util.List;
 @Service
 @Slf4j
 public class UserService extends UserServiceSupport{
-    @Resource
-    private UserDao userDao;
-    @Resource
-    private JwtUtil jwtUtil;
-    @Resource
-    private AuthService authService;
-    @Resource
-    private UserBackpackDao userBackpackDao;
-    @Resource
-    private ItemConfigDao itemConfigDao;
 
 
     public void register(String username, String password, String name) {
