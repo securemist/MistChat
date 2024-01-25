@@ -4,6 +4,7 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnEvent;
+import jakarta.annotation.PreDestroy;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,14 @@ public class SocketIoRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (enabled) {
             socketIOServer.start();
+        }
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        if (enabled) {
+            log.debug("shutdown socketIo Server");
+            socketIOServer.stop();
         }
     }
 }

@@ -11,9 +11,12 @@ import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.entity.UserBackpack;
+import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -56,7 +59,6 @@ public class UserService extends UserServiceSupport {
 
         String token = authService.login(user.getId());
         log.info("用户 {} 登陆成功", user.getName());
-
         return user;
     }
 
@@ -104,4 +106,20 @@ public class UserService extends UserServiceSupport {
     }
 
 
+    /**
+     * 更新ip信息
+     *
+     * @param uid
+     * @param ip
+     */
+    public void updateIpInfo(Long uid, String ip) {
+        User user = userDao.getUser(uid);
+        IpInfo ipInfo = user.getIpInfo();
+        if (StrUtil.isBlank(ipInfo.getInitialIp())) {
+            ipInfo.setInitialIp(ip);
+            ipInfo.setLastIp(ip);
+        } else {
+            ipInfo.setLastIp(ip);
+        }
+    }
 }

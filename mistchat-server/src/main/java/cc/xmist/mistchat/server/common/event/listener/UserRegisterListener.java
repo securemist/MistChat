@@ -8,6 +8,7 @@ import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import cc.xmist.mistchat.server.user.service.ItemService;
 import jakarta.annotation.Resource;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
@@ -26,6 +27,7 @@ public class UserRegisterListener {
      * @param event
      */
     @TransactionalEventListener(classes = UserRegisterEvent.class)
+    @Async
     public void sendItem(UserRegisterEvent event) {
         // 用户注册发送改名卡
         User user = event.getUser();

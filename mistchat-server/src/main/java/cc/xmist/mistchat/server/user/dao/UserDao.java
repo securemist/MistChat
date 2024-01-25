@@ -1,9 +1,14 @@
 package cc.xmist.mistchat.server.user.dao;
 
+import cc.xmist.mistchat.server.common.util.JsonUtil;
 import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.mapper.UserMapper;
+import cc.xmist.mistchat.server.user.model.IpInfo;
+import cc.xmist.mistchat.server.user.model.enums.ActiveType;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -52,6 +57,21 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
     public void wearBadge(Long uid, Long badgeId) {
         lambdaUpdate()
                 .set(User::getItemId, badgeId)
+                .eq(User::getId, uid)
+                .update();
+    }
+
+    public void updateIpInfo(Long uid, IpInfo ipInfo) {
+        lambdaUpdate()
+                .set(User::getIpInfo, JsonUtil.toJson(ipInfo))
+                .eq(User::getId, uid)
+                .update();
+    }
+
+    public void online(Long uid) {
+        lambdaUpdate()
+                .set(User::getActiveStatus, ActiveType.ON.key)
+                .set(User::getLastOptTime, new Date())
                 .eq(User::getId, uid)
                 .update();
     }

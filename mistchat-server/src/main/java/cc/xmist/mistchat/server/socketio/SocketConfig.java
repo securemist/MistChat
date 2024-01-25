@@ -21,10 +21,10 @@ public class SocketConfig {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setHostname("localhost");
         config.setPort(Integer.parseInt(port));
-
         // 用于身份验证
         //  http://localhost:8081?token=xxxxxxx可以获取token
 //        config.setAuthorizationListener(data -> {
+//            String hostName = data.getAddress().getHostName();
 //            String token = data.getSingleUrlParam("token");
 //            if (StrUtil.isNotBlank(token)) {
 //                log.info("登陆token：{}", token);

@@ -9,10 +9,11 @@
 </head>
 <script src="socket.io/socket.io.js"></script>
 <script>
-    const socket = new io("ws://127.0.0.1:8201?token=123");
+    let socket = new io("ws://127.0.0.1:8201");
     socket.connect()
 
     let token = ""
+
     function send() {
         socket.emit("login", {
             username: 18115168320,
@@ -23,8 +24,14 @@
         })
     }
 
-    function verifyToken() {
-        socket.emit("verifyToken",token,function (data) {
+    function loginByToken() {
+        socket.emit("verifyToken", token, function (data) {
+            console.log(data)
+        })
+    }
+
+    function login() {
+        socket.emit("login", {username: "18115168320", password: "12345"}, function (data) {
             console.log(data)
         })
     }
@@ -35,7 +42,8 @@
 <button onclick="connect()">connect</button>
 <br>
 <button onclick="send()">send</button>
-<button onclick="verifyToken()">token</button>
+<button onclick="loginByToken()">loginByToken</button>
+<button onclick="login()">login</button>
 <br>
 
 </body>
