@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.entity;
+package cc.xmist.mistchat.server.user.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

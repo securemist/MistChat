@@ -1,10 +1,8 @@
 package cc.xmist.mistchat.server.common.event;
 
-import cc.xmist.mistchat.server.user.entity.User;
+import cc.xmist.mistchat.server.user.model.entity.User;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
-
-import java.time.Clock;
 
 @Getter
 public class UserRegisterEvent extends ApplicationEvent {

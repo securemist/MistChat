@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.entity;
+package cc.xmist.mistchat.server.user.model.entity;
 
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import com.baomidou.mybatisplus.annotation.TableField;

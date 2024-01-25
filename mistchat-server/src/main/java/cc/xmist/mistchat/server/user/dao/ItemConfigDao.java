@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.user.dao;
 
-import cc.xmist.mistchat.server.user.entity.ItemConfig;
-import cc.xmist.mistchat.server.user.mapper.ItemConfigMapper;
+import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
+import cc.xmist.mistchat.server.user.model.mapper.ItemConfigMapper;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

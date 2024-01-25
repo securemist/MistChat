@@ -1,6 +1,6 @@
-package cc.xmist.mistchat.server.user.mapper;
+package cc.xmist.mistchat.server.user.model.mapper;
 
-import cc.xmist.mistchat.server.user.entity.UserBackpack;
+import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

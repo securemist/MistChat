@@ -5,7 +5,7 @@ import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.socketio.model.LoginRequest;
 import cc.xmist.mistchat.server.socketio.model.SocketResponse;
 import cc.xmist.mistchat.server.socketio.model.SocketResponseType;
-import cc.xmist.mistchat.server.user.entity.User;
+import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.UserService;
 import com.corundumstudio.socketio.AckRequest;

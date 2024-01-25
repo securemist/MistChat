@@ -1,13 +1,10 @@
 package cc.xmist.mistchat.server.user.dao;
 
-import cc.xmist.mistchat.server.user.entity.Black;
-import cc.xmist.mistchat.server.user.mapper.BlackMapper;
+import cc.xmist.mistchat.server.user.model.entity.Black;
+import cc.xmist.mistchat.server.user.model.mapper.BlackMapper;
 import cc.xmist.mistchat.server.user.model.enums.BlackType;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>

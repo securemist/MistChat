@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.common.context;
 
 import cc.xmist.mistchat.server.user.dao.UserDao;
-import cc.xmist.mistchat.server.user.entity.User;
+import cc.xmist.mistchat.server.user.model.entity.User;
 import cn.hutool.extra.spring.SpringUtil;
 
 /**
