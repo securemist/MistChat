@@ -3,7 +3,7 @@ package cc.xmist.mistchat.server.user.controller;
 
 import cc.xmist.mistchat.server.common.util.R;
 import cc.xmist.mistchat.server.common.context.RequestContext;
-import cc.xmist.mistchat.server.user.entity.User;
+import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.req.LoginRequest;
 import cc.xmist.mistchat.server.user.model.req.ModifyNameRequest;
 import cc.xmist.mistchat.server.user.model.req.RegisterRequest;
