@@ -1,14 +1,13 @@
 package cc.xmist.mistchatserver;
 
-import cc.xmist.mistchat.server.user.model.IpDetail;
-import cc.xmist.mistchat.server.user.model.req.LoginReq;
+import cc.xmist.mistchat.server.user.model.req.LoginRequest;
 import com.google.gson.Gson;
 import org.junit.Test;
 
 public class UtilTest {
     @Test
     public void testJson(){
-        LoginReq loginReq = new LoginReq("18115168320", "123456");
+        LoginRequest loginReq = new LoginRequest("18115168320", "123456");
         String json = new Gson().toJson(loginReq);
         System.out.println(json);
     }

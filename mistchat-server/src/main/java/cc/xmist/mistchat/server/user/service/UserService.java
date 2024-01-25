@@ -3,27 +3,17 @@ package cc.xmist.mistchat.server.user.service;
 import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
-import cc.xmist.mistchat.server.common.util.JwtUtil;
-import cc.xmist.mistchat.server.user.UserAdapter;
-import cc.xmist.mistchat.server.user.dao.ItemConfigDao;
-import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
-import cc.xmist.mistchat.server.user.dao.UserDao;
-import cc.xmist.mistchat.server.user.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.entity.User;
 import cc.xmist.mistchat.server.user.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
-import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
-import cc.xmist.mistchat.server.user.model.resp.UserInfoResponse;
+import cc.xmist.mistchat.server.user.model.vo.UserInfoVo;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.servlet.JakartaServletUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Slf4j
@@ -62,11 +52,11 @@ public class UserService extends UserServiceSupport {
         return user;
     }
 
-    public UserInfoResponse getUserInfo(Long uid) {
+    public UserInfoVo getUserInfo(Long uid) {
         User user = userDao.getUser(uid);
         Long modifyNameCount = userBackpackDao.getItemCount(uid, ItemType.MODIFY_NAME_CARD);
 
-        return UserInfoResponse.builder()
+        return UserInfoVo.builder()
                 .id(user.getId())
                 .sex(user.getSex())
                 .avatar(user.getAvatar())

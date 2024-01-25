@@ -70,7 +70,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
 
     public void online(Long uid) {
         lambdaUpdate()
-                .set(User::getActiveStatus, ActiveType.ON.key)
+                .set(User::getActiveStatus, ActiveType.ON)
                 .set(User::getLastOptTime, new Date())
                 .eq(User::getId, uid)
                 .update();

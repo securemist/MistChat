@@ -2,9 +2,10 @@ package cc.xmist.mistchat.server.user.model.enums;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+/**
+ * 用户在线状态
+ */
 public enum ActiveType {
-    ON(1),
-    OFF(0);
-    public Integer key;
+    ON,
+    OFF;
 }

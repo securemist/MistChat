@@ -2,6 +2,9 @@ package cc.xmist.mistchat.server.user.entity;
 
 import cc.xmist.mistchat.server.common.util.JsonUtil;
 import cc.xmist.mistchat.server.user.model.IpInfo;
+import cc.xmist.mistchat.server.user.model.enums.ActiveType;
+import cc.xmist.mistchat.server.user.model.enums.RoleType;
+import cc.xmist.mistchat.server.user.model.enums.SexType;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,6 +12,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -61,10 +65,10 @@ public class User extends Model<User> implements Serializable {
     private String avatar;
 
     /**
-     * 性别 1为男性，2为女性
+     * 性别
      */
     @TableField("sex")
-    private Integer sex;
+    private SexType sex;
 
     /**
      * 微信openid用户标识
@@ -73,10 +77,15 @@ public class User extends Model<User> implements Serializable {
     private String openId;
 
     /**
-     * 在线状态 1在线 0离线
+     * 角色
+     */
+    @TableField("role")
+    private RoleType role;
+    /**
+     * 在线状态
      */
     @TableField("active_status")
-    private Integer activeStatus;
+    private ActiveType activeStatus;
 
     /**
      * 最后上下线时间
@@ -114,13 +123,13 @@ public class User extends Model<User> implements Serializable {
      * 创建时间
      */
     @TableField("create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
     @TableField("update_time")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
 
 }
