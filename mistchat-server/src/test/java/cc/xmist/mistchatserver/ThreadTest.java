@@ -31,7 +31,7 @@ public class ThreadTest {
         Thread thread = new Thread(() -> {
             throw new RuntimeException("1234");
         });
-        thread.setUncaughtExceptionHandler(new MyUncaughtExceptionHandle());
+//        thread.setUncaughtExceptionHandler(new MyUncaughtExceptionHandle());
         thread.start();
         Thread.sleep(2000);
     }

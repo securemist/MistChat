@@ -61,6 +61,7 @@ public class UserService extends UserServiceSupport {
                 .sex(user.getSex())
                 .avatar(user.getAvatar())
                 .name(user.getName())
+                .role(user.getRole())
                 .modifyNameChance(modifyNameCount).build();
     }
 

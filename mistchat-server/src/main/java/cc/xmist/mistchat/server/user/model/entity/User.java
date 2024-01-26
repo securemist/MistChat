@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Builder;
 import lombok.Data;
 
@@ -28,7 +29,7 @@ import lombok.Data;
  * @since 2024-01-11
  */
 @Data
-@TableName(value = "user")
+@TableName(value = "user",autoResultMap = true)
 @Builder
 public class User extends Model<User> implements Serializable {
 
@@ -96,16 +97,16 @@ public class User extends Model<User> implements Serializable {
     /**
      * ip信息
      */
-    @TableField(value = "ip_info")
-    private String ipInfo;
+    @TableField(value = "ip_info",typeHandler = JacksonTypeHandler.class)
+    private IpInfo ipInfo;
 
-    public IpInfo getIpInfo() {
-        return JsonUtil.toObj(this.ipInfo, IpInfo.class);
-    }
-
-    public void setIpInfo(IpInfo ipInfo) {
-        this.ipInfo = JsonUtil.toJson(ipInfo);
-    }
+//    public IpInfo getIpInfo() {
+//        return JsonUtil.toObj(this.ipInfo, IpInfo.class);
+//    }
+//
+//    public void setIpInfo(IpInfo ipInfo) {
+//        this.ipInfo = JsonUtil.toJson(ipInfo);
+//    }
 
     /**
      * 佩戴的徽章id

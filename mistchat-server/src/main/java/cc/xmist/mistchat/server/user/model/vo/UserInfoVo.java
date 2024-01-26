@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.user.model.vo;
 
+import cc.xmist.mistchat.server.user.model.enums.RoleType;
 import cc.xmist.mistchat.server.user.model.enums.SexType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -19,4 +20,6 @@ public class UserInfoVo {
     private SexType sex;
     @Schema(description = "可改名次数")
     private Long modifyNameChance;
+    @Schema(description = "角色")
+    private RoleType role;
 }

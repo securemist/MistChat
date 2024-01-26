@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.user.dao;
 
 import cc.xmist.mistchat.server.common.util.JsonUtil;
 import cc.xmist.mistchat.server.user.model.entity.User;
+import cc.xmist.mistchat.server.user.model.enums.RoleType;
 import cc.xmist.mistchat.server.user.model.mapper.UserMapper;
 import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.enums.ActiveType;
@@ -31,6 +32,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
         User user = User.builder()
                 .username(username)
                 .password(password)
+                .role(RoleType.USER)
                 .name(name)
                 .build();
         user.insert();
