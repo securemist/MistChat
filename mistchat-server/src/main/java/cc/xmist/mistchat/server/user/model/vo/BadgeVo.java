@@ -19,5 +19,4 @@ public class BadgeVo {
     private Boolean own;
     @Schema(description = "是否佩戴")
     private Boolean wearing;
-
 }

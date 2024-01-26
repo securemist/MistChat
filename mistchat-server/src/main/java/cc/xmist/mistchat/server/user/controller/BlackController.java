@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.user.controller;
 
+import cc.xmist.mistchat.server.common.util.R;
 import cc.xmist.mistchat.server.user.model.req.BlockRequest;
 import cc.xmist.mistchat.server.user.service.BlackService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +21,8 @@ public class BlackController {
 
     @Operation(summary = "拉黑操作")
     @PostMapping("/add")
-    public void add(@RequestBody @Valid BlockRequest request) {
+    public R add(@RequestBody @Valid BlockRequest request) {
         blackService.block(request.getUid(),request.getType());
+        return R.ok();
     }
 }

@@ -34,9 +34,11 @@ public class IpService {
      * @throws IpParseException
      */
     @SneakyThrows
-    public void updateIpInfo(Long uid, String ip) {
+    public void updateIpInfo(Long uid, String clientIp) {
         executor.execute(() -> {
             IpInfo old = userDao.getUser(uid).getIpInfo();
+            String ip = clientIp;
+            if (ip.equals("localhost")) ip = "127.0.0.1";
 
             IpDetail ipDetail = null;
             // 当前ip与数据库中最新ip一致，不需要更新信息

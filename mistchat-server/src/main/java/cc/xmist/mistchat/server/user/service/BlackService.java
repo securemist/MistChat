@@ -3,9 +3,13 @@ package cc.xmist.mistchat.server.user.service;
 import cc.xmist.mistchat.server.user.dao.BlackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.model.IpInfo;
+import cc.xmist.mistchat.server.user.model.entity.Black;
 import cc.xmist.mistchat.server.user.model.enums.BlackType;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BlackService {
@@ -32,5 +36,30 @@ public class BlackService {
             target = ipInfo.getLastIp();
         }
         blackDao.addBlack(uid, blackType, target);
+    }
+
+    /**
+     * 获取所有被拉黑的uid
+     *
+     * @return
+     */
+    public List<Long> getBlockedUid() {
+        List<Black> blacks = blackDao.getBlacks(BlackType.UID);
+        return blacks.stream()
+                .map(Black::getTarget)
+                .map(ip -> Long.valueOf(ip))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取所有被拉黑的ip
+     *
+     * @return
+     */
+    public List<String> getBlockedIp() {
+        List<Black> blacks = blackDao.getBlacks(BlackType.IP);
+        return blacks.stream()
+                .map(Black::getTarget)
+                .collect(Collectors.toList());
     }
 }

@@ -32,6 +32,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String contextPath;
     @Resource
     private AuthService authService;
+
     private String[] openApiPaths = new String[]{"webjars", "doc.html", "swagger", "favicon.ico", "/v3/api-docs"};
 
     @PostConstruct

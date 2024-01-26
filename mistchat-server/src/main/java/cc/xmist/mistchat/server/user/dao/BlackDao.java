@@ -6,6 +6,8 @@ import cc.xmist.mistchat.server.user.model.enums.BlackType;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 黑名单 服务实现类
@@ -39,5 +41,12 @@ public class BlackDao extends ServiceImpl<BlackMapper, Black> {
                 .target(target)
                 .build();
         save(black);
+    }
+
+    public List<Black> getBlacks(BlackType blackType) {
+        return lambdaQuery()
+                .eq(Black::getType,blackType)
+                .list();
+
     }
 }
