@@ -15,6 +15,7 @@ import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.guieffect.qual.UI;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -33,34 +34,29 @@ public class SocketEventHandler {
     @Resource
     ApplicationEventPublisher eventPublisher;
 
-    private ConcurrentHashMap<UUID, String> sessionIdMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<UUID, Long> sessionIdMap = new ConcurrentHashMap<>();
 
     /**
      * 建立连接时获取token并验证
      */
     @OnConnect
     public void onConnect(SocketIOClient client) {
+        String token = client.getHandshakeData().getSingleUrlParam("token");
+        UUID sessionId = client.getSessionId();
+        Long uid = authService.verify(token);
 
+        if (uid != null) { // 验签成功，登陆
+            client.sendEvent("auth", true);
+            publishOnlineEvent(client, uid);
+            return;
+        }
+        client.sendEvent("auth", false);
     }
 
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
     }
 
-
-    @OnEvent(value = "verifyToken")
-    public void onTokenEvent(SocketIOClient client, AckRequest request, String token) {
-        Long uid = authService.verify(token);
-        if (uid == null) {
-            request.sendAckData(SocketResponse.build(SocketResponseType.INVALIDATE_TOKEN, null));
-            return;
-        }
-
-        authService.renewalToken(token);
-        publishOnlineEvent(client, uid);
-        // token续期
-        request.sendAckData(SocketResponse.build(SocketResponseType.LOGIN_SUCCESS, token));
-    }
 
 
     /**

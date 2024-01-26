@@ -9,13 +9,18 @@ import java.util.concurrent.ThreadFactory;
  * 可捕获异常的线程工厂，用于替换spring自带线程池ThreadPoolTaskExecutor的线程工厂
  * spring自带的线程工厂，处理子线程未捕获的异常方法是控制台打印，我们这里需要替换成自己的
  * 使用装饰器模式
- *
+ * <p>
  * 传入原有的线程工厂，在其基础上添加异常处理的逻辑
  */
 @Slf4j
 public class MyThreadFactory implements ThreadFactory {
     // 子线程异常的处理方法，使用自定义的log
-    public static final UncaughtExceptionHandler uncaughtExceptionHandler = new MyUncaughtExceptionHandle();
+    public static final UncaughtExceptionHandler uncaughtExceptionHandler = new UncaughtExceptionHandler() {
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+            log.error(e.getMessage());
+        }
+    };
 
     private ThreadFactory originalFactory;
 
