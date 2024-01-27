@@ -6,8 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class IpInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class IpInfo {
     private String initialIp;
     private IpDetail initialIpDetail;
     private String lastIp;

@@ -17,4 +17,8 @@ public class SocketResponse<T> {
         response.setData(data);
         return response;
     }
+
+    public static <T> SocketResponse build(SocketResponseType responseType) {
+        return build(responseType);
+    }
 }

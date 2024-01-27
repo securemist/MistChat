@@ -1,55 +1,56 @@
-package cc.xmist.mistchat.server.chat.model.entity;
+package cc.xmist.mistchat.server.user.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 用户联系人表
  * </p>
  *
  * @author securemist
- * @since 2024-01-26
+ * @since 2024-01-27
  */
 @Getter
 @Setter
-@TableName("room_group")
-public class RoomGroup implements Serializable {
+@Builder
+@TableName("user_friend")
+public class UserFriend implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @TableId(value = "id", type = IdType.AUTO)
+    /**
+     * id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 房间号
+     * uid
      */
-    @TableField("room_id")
-    private Long roomId;
+    @TableField("uid")
+    private Long uid;
 
     /**
-     * 群聊名
+     * 好友uid
      */
-    @TableField("name")
-    private String name;
+    @TableField("friend_uid")
+    private Long friendUid;
 
     /**
-     * 群聊头像
+     * 逻辑删除时间
      */
-    @TableField("avatar")
-    private String avatar;
-
-    @TableField("extra")
-    private String extra;
-
-    @TableField("status")
-    private String status;
+    @TableField("delete_time")
+    private LocalDateTime deleteTime;
 
     /**
      * 创建时间

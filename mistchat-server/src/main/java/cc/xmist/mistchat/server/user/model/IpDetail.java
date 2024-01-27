@@ -5,8 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class IpDetail implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class IpDetail {
     private String area;
     private String country;
     private String city;

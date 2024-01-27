@@ -1,10 +1,9 @@
 package cc.xmist.mistchat.server.socketio;
 
+import cc.xmist.mistchat.server.common.event.UserOfflineEvent;
 import cc.xmist.mistchat.server.common.event.UserOnlineEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
-import cc.xmist.mistchat.server.socketio.model.LoginRequest;
-import cc.xmist.mistchat.server.socketio.model.SocketResponse;
-import cc.xmist.mistchat.server.socketio.model.SocketResponseType;
+import cc.xmist.mistchat.server.socketio.model.*;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.UserService;
@@ -15,26 +14,23 @@ import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.guieffect.qual.UI;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
 public class SocketEventHandler {
-
     @Resource
-    AuthService authService;
+    private AuthService authService;
     @Resource
-    UserService userService;
+    private UserService userService;
     @Resource
-    ApplicationEventPublisher eventPublisher;
-
-    private ConcurrentHashMap<UUID, Long> sessionIdMap = new ConcurrentHashMap<>();
+    private SocketEventManager socketEventManager;
+    @Resource
+    private ApplicationEventPublisher eventPublisher;
 
     /**
      * 建立连接时获取token并验证
@@ -45,40 +41,57 @@ public class SocketEventHandler {
         UUID sessionId = client.getSessionId();
         Long uid = authService.verify(token);
 
-        if (uid != null) { // 验签成功，登陆
-            client.sendEvent("auth", true);
-            publishOnlineEvent(client, uid);
-            return;
+        boolean loginSuccess = uid != null;
+        if (loginSuccess) { // 验签成功，登陆
+            publishUserOnlineEvent(client, uid);
         }
-        client.sendEvent("auth", false);
+        client.sendEvent(SEvent.AUTH, loginSuccess);
     }
 
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
+        // 用户下线
+        Long uid = socketEventManager.userDisconnect(client);
+        log.info("用户下线: {}", uid);
+        eventPublisher.publishEvent(new UserOfflineEvent(this, uid));
     }
-
-
 
     /**
      * 专门的登陆请求
      */
-    @OnEvent(value = "login")
+    @OnEvent(value = REvent.LOGIN)
     public void onLoginEvent(SocketIOClient client, AckRequest request, LoginRequest loginRequest) {
         User user = null;
+
         try {
             user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
         } catch (BusinessException e) {
-            request.sendAckData(SocketResponse.build(SocketResponseType.LOGIN_FAILED, null));
+            request.sendAckData(
+                    SocketResponse.build(SocketResponseType.LOGIN_FAILED, null)
+            );
             return;
         }
 
         // 签发token
-        String token = authService.login(user.getId());
-        publishOnlineEvent(client, user.getId());
-        request.sendAckData(SocketResponse.build(SocketResponseType.LOGIN_SUCCESS, token));
+        Long uid = user.getId();
+        String token = authService.login(uid);
+        boolean loginSuccess = uid != null;
+        if (!loginSuccess) { // 验签成功，登陆
+            request.sendAckData(
+                    SocketResponse.build(SocketResponseType.LOGIN_FAILED)
+            );
+        }
+
+        publishUserOnlineEvent(client, uid);
+        request.sendAckData(
+                SocketResponse.build(SocketResponseType.LOGIN_SUCCESS, token)
+        );
     }
 
-    private void publishOnlineEvent(SocketIOClient client, Long uid) {
+    private void publishUserOnlineEvent(SocketIOClient client, Long uid) {
+        socketEventManager.userConnect(uid, client);
+        log.info("用户上线: {}", uid);
+
         InetSocketAddress remoteAddress = ((InetSocketAddress) client.getRemoteAddress());
         String ip = remoteAddress.getHostString();
         eventPublisher.publishEvent(new UserOnlineEvent(this, uid, ip));

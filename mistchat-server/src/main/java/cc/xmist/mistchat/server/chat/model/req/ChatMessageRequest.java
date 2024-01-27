@@ -7,5 +7,5 @@ import lombok.Data;
 public class ChatMessageRequest {
     private Long roomId;
     private MessageType type;
-    private Object data;
+    private Object body;
 }

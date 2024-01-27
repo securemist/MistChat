@@ -1,11 +1,14 @@
 package cc.xmist.mistchat.server.chat.model.entity;
 
+import cc.xmist.mistchat.server.chat.model.enums.RoomType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,12 +18,13 @@ import lombok.Setter;
  * </p>
  *
  * @author securemist
- * @since 2024-01-26
+ * @since 2024-01-27
  */
 @Getter
 @Setter
-@TableName("room_group")
-public class RoomGroup implements Serializable {
+@TableName("room")
+@Builder
+public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,28 +32,34 @@ public class RoomGroup implements Serializable {
     private Long id;
 
     /**
-     * 房间号
+     * 房间类型，单聊 OR 群聊
      */
-    @TableField("room_id")
-    private Long roomId;
+    @TableField("type")
+    private RoomType type;
 
     /**
-     * 群聊名
+     * 热点房间
      */
-    @TableField("name")
-    private String name;
+    @TableField("hot")
+    private String hot;
 
     /**
-     * 群聊头像
+     * 活跃时间，最新的一条消息的时间
      */
-    @TableField("avatar")
-    private String avatar;
+    @TableField("active_time")
+    private LocalDateTime activeTime;
 
+    /**
+     * 最新的消息id
+     */
+    @TableField("last_msg_id")
+    private Long lastMsgId;
+
+    /**
+     * 补充
+     */
     @TableField("extra")
     private String extra;
-
-    @TableField("status")
-    private String status;
 
     /**
      * 创建时间

@@ -5,6 +5,8 @@ import cc.xmist.mistchat.server.chat.model.mapper.RoomGroupMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -15,5 +17,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RoomGroupDao extends ServiceImpl<RoomGroupMapper, RoomGroup> {
+
+    public List<Long> getUsers(Long roomId) {
+        return null;
+    }
+
+    public RoomGroup getByRoomId(Long roomId) {
+        return lambdaQuery()
+                .eq(RoomGroup::getRoomId,roomId)
+                .one();
+    }
 
 }

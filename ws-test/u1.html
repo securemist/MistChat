@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>user1</title>
+
+</head>
+<script src="socket.io/socket.io.js"></script>
+<script>
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIwMDAxfQ.nZNYNJwxjYurAS-43DqbgFe-StMtAAoxmyWmzTONt38"
+    let socket = new io("ws://127.0.0.1:8201?token=" + token);
+    socket.connect()
+
+    function send() {
+        socket.emit("login", {
+            username: 18115168320,
+            password: 12345
+        }, function (data) {
+            token = data.data
+            console.log("token:" + token)
+        })
+    }
+
+    socket.on("auth", function (data) {
+        console.log(data)
+    })
+    //
+    // function loginByToken() {
+    //     socket.emit("verifyToken", token, function (data) {
+    //         console.log(data)
+    //     })
+    // }
+
+    socket.on("message",function(data) {
+        console.log("收到消息" + data)
+    })
+
+    function loginByPwd() {
+        socket.emit("login",
+            {username: "10000", password: "10000"},
+            function (data) {
+                console.log(data.data)
+            })
+    }
+
+
+
+    socket.on("apply",function (data) {
+        console.log(data.data)
+    })
+</script>
+<body>
+
+
+<button onclick="connect()">connect</button>
+<br>
+<button onclick="send()">send</button>
+<button onclick="loginByToken()">loginByToken</button>
+<button onclick="loginByPwd()">loginByPwd</button>
+<br>
+<br>
+<br>
+
+<button onclick="applyFriend()">添加好友10002</button>
+
+</body>
+</html>

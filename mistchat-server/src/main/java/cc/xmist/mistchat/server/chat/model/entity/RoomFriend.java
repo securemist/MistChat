@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +21,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
 @TableName("room_friend")
 public class RoomFriend implements Serializable {
 
@@ -30,7 +33,7 @@ public class RoomFriend implements Serializable {
     /**
      * 房间号
      */
-    @TableField("roomId")
+    @TableField("room_id")
     private Long roomId;
 
     @TableField("uid1")
@@ -42,7 +45,7 @@ public class RoomFriend implements Serializable {
     /**
      * 房间唯一标识
      */
-    @TableField("roomKey")
+    @TableField("room_key")
     private String roomKey;
 
     /**

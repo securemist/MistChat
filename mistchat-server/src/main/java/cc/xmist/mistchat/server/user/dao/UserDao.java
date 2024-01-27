@@ -35,7 +35,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .role(RoleType.USER)
                 .name(name)
                 .build();
-        user.insert();
+        save(user);
         return user;
     }
 
@@ -77,4 +77,5 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .eq(User::getId, uid)
                 .update();
     }
+
 }

@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>user2</title>
 
 </head>
 <script src="socket.io/socket.io.js"></script>
 <script>
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIwMDAwfQ.SSlsoEeBPsepL373G8FuVp3ZHmDlllnWBWZYB5Yitww"
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIwMDAyfQ.mxB_9rFwoYAo4GE0Cs7Ti3OXSwqdZ9qx8zi2HLXV8Qs"
     let socket = new io("ws://127.0.0.1:8201?token=" + token);
     socket.connect()
-
 
     function send() {
         socket.emit("login", {
@@ -34,9 +33,13 @@
     //     })
     // }
 
-    function login() {
-        socket.emit("login", {username: "18115168320", password: "12345"}, function (data) {
-            console.log(data)
+    socket.on("message", function (data) {
+        console.log("收到消息" + JSON.stringify(data))
+    })
+
+    function loginByPwd() {
+        socket.emit("login", {username: "10001", password: "10001"}, function (data) {
+            console.log(data.data)
         })
     }
 </script>
@@ -46,8 +49,8 @@
 <button onclick="connect()">connect</button>
 <br>
 <button onclick="send()">send</button>
-<!--<button onclick="loginByToken()">loginByToken</button>-->
-<button onclick="login()">login</button>
+<button onclick="loginByToken()">loginByToken</button>
+<button onclick="loginByPwd()">loginByPwd</button>
 <br>
 
 </body>

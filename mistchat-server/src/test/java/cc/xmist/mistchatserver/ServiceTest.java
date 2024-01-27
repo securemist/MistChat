@@ -1,5 +1,6 @@
 package cc.xmist.mistchatserver;
 
+import cc.xmist.mistchat.server.chat.service.RoomService;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.model.IpDetail;
 import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
@@ -25,10 +26,27 @@ public class ServiceTest {
     ItemService itemService;
     @Resource
     IpService ipService;
+    @Resource
+    private RoomService roomService;
 
     @Resource
     private JwtUtil jwtUtil;
 
+    @Test
+    public void testGetRoomUsers() {
+        Long roomId = 2L;
+        log.info("单聊结果");
+        roomService.getRoomUsers(roomId).forEach(uid -> {
+            log.info("{}", uid);
+        });
+
+        log.info("群聊结果");
+        Long roomId2 = 1L;
+        roomService.getRoomUsers(roomId2).forEach(uid -> {
+            log.info("{}", uid);
+        });
+
+    }
 
     @Test
     public void testAuth() {

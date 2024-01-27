@@ -52,7 +52,7 @@ public class MybatisPlusGenerator {
                             .moduleName("user")
                             .entity("entity")
                             .serviceImpl("dao")
-                            .controller("controller")
+//                            .controller("controller")
                             .mapper("mapper")
                             .xml("model.xml");
                 })

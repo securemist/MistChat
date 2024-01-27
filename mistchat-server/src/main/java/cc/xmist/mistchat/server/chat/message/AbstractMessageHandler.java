@@ -19,6 +19,7 @@ public abstract class AbstractMessageHandler<T extends MessageRequest> {
     protected Class<T> requestClass;
 
     protected abstract MessageType getMsgType();
+
     /**
      * 在子类注入容器的时候注册处理器
      * getGenericSuperclass: 获取当前类的带有泛型参数的直接父类的类型
@@ -32,13 +33,14 @@ public abstract class AbstractMessageHandler<T extends MessageRequest> {
         MessageHandleFactory.registerHandle(msgType, this);
     }
 
-    public void saveMsg(Long uid, ChatMessageRequest request) {
+    public Message saveMsg(Long uid, ChatMessageRequest request) {
         Message message = buildBaseMessage(uid, request);
-        customSaveMsg(message, BeanUtil.toBean(request.getData(), requestClass));
+        return customSaveMsg(message, BeanUtil.toBean(request.getBody(), requestClass));
     }
 
-    protected void customSaveMsg(Message message, T data) {
+    protected Message customSaveMsg(Message message, T data) {
         messageDao.save(message);
+        return message;
     }
 
     private Message buildBaseMessage(Long uid, ChatMessageRequest request) {
