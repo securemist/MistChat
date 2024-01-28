@@ -33,9 +33,9 @@ public class RoomService {
      * @param request
      * @return 聊天室的id
      */
-    public Long createFriendRoom(Long uid, Long targetUid) {
+    public Long createFriendRoom(Long uid1, Long uid2) {
         Room room = roomDao.create(RoomType.FRIEND);
-        RoomFriend roomFriend = roomFriendDao.create(room.getId(), uid, targetUid);
+        RoomFriend roomFriend = roomFriendDao.create(room.getId(), uid1, uid2);
         return room.getId();
     }
 

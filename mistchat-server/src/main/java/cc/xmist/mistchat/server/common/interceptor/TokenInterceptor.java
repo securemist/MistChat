@@ -47,7 +47,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String token = getToken(request);
+        String token = request.getHeader("token");
         Long uid = authService.verify(token);
         // 用户未登陆并且是非公共接口，抛出异常
         if (uid == null && !isPublicURI(request)) {
@@ -61,14 +61,6 @@ public class TokenInterceptor implements HandlerInterceptor {
     private boolean isPublicURI(HttpServletRequest request) {
         String uri = request.getRequestURI();
         return uri.contains("public");
-    }
-
-    private String getToken(HttpServletRequest request) {
-        String authorization = request.getHeader(AUTHORIZATION);
-        return Optional.ofNullable(authorization)
-                .filter(h -> h.startsWith(AUTHORIZATION_PREFIX))
-                .map(h -> h.replaceFirst(AUTHORIZATION_PREFIX, ""))
-                .orElse(null);
     }
 
     private boolean isDocURI(HttpServletRequest request) {

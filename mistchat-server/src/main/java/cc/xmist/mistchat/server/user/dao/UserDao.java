@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -33,6 +34,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .username(username)
                 .password(password)
                 .role(RoleType.USER)
+                .activeStatus(ActiveType.OFF)
                 .name(name)
                 .build();
         save(user);
@@ -78,4 +80,9 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .update();
     }
 
+    public List<User> getUserBatch(List<Long> uidList) {
+        return lambdaQuery()
+                .getBaseMapper()
+                .selectBatchIds(uidList);
+    }
 }

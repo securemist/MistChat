@@ -1,12 +1,16 @@
 package cc.xmist.mistchat.server.user.service;
 
+import cc.xmist.mistchat.server.common.cache.ItemCache;
 import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
+import cc.xmist.mistchat.server.user.UserAdapter;
+import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
+import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
 import cc.xmist.mistchat.server.user.model.vo.UserInfoVo;
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
@@ -15,12 +19,19 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 public class UserService extends UserServiceSupport {
 
     @Resource
     ApplicationEventPublisher eventPublisher;
+    @Resource
+    private ItemCache itemCache;
 
     @Transactional(rollbackFor = Exception.class)
     public void register(String username, String password, String name) {
@@ -112,5 +123,42 @@ public class UserService extends UserServiceSupport {
         } else {
             ipInfo.setLastIp(ip);
         }
+    }
+
+    /**
+     * 获取其他人的用户信息
+     *
+     * @param uidList
+     * @return
+     */
+    public List<SummaryUser> getSummaryUsers(List<Long> uidList) {
+        if (uidList.size() == 0) return Collections.emptyList();
+
+        List<User> users = userDao.getUserBatch(uidList);
+        List<ItemConfig> allBadges = itemCache.getAllBadges();
+
+        return users.stream()
+                .map(user -> {
+                    SummaryUser.Badge badgeVo = null;
+                    if (user.getItemId() != null) {
+                        ItemConfig badge = itemCache.getById(user.getItemId());
+                        badgeVo = SummaryUser.Badge
+                                .builder()
+                                .img(badge.getImg())
+                                .description(badge.getDescription())
+                                .itemId(badge.getId()).build();
+                    }
+
+                    IpInfo ipInfo = user.getIpInfo();
+                    String location = ipInfo == null ? null : ipInfo.getLastIpDetail().getCity();
+                    return SummaryUser.builder()
+                            .sex(user.getSex())
+                            .uid(user.getId())
+                            .avatar(user.getAvatar())
+                            .location(location)
+                            .name(user.getName())
+                            .wearingBadge(badgeVo).build();
+                })
+                .collect(Collectors.toList());
     }
 }

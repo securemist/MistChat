@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -18,15 +19,15 @@ import java.util.Arrays;
 @Service
 public class UserFriendDao extends ServiceImpl<UserFriendMapper, UserFriend> {
 
-    public void create(Long uid, Long targetId) {
+    public void create(Long uid1, Long uid2) {
         UserFriend friend1 = UserFriend.builder()
-                .uid(uid)
-                .friendUid(targetId)
+                .uid(uid1)
+                .friendUid(uid2)
                 .build();
 
         UserFriend friend2 = UserFriend.builder()
-                .uid(targetId)
-                .friendUid(uid)
+                .uid(uid2)
+                .friendUid(uid1)
                 .build();
 
         saveBatch(Arrays.asList(friend1, friend2));
@@ -37,5 +38,12 @@ public class UserFriendDao extends ServiceImpl<UserFriendMapper, UserFriend> {
                 .eq(UserFriend::getUid, uid)
                 .eq(UserFriend::getFriendUid, friendId)
                 .exists();
+    }
+
+    public List<UserFriend> getFriendList(Long uid) {
+        return lambdaQuery()
+                .eq(UserFriend::getUid,uid)
+                .isNull(UserFriend::getDeleteTime)
+                .list();
     }
 }

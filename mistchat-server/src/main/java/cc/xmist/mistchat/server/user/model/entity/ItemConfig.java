@@ -40,12 +40,6 @@ public class ItemConfig implements Serializable {
     private ItemType.Type type;
 
     /**
-     * 物品名称
-     */
-    @TableField("name")
-    private String name;
-
-    /**
      * 物品图片
      */
     @TableField("img")

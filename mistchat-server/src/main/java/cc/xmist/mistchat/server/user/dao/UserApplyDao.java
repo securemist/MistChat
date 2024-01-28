@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -19,6 +20,12 @@ import java.time.LocalDateTime;
  */
 @Service
 public class UserApplyDao extends ServiceImpl<UserApplyMapper, UserApply> {
+
+    public List<UserApply> getReceivedApplyList(Long uid) {
+        return lambdaQuery()
+                .eq(UserApply::getTargetId,uid)
+                .list();
+    }
 
     public void addFriendApply(Long uid, Long targetId, String msg) {
         UserApply userApply = UserApply.builder()

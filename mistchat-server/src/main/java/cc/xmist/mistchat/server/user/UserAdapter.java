@@ -1,7 +1,10 @@
 package cc.xmist.mistchat.server.user;
 
+import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
+import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
+import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
 import cc.xmist.mistchat.server.user.model.vo.BadgeVo;
 
 import java.util.Comparator;
@@ -38,4 +41,16 @@ public class UserAdapter {
 
         return badges;
     }
+
+
+//    public static FriendApplyVo.User buildUserInfo(User user) {
+//        return FriendApplyVo.User
+//                .builder()
+//                .id(user.getId())
+//                .name(user.getName())
+//                .sex(user.getSex())
+//                .avatar(user.getAvatar())
+//                .role(user.getRole())
+//                .build();
+//    }
 }
