@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @Operation(summary = "批量获取其它用户信息")
-    @GetMapping("/another/info/list")
+    @PostMapping("/another/info/list")
     public R<List<SummaryUser>> getUserInfoBatched(@RequestBody @Valid AnotherUserInfoRequest request) {
         Long uid = RequestContext.getUid();
         return R.ok(userService.getSummaryUsers(request.getUidList()));
@@ -60,12 +60,14 @@ public class UserController {
     }
 
     @PostMapping("/public/register")
+    @Operation(summary = "注册")
     public R register(@RequestBody RegisterRequest registerReq) {
         userService.register(registerReq.getUsername(), registerReq.getPassword(), registerReq.getName());
         return R.ok(null);
     }
 
     @PostMapping("/public/login")
+    @Operation(summary = "登录")
     public R login(@RequestBody LoginRequest loginReq) {
         User user = userService.login(loginReq.getUsername(), loginReq.getPassword());
         // 签发token

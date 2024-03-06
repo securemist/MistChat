@@ -5,6 +5,7 @@ import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.enums.ActiveType;
 import cc.xmist.mistchat.server.user.model.enums.RoleType;
 import cc.xmist.mistchat.server.user.model.enums.SexType;
+import cc.xmist.mistchat.server.user.model.enums.UserStatusType;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -119,7 +120,7 @@ public class User {
      * 使用状态 0.正常 1拉黑
      */
     @TableField("status")
-    private Integer status;
+    private UserStatusType status;
 
     /**
      * 创建时间

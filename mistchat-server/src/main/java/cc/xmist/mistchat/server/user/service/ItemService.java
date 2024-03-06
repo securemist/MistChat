@@ -49,12 +49,9 @@ public class ItemService extends UserServiceSupport {
      */
     public void wearBadge(Long uid, Long badgeId) {
         List<UserBackpack> ownBadges = userBackpackDao.getBadges(uid);
-        if (!ItemType.getBadgesId().contains(badgeId)) {
-            throw new ParamException("徽章不存在");
-        }
 
         List<Long> ownBadgeIds = ownBadges.stream()
-                .map(badge -> badge.getId())
+                .map(badge -> badge.getItemId())
                 .collect(Collectors.toList());
 
         if (!ownBadgeIds.contains(badgeId)) {

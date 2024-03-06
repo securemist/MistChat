@@ -21,5 +21,5 @@ public class UserInfoVo {
     @Schema(description = "可改名次数")
     private Long modifyNameChance;
     @Schema(description = "角色")
-    private RoleType role;
+    private Integer role;
 }
