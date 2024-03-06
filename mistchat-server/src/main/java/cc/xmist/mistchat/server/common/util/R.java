@@ -1,31 +1,32 @@
 package cc.xmist.mistchat.server.common.util;
 
 import lombok.Data;
+import lombok.Setter;
 
 @Data
 public class R<T> {
-    private Boolean success;
-    private Integer errCode;
-    private String errMsg;
+    private static Integer SUCCESS_CODE = 0;
+    private Integer code;
+    private String msg;
     private T data;
 
-    private R(T data) {
-        this.success = true;
+    private R(Integer code, String msg, T data) {
+        this.code = code;
+        this.msg = msg;
         this.data = data;
     }
 
-    private R(Integer errCode, String errMsg) {
-        this.success = false;
-        this.errCode = errCode;
-        this.errMsg = errMsg;
+    private R(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
     }
 
-    public static R ok(Object data) {
-        return new R(data);
+    public static <T> R ok(T data) {
+        return new R(SUCCESS_CODE, null, data);
     }
 
-    public static R ok() {
-        return new R(null);
+    public static <T> R ok() {
+        return R.ok(null);
     }
 
     public static R error(ErrorType errorType) {
@@ -33,7 +34,7 @@ public class R<T> {
     }
 
     public static R paramError() {
-        return new R(ErrorType.PARAM_ERROR.code, ErrorType.PARAM_ERROR.msg);
+        return R.error(ErrorType.PARAM_ERROR);
     }
 
     public static R paramError(String message) {
@@ -45,6 +46,6 @@ public class R<T> {
     }
 
     public static R commonError() {
-        return new R(ErrorType.UNKNOWN_FAILED.code, ErrorType.UNKNOWN_FAILED.msg);
+        return R.error(ErrorType.UNKNOWN_FAILED);
     }
 }
