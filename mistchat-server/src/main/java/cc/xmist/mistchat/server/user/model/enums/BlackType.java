@@ -1,5 +1,8 @@
 package cc.xmist.mistchat.server.user.model.enums;
 
+import cc.xmist.mistchat.server.common.config.convert.BaseEnum;
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,16 +17,10 @@ import java.util.stream.Collectors;
  */
 @Getter
 @AllArgsConstructor
-public enum BlackType {
+public enum BlackType implements BaseEnum {
     IP(0),
     UID(1);
-    public Integer key;
-
-    private static Map<Integer, BlackType> map = Arrays
-            .stream(BlackType.values())
-            .collect(Collectors.toMap(BlackType::getKey, Function.identity()));
-
-    public static BlackType of(Integer key) {
-        return map.get(key);
-    }
+    @JsonValue
+    @EnumValue
+    public Integer code;
 }

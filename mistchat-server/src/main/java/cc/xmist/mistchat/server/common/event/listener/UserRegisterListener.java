@@ -4,7 +4,7 @@ import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
-import cc.xmist.mistchat.server.user.model.enums.ItemType;
+import cc.xmist.mistchat.server.user.model.enums.Item;
 import cc.xmist.mistchat.server.user.service.ItemService;
 import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
@@ -29,18 +29,18 @@ public class UserRegisterListener {
         // 用户注册发送改名卡
         User user = event.getUser();
         long userCount = userDao.count();
-        ItemType badge = null;
+        Item badge = null;
 
         if (userCount < 12L) {
-            badge = ItemType.REG_TOP10_BADGE;
+            badge = Item.REG_TOP10_BADGE;
         } else if (userCount < 102L) {
-            badge = ItemType.REG_TOP100_BADGE;
+            badge = Item.REG_TOP100_BADGE;
         }
 
         if (badge != null) {
             itemService.acquireItem(user.getId(), badge, IdempotentType.UID, user.getId().toString());
         }
-        itemService.acquireItem(user.getId(), ItemType.MODIFY_NAME_CARD, IdempotentType.UID, user.getId().toString());
+        itemService.acquireItem(user.getId(), Item.MODIFY_NAME_CARD, IdempotentType.UID, user.getId().toString());
 
     }
 

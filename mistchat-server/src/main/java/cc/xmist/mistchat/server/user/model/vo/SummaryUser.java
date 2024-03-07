@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.user.model.vo;
 
-import cc.xmist.mistchat.server.user.model.enums.SexType;
+import cc.xmist.mistchat.server.user.model.enums.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ public class SummaryUser {
     @Schema(description = "邮箱")
     private String avatar;
     @Schema(description = "性别")
-    private SexType sex;
+    private Gender gender;
     @Schema(description = "ip属地")
     private String location;
     @Schema(description = "穿戴的徽章")

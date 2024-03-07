@@ -11,6 +11,5 @@ public class ApplyAddRequest {
     private ApplyType type;
     @NotNull
     private Long targetId;
-
     private String msg;
 }

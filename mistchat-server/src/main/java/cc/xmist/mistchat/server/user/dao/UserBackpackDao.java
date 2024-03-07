@@ -2,8 +2,8 @@ package cc.xmist.mistchat.server.user.dao;
 
 import cc.xmist.mistchat.server.common.constant.StatusType;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
+import cc.xmist.mistchat.server.user.model.enums.Item;
 import cc.xmist.mistchat.server.user.model.mapper.UserBackpackMapper;
-import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +27,10 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
      * @param itemType 物品枚举
      * @return
      */
-    public Long getItemCount(Long uid, ItemType itemType) {
+    public Long getItemCount(Long uid, Item item) {
         Long count = lambdaQuery()
                 .eq(UserBackpack::getUid, uid)
-                .eq(UserBackpack::getItemId, itemType.getId())
+                .eq(UserBackpack::getItemId, item.getCode())
                 .eq(UserBackpack::getStatus, StatusType.NO).count();
         return count;
     }
@@ -56,10 +56,10 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
      * @param itemType
      * @return
      */
-    public UserBackpack getLastItem(Long uid, ItemType itemType) {
+    public UserBackpack getLastItem(Long uid, Item item) {
         return lambdaQuery()
                 .eq(UserBackpack::getUid, uid)
-                .eq(UserBackpack::getItemId, itemType.getId())
+                .eq(UserBackpack::getItemId, item)
                 .eq(UserBackpack::getStatus, StatusType.NO.key)
                 .orderByAsc(UserBackpack::getCreateTime)
                 .last("limit 1")
@@ -89,7 +89,7 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
     public List<UserBackpack> getBadges(Long uid) {
         return lambdaQuery()
                 .eq(UserBackpack::getUid, uid)
-                .in(UserBackpack::getItemId, ItemType.getBadgesId())
+                .in(UserBackpack::getItemId, Item.getBadgesId())
                 .list();
     }
 

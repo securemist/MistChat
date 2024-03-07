@@ -4,6 +4,7 @@ import cc.xmist.mistchat.server.chat.service.RoomService;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.model.IpDetail;
 import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
+import cc.xmist.mistchat.server.user.model.enums.Item;
 import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.IpService;
@@ -69,7 +70,7 @@ public class ServiceTest {
     @Test
     public void testAcquireItem() {
         Long uid = 20001L;
-        itemService.acquireItem(uid, ItemType.MODIFY_NAME_CARD, IdempotentType.UID, "123");
+        itemService.acquireItem(uid, Item.MODIFY_NAME_CARD, IdempotentType.UID, "123");
     }
 
     @Test

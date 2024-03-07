@@ -24,9 +24,7 @@ public class BlackService {
      * @param uid  用户id
      * @param type 类型
      */
-    public void block(Long uid, Integer type) {
-        BlackType blackType = BlackType.of(type);
-
+    public void block(Long uid, BlackType blackType) {
         String target;
         if (blackType.equals(BlackType.UID)) {
             target = uid.toString();

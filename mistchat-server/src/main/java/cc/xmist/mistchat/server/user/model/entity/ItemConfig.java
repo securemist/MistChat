@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.user.model.entity;
 
-import cc.xmist.mistchat.server.user.model.enums.ItemType;
+import cc.xmist.mistchat.server.user.model.enums.Item;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -37,7 +37,7 @@ public class ItemConfig implements Serializable {
      * 物品类型
      */
     @TableField("type")
-    private ItemType.Type type;
+    private Item.Type type;
 
     /**
      * 物品图片

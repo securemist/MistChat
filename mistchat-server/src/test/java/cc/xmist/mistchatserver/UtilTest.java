@@ -16,4 +16,9 @@ public class UtilTest {
 //        IpDetail ipDetail = IpUtil.getIpDetail("124.223.207.249");
 //        System.out.println(ipDetail);
     }
+
+    @Test
+    public void testEnum() {
+        System.out.println(SexType.M == SexType.M);
+    }
 }

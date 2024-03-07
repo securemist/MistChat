@@ -7,7 +7,7 @@ import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
-import cc.xmist.mistchat.server.user.model.enums.ItemType;
+import cc.xmist.mistchat.server.user.model.enums.Item;
 import cc.xmist.mistchat.server.user.model.vo.BadgeVo;
 import jakarta.annotation.Resource;
 import org.redisson.api.RLock;
@@ -70,14 +70,14 @@ public class ItemService extends UserServiceSupport {
      * @param idempotentType 幂等类型/发放场景
      * @param businessId     业务id
      */
-    public void acquireItem(Long uid, ItemType itemType, IdempotentType idempotentType, String businessId) {
-        String idempotent = String.format("%d_%d_%s", itemType.id, idempotentType.key, businessId);
+    public void acquireItem(Long uid, Item item, IdempotentType idempotentType, String businessId) {
+        String idempotent = String.format("%d_%d_%s", item.getCode(), idempotentType, businessId);
         RLock lock = redissonClient.getLock("acquire" + idempotent);
         lock.tryLock();
 
         try {
             // 已经发放的
-            UserBackpack item = userBackpackDao.getItem(idempotent);
+            UserBackpack backpack = userBackpackDao.getItem(idempotent);
             if (item != null) {
                 return;
             }
@@ -86,7 +86,7 @@ public class ItemService extends UserServiceSupport {
             // ...
 
             UserBackpack newItem = UserBackpack.builder()
-                    .itemId(itemType.id)
+                    .itemId(backpack.getItemId())
                     .status(StatusType.NO.key)
                     .idempotent(idempotent)
                     .uid(uid)

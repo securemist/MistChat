@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.user.dao;
 
 import cc.xmist.mistchat.server.user.model.entity.UserApply;
-import cc.xmist.mistchat.server.user.model.enums.ApplyStatusType;
+import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
 import cc.xmist.mistchat.server.user.model.enums.ApplyType;
 import cc.xmist.mistchat.server.user.model.mapper.UserApplyMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -33,16 +33,16 @@ public class UserApplyDao extends ServiceImpl<UserApplyMapper, UserApply> {
                 .uid(uid)
                 .type(ApplyType.FRIEND)
                 .targetId(targetId)
-                .status(ApplyStatusType.WAIT)
+                .status(ApplyStatus.WAIT)
                 .build();
         save(userApply);
     }
 
     public void handleApply(Long uid, UserApply apply, Boolean pass, String msg) {
-        apply.setStatus(ApplyStatusType.READ);
+        apply.setStatus(ApplyStatus.READ);
 
         if (pass) {
-            apply.setStatus(ApplyStatusType.PASS);
+            apply.setStatus(ApplyStatus.PASS);
         }
         apply.setReadTime(LocalDateTime.now());
         updateById(apply);

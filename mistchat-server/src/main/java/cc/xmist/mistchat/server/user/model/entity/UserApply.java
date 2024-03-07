@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.user.model.entity;
 
-import cc.xmist.mistchat.server.user.model.enums.ApplyStatusType;
+import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
 import cc.xmist.mistchat.server.user.model.enums.ApplyType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -63,7 +63,7 @@ public class UserApply implements Serializable {
      * 申请状态 拒绝 待审批 同意
      */
     @TableField("status")
-    private ApplyStatusType status;
+    private ApplyStatus status;
 
     /**
      * 阅读时间

@@ -3,7 +3,7 @@ package cc.xmist.mistchat.server.user.controller;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.ErrorType;
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.user.model.enums.RoleType;
+import cc.xmist.mistchat.server.user.model.enums.Role;
 import cc.xmist.mistchat.server.user.model.req.BlockRequest;
 import cc.xmist.mistchat.server.user.service.BlackService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,8 +25,8 @@ public class BlackController {
     @Operation(summary = "拉黑操作")
     @PostMapping("/add")
     public R add(@RequestBody @Valid BlockRequest request) {
-        RoleType role = RequestContext.getUser().getRole();
-        if (!role.equals(RoleType.ADMIN)) {
+        Role role = RequestContext.getUser().getRole();
+        if (!role.equals(Role.ADMIN)) {
             return R.error(ErrorType.ACCESS_DENIED);
         }
 

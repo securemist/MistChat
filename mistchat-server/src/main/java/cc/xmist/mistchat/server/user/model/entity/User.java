@@ -3,24 +3,20 @@ package cc.xmist.mistchat.server.user.model.entity;
 import cc.xmist.mistchat.server.common.util.JsonUtil;
 import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.enums.ActiveType;
-import cc.xmist.mistchat.server.user.model.enums.RoleType;
-import cc.xmist.mistchat.server.user.model.enums.SexType;
-import cc.xmist.mistchat.server.user.model.enums.UserStatusType;
+import cc.xmist.mistchat.server.user.model.enums.Gender;
+import cc.xmist.mistchat.server.user.model.enums.Role;
+import cc.xmist.mistchat.server.user.model.enums.UserStatus;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -70,8 +66,8 @@ public class User {
     /**
      * 性别
      */
-    @TableField("sex")
-    private SexType sex;
+    @TableField("gender")
+    private Gender gender;
 
     /**
      * 微信openid用户标识
@@ -83,7 +79,7 @@ public class User {
      * 角色
      */
     @TableField("role")
-    private RoleType role;
+    private Role role;
     /**
      * 在线状态
      */
@@ -120,7 +116,7 @@ public class User {
      * 使用状态 0.正常 1拉黑
      */
     @TableField("status")
-    private UserStatusType status;
+    private UserStatus status;
 
     /**
      * 创建时间

@@ -8,7 +8,7 @@ import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.dao.UserFriendDao;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserApply;
-import cc.xmist.mistchat.server.user.model.enums.ApplyStatusType;
+import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
 import cc.xmist.mistchat.server.user.model.enums.ApplyType;
 import cc.xmist.mistchat.server.user.model.req.ApplyAddRequest;
 import cc.xmist.mistchat.server.user.model.req.ApplyHandleRequest;
@@ -47,6 +47,8 @@ public class ApplyService {
         if (userApplyDao.existApply(uid, type, targetId)) {
             throw new BusinessException("请勿重复申请");
         }
+
+        // TODO FRIEND
         switch (type) {
             case FRIEND -> createFriendApply(uid, targetId, request.getMsg());
         }
@@ -81,7 +83,7 @@ public class ApplyService {
     }
 
     private static void checkApply(Long uid, UserApply apply) {
-        if (apply.getStatus().equals(ApplyStatusType.PASS) || apply.getStatus().equals(ApplyStatusType.FORBID)) {
+        if (apply.getStatus().equals(ApplyStatus.PASS) || apply.getStatus().equals(ApplyStatus.FORBID)) {
             throw new BusinessException("请勿重复处理");
         }
 

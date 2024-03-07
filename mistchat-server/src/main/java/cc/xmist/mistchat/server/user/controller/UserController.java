@@ -43,6 +43,14 @@ public class UserController {
         return R.ok(userInfo);
     }
 
+    @Operation(summary = "获取用户信息")
+    @GetMapping("/own/info1")
+    public R<UserInfoVo> getUserInfo1(UserInfoVo userInfoVo) {
+        Long uid = RequestContext.getUid();
+        UserInfoVo userInfo = userService.getUserInfo(uid);
+        return R.ok(userInfo);
+    }
+
     @Operation(summary = "批量获取其它用户信息")
     @PostMapping("/another/info/list")
     public R<List<SummaryUser>> getUserInfoBatched(@RequestBody @Valid AnotherUserInfoRequest request) {

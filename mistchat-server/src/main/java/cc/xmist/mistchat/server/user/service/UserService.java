@@ -9,7 +9,7 @@ import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.IpInfo;
-import cc.xmist.mistchat.server.user.model.enums.ItemType;
+import cc.xmist.mistchat.server.user.model.enums.Item;
 import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
 import cc.xmist.mistchat.server.user.model.vo.UserInfoVo;
 import cn.hutool.core.util.StrUtil;
@@ -65,14 +65,14 @@ public class UserService extends UserServiceSupport {
 
     public UserInfoVo getUserInfo(Long uid) {
         User user = userDao.getUser(uid);
-        Long modifyNameCount = userBackpackDao.getItemCount(uid, ItemType.MODIFY_NAME_CARD);
+        Long modifyNameCount = userBackpackDao.getItemCount(uid, Item.MODIFY_NAME_CARD);
 
         return UserInfoVo.builder()
                 .id(user.getId())
-                .sex(user.getSex())
+                .gender(user.getGender())
                 .avatar(user.getAvatar())
                 .name(user.getName())
-                .role(user.getRole().getKey())
+                .role(user.getRole())
                 .modifyNameChance(modifyNameCount).build();
     }
 
@@ -97,7 +97,7 @@ public class UserService extends UserServiceSupport {
         }
 
         // 获取用户最新的一张改名卡
-        UserBackpack renameItem = userBackpackDao.getLastItem(uid, ItemType.MODIFY_NAME_CARD);
+        UserBackpack renameItem = userBackpackDao.getLastItem(uid, Item.MODIFY_NAME_CARD);
         if (renameItem == null) {
             throw new BusinessException("改名卡数量不足");
         }
@@ -152,7 +152,7 @@ public class UserService extends UserServiceSupport {
                     IpInfo ipInfo = user.getIpInfo();
                     String location = ipInfo == null ? null : ipInfo.getLastIpDetail().getCity();
                     return SummaryUser.builder()
-                            .sex(user.getSex())
+                            .gender(user.getGender())
                             .uid(user.getId())
                             .avatar(user.getAvatar())
                             .location(location)
