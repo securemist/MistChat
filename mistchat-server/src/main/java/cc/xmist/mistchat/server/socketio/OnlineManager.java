@@ -29,7 +29,7 @@ public class OnlineManager {
         String ip = remoteAddress.getHostString();
         eventPublisher.publishEvent(new UserOnlineEvent(this, uid, ip));
 
-        emitEvent(SEvent.ONLINE,uid);
+        emitEvent(SEvent.ONLINE, uid);
     }
 
     public Long offline(SocketIOClient client) {
@@ -41,12 +41,31 @@ public class OnlineManager {
                 .get();
         log.info("{} 下线", uid);
         eventPublisher.publishEvent(new UserOfflineEvent(this, uid));
-        emitEvent(SEvent.OFFLINE,uid);
+        emitEvent(SEvent.OFFLINE, uid);
         return uid;
     }
 
     public void getOnlineUsersId() {
         return;
+    }
+
+    public boolean isOnline(Long uid) {
+        return clientMap.keySet().contains(uid);
+    }
+
+
+    public void emitIfOnline(Long uid, SEvent event, Object data) {
+        if (isOnline(uid)) {
+            emitEvent(uid, event, data);
+        }
+    }
+
+    public void emitIfOnline(List<Long> uidList, SEvent event, Object data) {
+        for (Long uid : uidList) {
+            if (isOnline(uid)) {
+                emitEvent(uid, event, data);
+            }
+        }
     }
 
     public void emitEvent(Long uid, SEvent event, Object data) {
@@ -61,7 +80,7 @@ public class OnlineManager {
         }
     }
 
-    public void emitEvent( SEvent event, Object data) {
+    public void emitEvent(SEvent event, Object data) {
         for (Long uid : clientMap.keySet()) {
             SocketIOClient client = clientMap.get(uid);
             emitEvent(uid, event, data);

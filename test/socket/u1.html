@@ -33,8 +33,8 @@
     //     })
     // }
 
-    socket.on("message",function(data) {
-        console.log("收到消息" + data)
+    socket.on("MESSAGE",function(data) {
+        console.log("收到消息" + JSON.stringify(data))
     })
 
     function loginByPwd() {

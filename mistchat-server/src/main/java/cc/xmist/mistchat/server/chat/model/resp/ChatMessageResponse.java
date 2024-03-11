@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.chat.model.resp;
 
 import cc.xmist.mistchat.server.chat.model.enums.MessageType;
-import cc.xmist.mistchat.server.chat.model.enums.RoomType;
+import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,20 +9,16 @@ import java.time.LocalDateTime;
 
 @Data
 public class ChatMessageResponse {
-    private UserInfo fromUser;
+    private Long uid;
+    private ChatType type;
     private Message message;
-    @Data
-    @Builder
-    public static class UserInfo{
-        private Long uid;
-    }
 
     @Data
     @Builder
-    public static class Message{
-        private Long uid;
+    public static class Message {
+        private Long id;
         private Long roomId;
-//        private RoomType roomType;
+        private ChatType roomType;
         private LocalDateTime sendTime;
         private MessageType type;
         private Object body;

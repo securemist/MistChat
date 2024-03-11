@@ -14,7 +14,7 @@ logging:
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     map-underscore-to-camel-case: true
 
 spring:
@@ -25,9 +25,9 @@ spring:
     password: root
   data:
     redis:
-      host: 192.168.1.216
+      host: 127.0.0.1
       port: 6379
-      password: securemist
+      password: 123456
 
 
 # springdoc-openapi项目配置

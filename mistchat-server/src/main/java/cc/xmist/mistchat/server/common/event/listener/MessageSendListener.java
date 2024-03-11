@@ -1,10 +1,7 @@
 package cc.xmist.mistchat.server.common.event.listener;
 
-import cc.xmist.mistchat.server.chat.message.MessageAdapter;
 import cc.xmist.mistchat.server.chat.model.entity.Message;
-import cc.xmist.mistchat.server.chat.model.enums.MessageType;
-import cc.xmist.mistchat.server.chat.model.enums.RoomType;
-import cc.xmist.mistchat.server.chat.model.resp.ChatMessageResponse;
+import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import cc.xmist.mistchat.server.chat.service.RoomService;
 import cc.xmist.mistchat.server.common.event.MessageSendEvent;
 import cc.xmist.mistchat.server.socketio.SocketService;
@@ -29,28 +26,17 @@ public class MessageSendListener {
         List<Long> targetIds = new ArrayList();
         Long uid = message.getUid();
 
-        if (event.getType() == RoomType.FRIEND) {
-            targetIds = Arrays.asList(message.getRoomId());
+        if (event.getType() == ChatType.FRIEND) {
+            targetIds = Arrays.asList(event.getTargetId());
         } else {
             // 获取群所有成员
         }
 
-        ChatMessageResponse messageResponse = event.getMessageResponse();
-        List<Long> targetUidList = event.getTargetUidList();
-        Long roomId = messageResponse.getMessage().getRoomId();
-
-        RoomType roomType = roomService.getRoomType(roomId);
-        switch (roomType) {
+        switch (event.getType()) {
             case FRIEND: {
-                socketService.sendToUser(targetUidList.get(0), messageResponse);
+                socketService.sendToUser(targetIds.get(0), message);
             }
             ;
         }
     }
-
-
-    public void getRoomType(Long roomId) {
-
-    }
-
 }

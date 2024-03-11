@@ -1,6 +1,7 @@
 package cc.xmist.mistchat.server.chat.controller;
 
 import cc.xmist.mistchat.server.chat.model.req.FriendMessageReq;
+import cc.xmist.mistchat.server.chat.model.req.GroupMessageReq;
 import cc.xmist.mistchat.server.chat.service.ChatService;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.R;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author securemist
@@ -28,10 +29,17 @@ public class ChatController {
     private ChatService chatService;
 
     @PostMapping("/friend/send")
-    @Operation(summary = "发送消息")
-    public R sendMsg(@RequestBody FriendMessageReq req){
+    @Operation(summary = "发送单聊消息")
+    public R sendMsg(@RequestBody FriendMessageReq req) {
         Long uid = RequestContext.getUid();
-        chatService.setFriendMsg(uid, req.getTargetUid(),req.getMessage());
+        chatService.setFriendMsg(uid, req.getTargetUid(), req.getMessage());
+        return R.ok();
+    }
+
+    @PostMapping("/group/send")
+    @Operation(summary = "发送群聊消息")
+    public R sendMsg(@RequestBody GroupMessageReq req) {
+        Long uid = RequestContext.getUid();
         return R.ok();
     }
 

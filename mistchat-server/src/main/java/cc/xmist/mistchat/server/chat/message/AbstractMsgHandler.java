@@ -1,22 +1,22 @@
 package cc.xmist.mistchat.server.chat.message;
 
-import cc.xmist.mistchat.server.chat.message.req.MessageRequest;
+import cc.xmist.mistchat.server.chat.model.ChatMessage;
 import cc.xmist.mistchat.server.chat.model.dao.MessageDao;
 import cc.xmist.mistchat.server.chat.model.entity.Message;
+import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import cc.xmist.mistchat.server.chat.model.enums.MessageType;
-import cc.xmist.mistchat.server.chat.model.req.ChatMessageRequest;
 import cn.hutool.core.bean.BeanUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AbstractMessageHandler<T extends MessageRequest> {
+public abstract class AbstractMsgHandler<T> {
     @Resource
     protected MessageDao messageDao;
 
     protected MessageType msgType;
-    protected Class<T> requestClass;
+    protected Class<T> bodyClass;
 
     protected abstract MessageType getMsgType();
 
@@ -29,28 +29,32 @@ public abstract class AbstractMessageHandler<T extends MessageRequest> {
     protected void registerHandle() {
         msgType = getMsgType();
         ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
-        this.requestClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
+        this.bodyClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
         MessageHandleFactory.registerHandle(msgType, this);
     }
 
-    public Message saveMsg(Long uid, ChatMessageRequest request) {
-        Message message = buildBaseMessage(uid, request);
-        return customSaveMsg(message, BeanUtil.toBean(request.getBody(), requestClass));
-    }
 
-    protected Message customSaveMsg(Message message, T data) {
-        messageDao.save(message);
-        return message;
-    }
-
-    private Message buildBaseMessage(Long uid, ChatMessageRequest request) {
-        Message message = Message.builder()
-                .uid(uid)
-                .type(request.getType())
-                .roomId(request.getRoomId())
-                .build();
-        return message;
-    }
+    protected abstract Message customSaveMsg(Message message, T data);
 
     public abstract void recall();
+
+    public Message saveMsg(Long uid, ChatType chatType, Long chatId, ChatMessage message) {
+        T body = toBean(message);
+        Message m = Message.builder()
+                .uid(uid)
+                .chatType(chatType)
+                .type(message.getType())
+                .chatId(chatId)
+                .build();
+
+        customSaveMsg(m, body);
+        return m;
+    }
+
+    private T toBean(Object body) {
+        if (bodyClass.isAssignableFrom(body.getClass())) {
+            return (T) body;
+        }
+        return BeanUtil.toBean(body, bodyClass);
+    }
 }

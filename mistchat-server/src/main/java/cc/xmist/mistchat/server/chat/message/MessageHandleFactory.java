@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MessageHandleFactory {
-    private static Map<MessageType, AbstractMessageHandler> MSG_STRATEGY_MAP = new HashMap<>();
+    private static Map<MessageType, AbstractMsgHandler> MSG_STRATEGY_MAP = new HashMap<>();
 
-    public static void registerHandle(MessageType type, AbstractMessageHandler messageHandle) {
+    public static void registerHandle(MessageType type, AbstractMsgHandler messageHandle) {
         MSG_STRATEGY_MAP.put(type, messageHandle);
     }
 
 
-    public static AbstractMessageHandler getHandle(MessageType type) {
+    public static AbstractMsgHandler getHandle(MessageType type) {
         return MSG_STRATEGY_MAP.get(type);
     }
 }

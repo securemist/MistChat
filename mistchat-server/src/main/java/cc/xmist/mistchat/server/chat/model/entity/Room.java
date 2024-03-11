@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.chat.model.entity;
 
-import cc.xmist.mistchat.server.chat.model.enums.RoomType;
+import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -35,7 +35,7 @@ public class Room implements Serializable {
      * 房间类型，单聊 OR 群聊
      */
     @TableField("type")
-    private RoomType type;
+    private ChatType type;
 
     /**
      * 热点房间

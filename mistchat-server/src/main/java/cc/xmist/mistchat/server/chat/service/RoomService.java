@@ -5,10 +5,8 @@ import cc.xmist.mistchat.server.chat.model.dao.RoomDao;
 import cc.xmist.mistchat.server.chat.model.dao.RoomFriendDao;
 import cc.xmist.mistchat.server.chat.model.dao.RoomGroupDao;
 import cc.xmist.mistchat.server.chat.model.entity.Room;
-import cc.xmist.mistchat.server.chat.model.entity.RoomFriend;
 import cc.xmist.mistchat.server.chat.model.entity.RoomGroup;
-import cc.xmist.mistchat.server.chat.model.enums.RoomType;
-import cc.xmist.mistchat.server.chat.model.req.RoomCreateRequest;
+import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -35,7 +33,7 @@ public class RoomService {
     }
 
     public Long createGroupRoom(Long uid1, List<Long> uidList) {
-        Room room = roomDao.create(RoomType.FRIEND);
+        Room room = roomDao.create(ChatType.FRIEND);
 //        RoomFriend roomFriend = roomFriendDao.create(room.getId(), uid1, uid2);
         return room.getId();
     }
@@ -48,12 +46,12 @@ public class RoomService {
         }
     }
 
-    private static void checkUidList(List<Long> uidList, RoomType type) {
+    private static void checkUidList(List<Long> uidList, ChatType type) {
         if (uidList == null || uidList.size() == 0) {
             throw new ParamException();
         }
 
-        if (type.equals(RoomType.FRIEND) && uidList.size() > 1) {
+        if (type.equals(ChatType.FRIEND) && uidList.size() > 1) {
             throw new ParamException();
         }
     }
@@ -82,7 +80,7 @@ public class RoomService {
         return roomDao.getById(roomId);
     }
 
-    public RoomType getRoomType(Long roomId) {
+    public ChatType getRoomType(Long roomId) {
         return getById(roomId).getType();
     }
 

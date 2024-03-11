@@ -16,12 +16,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MessageDao extends ServiceImpl<MessageMapper, Message> {
-    public void save(Long uid, FriendMessageReq request) {
-        Message message = Message.builder()
-                .uid(uid)
-                .type(request.getType())
-                .roomId(request.getRoomId())
-                .build();
-        save(message);
-    }
 }

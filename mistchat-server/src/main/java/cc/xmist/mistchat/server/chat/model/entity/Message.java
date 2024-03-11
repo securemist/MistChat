@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.chat.model.entity;
 
+import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import cc.xmist.mistchat.server.chat.model.enums.MessageType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -35,8 +36,11 @@ public class Message implements Serializable {
     /**
      * 房间号
      */
-    @TableField("room_id")
-    private Long roomId;
+    @TableField("chat_id")
+    private Long chatId;
+
+    @TableField("chat_type")
+    private ChatType chatType;
 
     /**
      * 发送者
