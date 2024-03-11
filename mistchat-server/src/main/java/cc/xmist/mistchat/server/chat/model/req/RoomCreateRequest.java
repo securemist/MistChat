@@ -9,8 +9,6 @@ import java.util.List;
 
 @Data
 public class RoomCreateRequest {
-    @Schema(description = "聊天室类型")
-    private ChatType type;
     @Schema(description = "成员列表")
     @NotNull
     private List<Long> uidList;

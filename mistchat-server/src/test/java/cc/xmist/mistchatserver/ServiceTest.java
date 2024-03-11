@@ -29,8 +29,7 @@ public class ServiceTest {
     @Resource
     private RoomService roomService;
 
-    @Resource
-    private JwtUtil jwtUtil;
+    private JwtUtil jwtUtil = new JwtUtil("adsa");
 
     @Test
     public void testGetRoomUsers() {

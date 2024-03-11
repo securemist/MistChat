@@ -11,7 +11,6 @@ import cn.hutool.extra.spring.SpringUtil;
  */
 public class RequestContext {
     private static ThreadLocal<Long> uidLocal = new ThreadLocal<>();
-    private static ThreadLocal<String> ipLocal = new ThreadLocal<>();
 
     private static UserDao userDao;
 
@@ -31,11 +30,7 @@ public class RequestContext {
         return userDao.getUser(uidLocal.get());
     }
 
-    public static String  getIp() {
-        return ipLocal.get();
-    }
-
-    public static void setIp(String ip) {
-        ipLocal.set(ip);
+    public static void remove() {
+        uidLocal.remove();
     }
 }

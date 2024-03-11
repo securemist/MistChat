@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoomController {
     @Resource
     private RoomService roomService;
+
     @PostMapping("/add")
     @Operation(summary = "发起聊天")
     public void addFriendRoom(@RequestBody @Valid RoomCreateRequest request) {
-        Long uid = RequestContext.getUid();
     }
 }

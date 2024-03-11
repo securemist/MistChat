@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.common.interceptor;
 
+import cc.xmist.mistchat.server.common.annotion.Authorize;
 import cc.xmist.mistchat.server.common.exception.NotLoginException;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.user.service.AuthService;
@@ -11,8 +12,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -33,8 +36,6 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Resource
     private AuthService authService;
 
-    private String[] openApiPaths = new String[]{"webjars", "doc.html", "swagger", "favicon.ico", "/v3/api-docs"};
-
     @PostConstruct
     public void log() {
         log.info("项目接口文档：{} ", contextPath + "doc.html");
@@ -43,33 +44,23 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (isDocURI(request)) {
-            return true;
+
+        if (!isPublicURI(request)) {
+            String token = request.getHeader("token");
+            Long uid = authService.verify(token);
+            RequestContext.setUid(uid);
         }
 
-        String token = request.getHeader("token");
-        Long uid = authService.verify(token);
-        // 用户未登陆并且是非公共接口，抛出异常
-        if (uid == null && !isPublicURI(request)) {
-            throw new NotLoginException();
-        }
-
-        RequestContext.setUid(uid);
         return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        RequestContext.remove();
     }
 
     private boolean isPublicURI(HttpServletRequest request) {
         String uri = request.getRequestURI();
         return uri.contains("public");
-    }
-
-    private boolean isDocURI(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        for (String path : openApiPaths) {
-            if (uri.contains(path)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

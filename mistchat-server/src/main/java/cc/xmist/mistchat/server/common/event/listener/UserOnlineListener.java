@@ -29,8 +29,7 @@ public class UserOnlineListener {
 
     @EventListener(classes = UserOnlineEvent.class)
     public void parseIpInfo(UserOnlineEvent event) {
-        String ip = event.getIp();
         Long uid = event.getUid();
-        ipService.updateIpInfo(uid, ip);
+        ipService.updateIpInfo(uid, event.getIp());
     }
 }

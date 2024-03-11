@@ -29,9 +29,8 @@ public class ChatController {
     private ChatService chatService;
 
     @PostMapping("/send")
-    @Operation(summary = "发送单聊消息")
-    public R sendMsg(@RequestBody ChatMessageReq req) {
-        Long uid = RequestContext.getUid();
+    @Operation(summary = "发送消息")
+    public R sendMsg(@RequestBody ChatMessageReq req, Long uid) {
         chatService.sendMsg(uid, req);
         return R.ok();
     }

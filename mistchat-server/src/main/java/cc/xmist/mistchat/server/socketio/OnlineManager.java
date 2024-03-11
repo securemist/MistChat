@@ -23,12 +23,12 @@ public class OnlineManager {
 
     public void online(Long uid, SocketIOClient client) {
         clientMap.put(uid, client);
-        log.info("{} 上线", uid);
 
         InetSocketAddress remoteAddress = ((InetSocketAddress) client.getRemoteAddress());
         String ip = remoteAddress.getHostString();
-        eventPublisher.publishEvent(new UserOnlineEvent(this, uid, ip));
 
+        log.info("{} 上线, ip: {}", uid, ip);
+        eventPublisher.publishEvent(new UserOnlineEvent(this, uid, ip));
         emitEvent(SEvent.ONLINE, uid);
     }
 

@@ -5,7 +5,6 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 public class UserOnlineEvent extends ApplicationEvent {
-
     private Long uid;
     private String ip;
 

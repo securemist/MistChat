@@ -5,7 +5,9 @@ import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.common.util.RedisUtil;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cn.hutool.core.util.StrUtil;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,18 @@ public class AuthService {
     private static final long TOKEN_EXPIRE_DAYS = 7;
     private static final long TOKEN_REFRESH_DAYS_LIMIT = 1;
 
-    @Resource
-    private JwtUtil jwtUtil;
-
+    @Value("${mistchat.jwt.secret}")
+    private String secret;
     @Resource
     private UserDao userDao;
+
+    private JwtUtil jwtUtil;
+
+    @PostConstruct
+    public void init() {
+        jwtUtil = new JwtUtil(secret);
+    }
+
 
     /**
      * token续期
@@ -44,7 +53,6 @@ public class AuthService {
         if (expireDays < TOKEN_REFRESH_DAYS_LIMIT) {
             RedisUtil.set(formatTokenKey(uid), token, TOKEN_EXPIRE_DAYS, TimeUnit.DAYS);
         }
-
     }
 
 
@@ -86,4 +94,6 @@ public class AuthService {
     private static String formatTokenKey(Long uid) {
         return RedisKey.getKey(RedisKey.USER_TOKEN_STRING, uid);
     }
+
+
 }

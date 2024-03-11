@@ -28,40 +28,35 @@ public class FriendController {
 
     @PostMapping("/apply/add")
     @Operation(summary = "添加好友申请")
-    public R<Void> add(@RequestBody @Valid ApplyAddReq request) {
-        Long uid = RequestContext.getUid();
+    public R<Void> add(@RequestBody @Valid ApplyAddReq request, Long uid) {
         applyService.createApply(uid, request);
         return R.ok();
     }
 
     @GetMapping("/rApply/list")
     @Operation(summary = "获取收到的好友申请")
-    public R<List<ReceivedApplyVo>> getReceivedApplyList() {
-        Long uid = RequestContext.getUid();
+    public R<List<ReceivedApplyVo>> getReceivedApplyList(Long uid) {
         List<ReceivedApplyVo> applyList = applyService.getReceivedApplyList(uid);
         return R.ok(applyList);
     }
 
     @GetMapping("/fApply/list")
     @Operation(summary = "获取发送出好友申请")
-    public R<List<ForwardApplyVo>> getForwardApplyList() {
-        Long uid = RequestContext.getUid();
+    public R<List<ForwardApplyVo>> getForwardApplyList(Long uid) {
         List<ForwardApplyVo> applyList = applyService.getForwardApplyList(uid);
         return R.ok(applyList);
     }
 
     @PostMapping("/apply/handle")
     @Operation(summary = "处理申请")
-    public R<Void> handle(@RequestBody @Valid ApplyHandleReq request) {
-        Long uid = RequestContext.getUid();
+    public R<Void> handle(@RequestBody @Valid ApplyHandleReq request, Long uid) {
         applyService.handleApply(uid, request);
         return R.ok();
     }
 
     @GetMapping("/list")
     @Operation(summary = "获取好友列表")
-    public R<List<SummaryUser>> getFriendList() {
-        Long uid = RequestContext.getUid();
+    public R<List<SummaryUser>> getFriendList(Long uid) {
         List<Long> friendInfoList = friendService.getFriendIdList(uid);
         return R.ok(friendInfoList);
     }

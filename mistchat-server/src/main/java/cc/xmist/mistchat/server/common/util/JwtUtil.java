@@ -12,11 +12,13 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
-@Component
 public class JwtUtil {
 
-    @Value("${mistchat.jwt.secret}")
     private String secret;
+
+    public JwtUtil(String secret) {
+        this.secret = secret;
+    }
 
     public static final String UID = "uid";
     public static final String CREATE_TIME = "createTime";
@@ -24,7 +26,7 @@ public class JwtUtil {
     public String createToken(Long uid) {
         String token = JWT.create()
                 .withClaim(UID, uid)
-//                .withClaim("createTime", new Date())
+//                .withClaim("createTime", new Date()) TODO 暂时是无期限
                 .sign(Algorithm.HMAC256(secret));
         return token;
     }

@@ -21,23 +21,20 @@ public class BadgeController {
 
     @Operation(summary = "当前用户徽章列表")
     @GetMapping("/list")
-    public R<List<BadgeVo>> getBadges() {
-        Long uid = RequestContext.getUid();
+    public R<List<BadgeVo>> getBadges(Long uid) {
         return R.ok(itemService.getBadgeList(uid));
     }
 
     @Operation(summary = "佩戴徽章")
     @PostMapping("wear/{badgeId}")
-    public R wearBadge(@PathVariable Long badgeId) {
-        Long uid = RequestContext.getUid();
+    public R wearBadge(@PathVariable Long badgeId,Long uid) {
         itemService.wearBadge(uid, badgeId);
         return R.ok();
     }
 
     @Operation(summary = "其他用户佩戴的徽章")
     @PostMapping("/another/list")
-    public R getUserBadgeInfo(@RequestBody UidListReq req) {
-        Long uid = RequestContext.getUid();
+    public R getUserBadgeInfo(@RequestBody UidListReq req,Long uid) {
         return R.ok(itemService.getWaringBadgeInfo(req.getUidList()));
     }
 

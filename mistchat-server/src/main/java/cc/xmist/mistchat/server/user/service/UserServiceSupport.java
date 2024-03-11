@@ -11,8 +11,6 @@ public class UserServiceSupport {
     @Resource
     protected UserDao userDao;
     @Resource
-    protected JwtUtil jwtUtil;
-    @Resource
     protected AuthService authService;
     @Resource
     protected UserBackpackDao userBackpackDao;

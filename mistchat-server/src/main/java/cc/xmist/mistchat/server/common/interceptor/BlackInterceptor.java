@@ -22,10 +22,10 @@ public class BlackInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Long uid = RequestContext.getUid();
-        String ip = RequestContext.getIp();
         List<String> blockedIp = blackService.getBlockedIp();
         List<Long> blockedUid = blackService.getBlockedUid();
 
+        String ip = JakartaServletUtil.getClientIP(request);
 
         if (blockedIp.contains(ip) || blockedUid.contains(uid)) {
             throw new BlackException();
