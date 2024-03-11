@@ -34,17 +34,17 @@ public class ServiceTest {
 
     @Test
     public void testGetRoomUsers() {
-        Long roomId = 2L;
-        log.info("单聊结果");
-        roomService.getRoomUsers(roomId).forEach(uid -> {
-            log.info("{}", uid);
-        });
-
-        log.info("群聊结果");
-        Long roomId2 = 1L;
-        roomService.getRoomUsers(roomId2).forEach(uid -> {
-            log.info("{}", uid);
-        });
+//        Long roomId = 2L;
+//        log.info("单聊结果");
+//        roomService.getRoomUsers(roomId).forEach(uid -> {
+//            log.info("{}", uid);
+//        });
+//
+//        log.info("群聊结果");
+//        Long roomId2 = 1L;
+//        roomService.getRoomUsers(roomId2).forEach(uid -> {
+//            log.info("{}", uid);
+//        });
 
     }
 

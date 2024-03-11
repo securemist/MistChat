@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.common.event.listener;
 
+import cc.xmist.mistchat.server.chat.model.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.chat.model.entity.Message;
 import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import cc.xmist.mistchat.server.chat.service.RoomService;
@@ -19,6 +20,8 @@ public class MessageSendListener {
     private SocketService socketService;
     @Resource
     private RoomService roomService;
+    @Resource
+    private GroupMemberDao groupMemberDao;
 
     @EventListener(MessageSendEvent.class)
     public void send(MessageSendEvent event) {
@@ -26,17 +29,20 @@ public class MessageSendListener {
         List<Long> targetIds = new ArrayList();
         Long uid = message.getUid();
 
-        if (event.getType() == ChatType.FRIEND) {
+        if (event.getChatType() == ChatType.FRIEND) {
             targetIds = Arrays.asList(event.getTargetId());
         } else {
             // 获取群所有成员
+            targetIds = groupMemberDao.getMembers(event.getTargetId());
         }
 
-        switch (event.getType()) {
+        switch (event.getChatType()) {
             case FRIEND: {
                 socketService.sendToUser(targetIds.get(0), message);
             }
-            ;
+            case GROUP:{
+                socketService.sendToGroup(targetIds,message);
+            }
         }
     }
 }

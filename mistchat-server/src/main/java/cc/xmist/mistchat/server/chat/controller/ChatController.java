@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.chat.controller;
 
-import cc.xmist.mistchat.server.chat.model.req.FriendMessageReq;
+import cc.xmist.mistchat.server.chat.model.req.ChatMessageReq;
 import cc.xmist.mistchat.server.chat.model.req.GroupMessageReq;
 import cc.xmist.mistchat.server.chat.service.ChatService;
 import cc.xmist.mistchat.server.common.context.RequestContext;
@@ -28,19 +28,12 @@ public class ChatController {
     @Resource
     private ChatService chatService;
 
-    @PostMapping("/friend/send")
+    @PostMapping("/send")
     @Operation(summary = "发送单聊消息")
-    public R sendMsg(@RequestBody FriendMessageReq req) {
+    public R sendMsg(@RequestBody ChatMessageReq req) {
         Long uid = RequestContext.getUid();
-        chatService.setFriendMsg(uid, req.getTargetUid(), req.getMessage());
+        chatService.sendMsg(uid, req);
         return R.ok();
     }
-
-    @PostMapping("/group/send")
-    @Operation(summary = "发送群聊消息")
-    public R sendMsg(@RequestBody GroupMessageReq req) {
-        Long uid = RequestContext.getUid();
-        return R.ok();
-    }
-
 }
+

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> {
 
-    public List<Long> getMembersByGroupId(Long groupId) {
+    public List<Long> getMembers(Long groupId) {
         List<GroupMember> members = lambdaQuery()
                 .eq(GroupMember::getGroupId, groupId)
                 .select(GroupMember::getUid)

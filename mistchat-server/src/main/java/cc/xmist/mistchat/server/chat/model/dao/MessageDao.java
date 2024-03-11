@@ -2,7 +2,6 @@ package cc.xmist.mistchat.server.chat.model.dao;
 
 import cc.xmist.mistchat.server.chat.model.entity.Message;
 import cc.xmist.mistchat.server.chat.model.mapper.MessageMapper;
-import cc.xmist.mistchat.server.chat.model.req.FriendMessageReq;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

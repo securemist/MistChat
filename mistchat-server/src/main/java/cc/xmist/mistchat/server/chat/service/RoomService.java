@@ -70,7 +70,7 @@ public class RoomService {
 //            case FRIEND -> uidList = roomFriendDao.getMembers(roomId);
             case GROUP -> {
                 RoomGroup group = roomGroupDao.getByRoomId(roomId);
-                uidList = groupMemberDao.getMembersByGroupId(group.getRoomId());
+                uidList = groupMemberDao.getMembers(group.getRoomId());
             }
         }
         return uidList;

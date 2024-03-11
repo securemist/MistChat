@@ -6,6 +6,8 @@ import cc.xmist.mistchat.server.chat.model.dao.RoomFriendDao;
 import cc.xmist.mistchat.server.chat.model.entity.Message;
 import cc.xmist.mistchat.server.chat.model.ChatMessage;
 import cc.xmist.mistchat.server.chat.model.enums.ChatType;
+import cc.xmist.mistchat.server.chat.model.req.ChatMessageReq;
+import cc.xmist.mistchat.server.chat.model.resp.ChatMessageResponse;
 import cc.xmist.mistchat.server.common.event.MessageSendEvent;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -24,17 +26,15 @@ public class ChatService {
     private RoomFriendDao roomFriendDao;
 
 
-    /**
-     * 发送好友消息
-     *
-     * @param uid
-     * @param targetUid
-     * @param message
-     */
-    public void setFriendMsg(Long uid, Long targetUid, ChatMessage message) {
+    public void sendMsg(Long uid, ChatMessageReq req) {
+        ChatMessage message = req.getMessage();
+        Long targetId = req.getTargetId();
         AbstractMsgHandler messageHandler = MessageHandleFactory.getHandle(message.getType());
-        Long friendId = roomFriendDao.getId(uid, targetUid);
-        Message m = messageHandler.saveMsg(uid, ChatType.FRIEND, friendId, message);
-        eventPublisher.publishEvent(new MessageSendEvent(this, ChatType.FRIEND, targetUid, m));
+
+        Message m = switch (req.getChatType()) {
+            case FRIEND -> messageHandler.saveMsg(uid, ChatType.FRIEND, targetId, message);
+            case GROUP -> messageHandler.saveMsg(uid, ChatType.GROUP, targetId, message);
+        };
+        eventPublisher.publishEvent(new MessageSendEvent(this, req.getChatType(), targetId, m));
     }
 }

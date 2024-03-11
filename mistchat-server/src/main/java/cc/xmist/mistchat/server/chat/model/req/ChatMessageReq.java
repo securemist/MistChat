@@ -1,10 +1,12 @@
 package cc.xmist.mistchat.server.chat.model.req;
 
 import cc.xmist.mistchat.server.chat.model.ChatMessage;
+import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import lombok.Data;
 
 @Data
-public class FriendMessageReq  {
-    private Long targetUid;
+public class ChatMessageReq {
+    private Long targetId;
+    private ChatType chatType;
     private ChatMessage message;
 }
