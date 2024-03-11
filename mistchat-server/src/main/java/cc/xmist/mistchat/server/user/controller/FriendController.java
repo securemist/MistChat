@@ -1,12 +1,12 @@
 package cc.xmist.mistchat.server.user.controller;
 
-import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.R;
 import cc.xmist.mistchat.server.user.model.req.ApplyAddReq;
 import cc.xmist.mistchat.server.user.model.req.ApplyHandleReq;
-import cc.xmist.mistchat.server.user.model.vo.ForwardApplyVo;
-import cc.xmist.mistchat.server.user.model.vo.ReceivedApplyVo;
-import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
+import cc.xmist.mistchat.server.user.model.resp.ApplyResp;
+import cc.xmist.mistchat.server.user.model.resp.ForwardApplyVo;
+import cc.xmist.mistchat.server.user.model.resp.ReceivedApplyVo;
+import cc.xmist.mistchat.server.user.model.resp.SummaryUser;
 import cc.xmist.mistchat.server.user.service.ApplyService;
 import cc.xmist.mistchat.server.user.service.FriendService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,9 +28,12 @@ public class FriendController {
 
     @PostMapping("/apply/add")
     @Operation(summary = "添加好友申请")
-    public R<Void> add(@RequestBody @Valid ApplyAddReq request, Long uid) {
-        applyService.createApply(uid, request);
-        return R.ok();
+    public R<Void> add(@RequestBody @Valid ApplyAddReq req, Long uid) {
+        ApplyResp resp = switch (req.getType()) {
+            case FRIEND -> applyService.friendApply(uid, req);
+            case GROUP -> applyService.groupApply(uid, req);
+        };
+        return R.ok(resp);
     }
 
     @GetMapping("/rApply/list")
@@ -49,8 +52,11 @@ public class FriendController {
 
     @PostMapping("/apply/handle")
     @Operation(summary = "处理申请")
-    public R<Void> handle(@RequestBody @Valid ApplyHandleReq request, Long uid) {
-        applyService.handleApply(uid, request);
+    public R<Void> handle(@RequestBody @Valid ApplyHandleReq req, Long uid) {
+        switch (req.getType()) {
+            case FRIEND -> applyService.handleFriendApply(uid, req);
+            case GROUP -> applyService.handleGroupApply(uid, req);
+        }
         return R.ok();
     }
 

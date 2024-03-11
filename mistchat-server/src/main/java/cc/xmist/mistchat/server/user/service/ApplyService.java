@@ -1,7 +1,9 @@
 package cc.xmist.mistchat.server.user.service;
 
+import cc.xmist.mistchat.server.chat.model.dao.FriendContactDao;
 import cc.xmist.mistchat.server.chat.model.dao.RoomFriendDao;
 import cc.xmist.mistchat.server.chat.service.RoomService;
+import cc.xmist.mistchat.server.common.event.UserApplyEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.user.dao.UserApplyDao;
@@ -13,9 +15,13 @@ import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
 import cc.xmist.mistchat.server.user.model.enums.ApplyType;
 import cc.xmist.mistchat.server.user.model.req.ApplyAddReq;
 import cc.xmist.mistchat.server.user.model.req.ApplyHandleReq;
-import cc.xmist.mistchat.server.user.model.vo.ForwardApplyVo;
-import cc.xmist.mistchat.server.user.model.vo.ReceivedApplyVo;
+import cc.xmist.mistchat.server.user.model.resp.ApplyResp;
+import cc.xmist.mistchat.server.user.model.resp.ForwardApplyVo;
+import cc.xmist.mistchat.server.user.model.resp.ReceivedApplyVo;
 import jakarta.annotation.Resource;
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -35,68 +41,64 @@ public class ApplyService {
     private RoomFriendDao roomFriendDao;
     @Resource
     private UserService userService;
+    @Resource
+    private FriendContactDao friendContactDao;
+    @Resource
+    private ApplicationEventPublisher eventPublisher;
 
-    /**
-     * 创建申请
-     *
-     * @param uid
-     * @param request
-     */
-    public void createApply(Long uid, ApplyAddReq request) {
-        ApplyType type = request.getType();
-        Long targetId = request.getTargetId();
 
-        if (uid == targetId) throw new ParamException();
-        if (userApplyDao.isFriend(uid, targetId)) throw new BusinessException("你们已经是好友了，请勿重复添加");
-        if (userApplyDao.exist(uid, type, targetId)) throw new BusinessException("请勿重复申请");
+    public ApplyResp friendApply(Long uid, ApplyAddReq req) {
+        Long targetUid = req.getTargetId();
+        if (uid == targetUid) throw new ParamException();
+        if (userApplyDao.isFriend(uid, targetUid)) throw new BusinessException("你们已经是好友了，请勿重复添加");
+        if (userApplyDao.exist(uid, ApplyType.FRIEND, targetUid)) throw new BusinessException("请勿重复申请");
 
-        // 添加对方好友时，已经有对方添加自己的申请，视为同一申请
-        UserApply apply = userApplyDao.find(targetId, type, uid);
+        UserApply apply = userApplyDao.find(targetUid, ApplyType.FRIEND, uid);
         if (apply != null) {
-            userApplyDao.handleApply(apply.getId(), true, null);
-            applyPass(uid, targetId);
-            return;
+            userApplyDao.handle(apply.getId(), true, null);
+            friendApplyPass(uid, targetUid);
+            return ApplyResp.build(apply);
         }
 
-        // TODO FRIEND
-        switch (type) {
-            case FRIEND -> {
-                userApplyDao.addFriendApply(uid, targetId, request.getMsg());
-                applyPass(uid, targetId);
-            }
-        }
+        apply = userApplyDao.addFriendApply(uid, targetUid, req.getMsg());
+        return ApplyResp.build(apply);
     }
+
+
+    public ApplyResp groupApply(Long uid, ApplyAddReq req) {
+        UserApply apply = null;
+        return ApplyResp.build(apply);
+    }
+
 
     /**
-     * 处理请求
+     * uid 同意了 targetUid 的申请
      *
      * @param uid
-     * @param request
+     * @param targetUid
+     * @return
      */
-    public void handleApply(Long uid, ApplyHandleReq request) {
-        UserApply apply = userApplyDao.getById(request.getApplyId());
-        checkApply(uid, apply);
-
-        userApplyDao.handleApply(apply.getId(), request.getPass(), request.getMsg());
-
-        switch (apply.getType()) {
-            case FRIEND -> applyPass(uid, apply.getUid());
-        }
+    private Long friendApplyPass(Long uid, Long targetUid) {
+        UserFriend friend = userFriendDao.create(uid, targetUid);
+        roomFriendDao.create(friend.getId());
+        friendContactDao.firstCreate(friend.getId(), uid, targetUid);
+        eventPublisher.publishEvent(new UserApplyEvent(uid, targetUid));
+        return friend.getId();
     }
 
-    private static void checkApply(Long uid, UserApply apply) {
-        if (apply == null) throw new ParamException();
 
+    public void handleGroupApply(Long uid, ApplyHandleReq req) {
+
+    }
+
+    public void handleFriendApply(Long uid, ApplyHandleReq req) {
+        UserApply apply = userApplyDao.getById(req.getApplyId());
+        if (apply == null || apply.getTargetId().equals(uid)) throw new ParamException();
         if (apply.getStatus().equals(ApplyStatus.PASS) || apply.getStatus().equals(ApplyStatus.FORBID))
             throw new BusinessException("请勿重复处理");
 
-        if (!apply.getTargetId().equals(uid)) throw new BusinessException("异常操作");
-    }
-    
-    private Long applyPass(Long uid1, Long uid2) {
-        UserFriend friend = userFriendDao.create(uid1, uid2);
-        roomFriendDao.create(friend.getId());
-        return friend.getId();
+        userApplyDao.handle(apply.getId(), req.getPass(), req.getMsg());
+        friendApplyPass(uid, apply.getTargetId());
     }
 
 
@@ -141,4 +143,5 @@ public class ApplyService {
 
         return applyVoList;
     }
+
 }

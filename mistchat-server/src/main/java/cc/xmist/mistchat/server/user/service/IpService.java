@@ -26,13 +26,6 @@ public class IpService {
 
     private ExecutorService executor = Executors.newSingleThreadExecutor(new NamedThreadFactory("ip-update", false));
 
-    /**
-     * 解析ip地址信息
-     *
-     * @param ip
-     * @return ipDetail
-     * @throws IpParseException
-     */
     @SneakyThrows
     public void updateIpInfo(Long uid, String clientIp) {
         executor.execute(() -> {

@@ -22,8 +22,8 @@ public class ApplyHandleListener {
 
         switch (type) {
             case FRIEND -> {
-                if (status.equals(ApplyStatus.PASS)) {
-
+                    if (status.equals(ApplyStatus.PASS)) {
+                    // TODO
                 }
             }
         }

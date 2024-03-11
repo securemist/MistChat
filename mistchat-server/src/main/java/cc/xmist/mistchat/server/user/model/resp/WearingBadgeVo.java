@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.model.vo;
+package cc.xmist.mistchat.server.user.model.resp;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

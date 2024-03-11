@@ -8,14 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author securemist
- * @since 2024-01-26
- */
 @Service
 public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> {
 

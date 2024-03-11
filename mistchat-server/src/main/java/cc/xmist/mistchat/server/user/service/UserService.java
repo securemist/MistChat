@@ -4,15 +4,13 @@ import cc.xmist.mistchat.server.common.cache.ItemCache;
 import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
-import cc.xmist.mistchat.server.user.UserAdapter;
 import cc.xmist.mistchat.server.user.dao.UserFriendDao;
 import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.enums.Item;
-import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
-import cc.xmist.mistchat.server.user.model.vo.UserInfoVo;
+import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

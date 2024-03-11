@@ -2,14 +2,10 @@ package cc.xmist.mistchat.server.user.controller;
 
 
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.common.context.RequestContext;
-import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.req.*;
-import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
-import cc.xmist.mistchat.server.user.model.vo.BadgeVo;
-import cc.xmist.mistchat.server.user.model.vo.UserInfoVo;
+import cc.xmist.mistchat.server.user.model.resp.SummaryUser;
+import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
 import cc.xmist.mistchat.server.user.service.AuthService;
-import cc.xmist.mistchat.server.user.service.ItemService;
 import cc.xmist.mistchat.server.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

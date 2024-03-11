@@ -35,7 +35,7 @@ public class UserApplyDao extends ServiceImpl<UserApplyMapper, UserApply> {
                 .eq(UserApply::getUid,uid)
                 .list();
     }
-    public void addFriendApply(Long uid, Long targetId, String msg) {
+    public UserApply addFriendApply(Long uid, Long targetId, String msg) {
         UserApply userApply = UserApply.builder()
                 .applyMsg(msg)
                 .uid(uid)
@@ -44,6 +44,7 @@ public class UserApplyDao extends ServiceImpl<UserApplyMapper, UserApply> {
                 .status(ApplyStatus.WAIT)
                 .build();
         save(userApply);
+        return userApply;
     }
 
     /**
@@ -54,7 +55,7 @@ public class UserApplyDao extends ServiceImpl<UserApplyMapper, UserApply> {
      * @param pass  是否通过
      * @param msg
      */
-    public void handleApply( Long applyId, Boolean pass, String msg) {
+    public void handle( Long applyId, Boolean pass, String msg) {
         ApplyStatus status = ApplyStatus.READ;
 
         if (pass) {

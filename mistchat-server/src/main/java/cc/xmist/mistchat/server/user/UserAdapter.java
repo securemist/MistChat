@@ -1,12 +1,8 @@
 package cc.xmist.mistchat.server.user;
 
-import cc.xmist.mistchat.server.user.model.IpInfo;
-import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
-import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.enums.Item;
-import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
-import cc.xmist.mistchat.server.user.model.vo.BadgeVo;
+import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 
 import java.util.Comparator;
 import java.util.List;

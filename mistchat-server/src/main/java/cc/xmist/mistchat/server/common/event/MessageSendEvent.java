@@ -9,13 +9,13 @@ import org.springframework.context.ApplicationEvent;
 @Getter
 public class MessageSendEvent extends ApplicationEvent {
     private Message message;
-    private Long targetId; // 单聊为对方 uid，群聊为 groupId
+    private Long chatId; // 单聊为对方 uid，群聊为 groupId
     private ChatType chatType;
 
-    public MessageSendEvent(ChatService source, ChatType type, Long targetId,Message message) {
+    public MessageSendEvent(ChatService source, ChatType type, Long chatId,Message message) {
         super(source);
         this.message = message;
-        this.targetId = targetId;
+        this.chatId = chatId;
         this.chatType = type;
     }
 }

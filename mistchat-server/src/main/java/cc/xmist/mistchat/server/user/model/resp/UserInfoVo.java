@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.model.vo;
+package cc.xmist.mistchat.server.user.model.resp;
 
 import cc.xmist.mistchat.server.user.model.enums.Gender;
 import cc.xmist.mistchat.server.user.model.enums.Role;
