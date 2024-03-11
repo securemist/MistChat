@@ -50,6 +50,10 @@
     socket.on("apply",function (data) {
         console.log(data.data)
     })
+
+    socket.on('ONLINE', data => {
+        console.log(data, '上线')
+    })
 </script>
 <body>
 

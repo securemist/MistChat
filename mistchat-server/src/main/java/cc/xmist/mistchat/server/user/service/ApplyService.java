@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.user.service;
 
+import cc.xmist.mistchat.server.chat.model.dao.RoomFriendDao;
 import cc.xmist.mistchat.server.chat.service.RoomService;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
@@ -7,6 +8,7 @@ import cc.xmist.mistchat.server.user.dao.UserApplyDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.dao.UserFriendDao;
 import cc.xmist.mistchat.server.user.model.entity.UserApply;
+import cc.xmist.mistchat.server.user.model.entity.UserFriend;
 import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
 import cc.xmist.mistchat.server.user.model.enums.ApplyType;
 import cc.xmist.mistchat.server.user.model.req.ApplyAddReq;
@@ -30,6 +32,8 @@ public class ApplyService {
     @Resource
     private UserDao userDao;
     @Resource
+    private RoomFriendDao roomFriendDao;
+    @Resource
     private UserService userService;
 
     /**
@@ -50,7 +54,7 @@ public class ApplyService {
         UserApply apply = userApplyDao.find(targetId, type, uid);
         if (apply != null) {
             userApplyDao.handleApply(apply.getId(), true, null);
-            userFriendDao.create(uid, targetId);
+            applyPass(uid, targetId);
             return;
         }
 
@@ -58,11 +62,10 @@ public class ApplyService {
         switch (type) {
             case FRIEND -> {
                 userApplyDao.addFriendApply(uid, targetId, request.getMsg());
-                userFriendDao.create(uid, targetId);
+                applyPass(uid, targetId);
             }
         }
     }
-
 
     /**
      * 处理请求
@@ -77,7 +80,7 @@ public class ApplyService {
         userApplyDao.handleApply(apply.getId(), request.getPass(), request.getMsg());
 
         switch (apply.getType()) {
-            case FRIEND -> friendApplyPass(uid, apply.getUid());
+            case FRIEND -> applyPass(uid, apply.getUid());
         }
     }
 
@@ -89,11 +92,11 @@ public class ApplyService {
 
         if (!apply.getTargetId().equals(uid)) throw new BusinessException("异常操作");
     }
-
-    private Long friendApplyPass(Long uid1, Long uid2) {
-        userFriendDao.create(uid1, uid2);
-        Long roomId = roomService.createFriendRoom(uid1, uid2);
-        return roomId;
+    
+    private Long applyPass(Long uid1, Long uid2) {
+        UserFriend friend = userFriendDao.create(uid1, uid2);
+        roomFriendDao.create(friend.getId());
+        return friend.getId();
     }
 
 

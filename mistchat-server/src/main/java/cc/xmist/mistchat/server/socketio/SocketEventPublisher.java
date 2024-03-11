@@ -14,10 +14,10 @@ import java.util.UUID;
 @Slf4j
 public class SocketEventPublisher {
     @Resource
-    private SocketEventManager eventManager;
+    private OnlineManager onlineManager;
 
     public void sendMsg(Long targetUid, ChatMessageResponse messageResponse) {
-        eventManager.emitEvent(targetUid, SEvent.MESSAGE, messageResponse);
+        onlineManager.emitEvent(targetUid, SEvent.MESSAGE, messageResponse);
         // 根据uid拿到对应的sessionId
     }
 

@@ -20,6 +20,5 @@ public class RoomController {
     @Operation(summary = "发起聊天")
     public void addFriendRoom(@RequestBody @Valid RoomCreateRequest request) {
         Long uid = RequestContext.getUid();
-//        roomService.createRoom(uid,request);
     }
 }

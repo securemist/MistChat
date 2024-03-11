@@ -2,13 +2,10 @@ package cc.xmist.mistchat.server.chat.model.dao;
 
 import cc.xmist.mistchat.server.chat.model.entity.RoomFriend;
 import cc.xmist.mistchat.server.chat.model.mapper.RoomFriendMapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cc.xmist.mistchat.server.user.dao.UserFriendDao;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -20,23 +17,34 @@ import java.util.stream.Collectors;
  */
 @Service
 public class RoomFriendDao extends ServiceImpl<RoomFriendMapper, RoomFriend> {
-
-    public RoomFriend create(Long roomId, Long uid1, Long uid2) {
-        Long small = uid1 < uid2 ? uid1 : uid2;
-        Long big = uid1 < uid2 ? uid2 : uid1;
-        RoomFriend roomFriend = RoomFriend.builder()
-                .roomId(roomId)
-                .uid1(small)
-                .uid2(big)
-                .build();
+    @Resource
+    private UserFriendDao userFriendDao;
+    /**
+     * 双人聊天室
+     * 两个人的聊天室，有两个 uid1 和 uid2
+     * 规定小的 uid 为 uid1，大的 uid 为 uid2，这样保证两个人只会创建一个聊天室
+     *
+     * @param roomId
+     * @param uid1
+     * @param uid2
+     * @param friendId
+     * @return
+     */
+    public RoomFriend create(Long uid1, Long uid2) {
+        RoomFriend roomFriend = RoomFriend.builder().build();
         save(roomFriend);
         return roomFriend;
     }
 
-    public List<Long> getMembers(Long roomId) {
-        RoomFriend roomFriend = lambdaQuery()
-                .eq(RoomFriend::getRoomId, roomId)
-                .one();
-        return Arrays.asList(roomFriend.getUid1(),roomFriend.getUid2());
+    public void create(Long friendId) {
+        RoomFriend roomFriend = RoomFriend.builder()
+                .friendId(friendId)
+                .build();
+        save(roomFriend);
+    }
+
+
+    public Long getId(Long uid, Long targetUid) {
+        return  userFriendDao.get(uid,targetUid).getId();
     }
 }

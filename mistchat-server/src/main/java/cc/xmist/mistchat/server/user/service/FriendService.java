@@ -23,9 +23,6 @@ public class FriendService {
      * @return
      */
     public List<Long> getFriendIdList(Long uid) {
-        List<UserFriend> friendList = userFriendDao.getFriendList(uid);
-        return friendList.stream()
-                .map(UserFriend::getFriendUid)
-                .collect(Collectors.toList());
+        return userFriendDao.getFriendIdList(uid);
     }
 }

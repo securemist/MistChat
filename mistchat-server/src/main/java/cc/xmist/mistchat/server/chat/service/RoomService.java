@@ -8,6 +8,7 @@ import cc.xmist.mistchat.server.chat.model.entity.Room;
 import cc.xmist.mistchat.server.chat.model.entity.RoomFriend;
 import cc.xmist.mistchat.server.chat.model.entity.RoomGroup;
 import cc.xmist.mistchat.server.chat.model.enums.RoomType;
+import cc.xmist.mistchat.server.chat.model.req.RoomCreateRequest;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -26,16 +27,16 @@ public class RoomService {
     private GroupMemberDao groupMemberDao;
 
     /**
-     * 创建好友聊天室
-     * 在两人成功添加好友的时候创建
-     *
-     * @param uid     创建者
-     * @param request
-     * @return 聊天室的id
+     * 创建双人聊天室
+     * @param friendId
      */
-    public Long createFriendRoom(Long uid1, Long uid2) {
+    public void addFriendRoom(Long friendId) {
+        roomFriendDao.create(friendId);
+    }
+
+    public Long createGroupRoom(Long uid1, List<Long> uidList) {
         Room room = roomDao.create(RoomType.FRIEND);
-        RoomFriend roomFriend = roomFriendDao.create(room.getId(), uid1, uid2);
+//        RoomFriend roomFriend = roomFriendDao.create(room.getId(), uid1, uid2);
         return room.getId();
     }
 
@@ -57,7 +58,6 @@ public class RoomService {
         }
     }
 
-
     /**
      * 获取聊天室里的所有用户
      *
@@ -69,10 +69,10 @@ public class RoomService {
         Room room = roomDao.getById(roomId);
         List<Long> uidList = null;
         switch (room.getType()) {
-            case FRIEND -> uidList = roomFriendDao.getMembers(roomId);
+//            case FRIEND -> uidList = roomFriendDao.getMembers(roomId);
             case GROUP -> {
                 RoomGroup group = roomGroupDao.getByRoomId(roomId);
-                uidList = groupMemberDao.getMembersByGroupId(group.getId());
+                uidList = groupMemberDao.getMembersByGroupId(group.getRoomId());
             }
         }
         return uidList;
@@ -85,4 +85,5 @@ public class RoomService {
     public RoomType getRoomType(Long roomId) {
         return getById(roomId).getType();
     }
+
 }

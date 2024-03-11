@@ -12,6 +12,8 @@ import jakarta.annotation.Resource;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -23,6 +25,16 @@ public class MessageSendListener {
 
     @EventListener(MessageSendEvent.class)
     public void send(MessageSendEvent event) {
+        Message message = event.getMessage();
+        List<Long> targetIds = new ArrayList();
+        Long uid = message.getUid();
+
+        if (event.getType() == RoomType.FRIEND) {
+            targetIds = Arrays.asList(message.getRoomId());
+        } else {
+            // 获取群所有成员
+        }
+
         ChatMessageResponse messageResponse = event.getMessageResponse();
         List<Long> targetUidList = event.getTargetUidList();
         Long roomId = messageResponse.getMessage().getRoomId();

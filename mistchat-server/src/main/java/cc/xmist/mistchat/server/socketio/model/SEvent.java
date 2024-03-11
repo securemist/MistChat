@@ -1,6 +1,10 @@
 package cc.xmist.mistchat.server.socketio.model;
 
-public interface SEvent {
-    String MESSAGE = "message";
-    String AUTH = "auth";
+import org.apache.http.auth.AUTH;
+
+public enum SEvent {
+    MESSAGE,
+    ONLINE,
+    OFFLINE,
+    AUTH;
 }

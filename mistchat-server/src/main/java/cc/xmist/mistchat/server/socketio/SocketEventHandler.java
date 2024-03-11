@@ -28,7 +28,7 @@ public class SocketEventHandler {
     @Resource
     private UserService userService;
     @Resource
-    private SocketEventManager socketEventManager;
+    private OnlineManager onlineManager;
     @Resource
     private ApplicationEventPublisher eventPublisher;
 
@@ -43,32 +43,28 @@ public class SocketEventHandler {
 
         boolean loginSuccess = uid != null;
         if (loginSuccess) { // 验签成功，登陆
-            publishUserOnlineEvent(client, uid);
+            onlineManager.online(uid, client);
         }
-        client.sendEvent(SEvent.AUTH, loginSuccess);
+        client.sendEvent(SEvent.AUTH.name(), loginSuccess);
     }
 
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
         // 用户下线
-        Long uid = socketEventManager.userDisconnect(client);
-        log.info("用户下线: {}", uid);
-        eventPublisher.publishEvent(new UserOfflineEvent(this, uid));
+        Long uid = onlineManager.offline(client);
     }
 
     /**
      * 专门的登陆请求
      */
-    @OnEvent(value = REvent.LOGIN)
+    @OnEvent(value = "login")
     public void onLoginEvent(SocketIOClient client, AckRequest request, LoginRequest loginRequest) {
         User user = null;
 
         try {
             user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
         } catch (BusinessException e) {
-            request.sendAckData(
-                    SocketResponse.build(SocketResponseType.LOGIN_FAILED, null)
-            );
+            request.sendAckData(SocketResponse.build(SocketResponseType.LOGIN_FAILED, null));
             return;
         }
 
@@ -77,24 +73,11 @@ public class SocketEventHandler {
         String token = authService.login(uid);
         boolean loginSuccess = uid != null;
         if (!loginSuccess) { // 验签成功，登陆
-            request.sendAckData(
-                    SocketResponse.build(SocketResponseType.LOGIN_FAILED)
-            );
+            request.sendAckData(SocketResponse.build(SocketResponseType.LOGIN_FAILED));
         }
 
-        publishUserOnlineEvent(client, uid);
-        request.sendAckData(
-                SocketResponse.build(SocketResponseType.LOGIN_SUCCESS, token)
-        );
-    }
-
-    private void publishUserOnlineEvent(SocketIOClient client, Long uid) {
-        socketEventManager.userConnect(uid, client);
-        log.info("用户上线: {}", uid);
-
-        InetSocketAddress remoteAddress = ((InetSocketAddress) client.getRemoteAddress());
-        String ip = remoteAddress.getHostString();
-        eventPublisher.publishEvent(new UserOnlineEvent(this, uid, ip));
+        onlineManager.online(uid, client);
+        request.sendAckData(SocketResponse.build(SocketResponseType.LOGIN_SUCCESS, token));
     }
 
 }

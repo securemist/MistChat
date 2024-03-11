@@ -22,37 +22,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@TableName("room_friend")
+@TableName("roomf")
 public class RoomFriend implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-
     /**
      * 房间号
      */
-    @TableField("room_id")
-    private Long roomId;
-
-    @TableField("uid1")
-    private Long uid1;
-
-    @TableField("uid2")
-    private Long uid2;
-
-    /**
-     * 房间唯一标识
-     */
-    @TableField("room_key")
-    private String roomKey;
-
-    /**
-     * 房间状态
-     */
-    @TableField("status")
-    private String status;
+    @TableId(value = "friend_id", type = IdType.INPUT)
+    private Long friendId;
 
     /**
      * 创建时间

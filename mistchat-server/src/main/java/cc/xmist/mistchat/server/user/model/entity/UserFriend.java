@@ -37,14 +37,15 @@ public class UserFriend implements Serializable {
     /**
      * uid
      */
-    @TableField("uid")
-    private Long uid;
+    @TableField("uid1")
+    private Long uid1;
 
     /**
      * 好友uid
      */
-    @TableField("friend_uid")
-    private Long friendUid;
+    @TableField("uid2")
+    private Long uid2;
+
 
     /**
      * 逻辑删除时间

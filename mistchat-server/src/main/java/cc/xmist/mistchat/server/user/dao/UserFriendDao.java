@@ -3,12 +3,10 @@ package cc.xmist.mistchat.server.user.dao;
 import cc.xmist.mistchat.server.user.model.entity.UserFriend;
 import cc.xmist.mistchat.server.user.model.mapper.UserFriendMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import jakarta.annotation.Resource;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -21,25 +19,33 @@ import java.util.List;
 @Service
 public class UserFriendDao extends ServiceImpl<UserFriendMapper, UserFriend> {
 
-    public void create(Long uid1, Long uid2) {
-        UserFriend friend1 = UserFriend.builder()
-                .uid(uid1)
-                .friendUid(uid2)
+    public UserFriend create(Long uid1, Long uid2) {
+        UserFriend friend = UserFriend.builder()
+                .uid1(Math.min(uid1, uid2))
+                .uid2(Math.max(uid1, uid2))
                 .build();
-
-        UserFriend friend2 = UserFriend.builder()
-                .uid(uid2)
-                .friendUid(uid1)
-                .build();
-
-        saveBatch(Arrays.asList(friend1, friend2));
+        save(friend);
+        return friend;
     }
 
 
-    public List<UserFriend> getFriendList(Long uid) {
-        return lambdaQuery()
-                .eq(UserFriend::getUid, uid)
+    public List<Long> getFriendIdList(Long uid) {
+        List<UserFriend> list = lambdaQuery()
+                .eq(UserFriend::getUid1, uid)
+                .or()
+                .eq(UserFriend::getUid2, uid)
                 .isNull(UserFriend::getDeleteTime)
                 .list();
+
+        return list.stream().map(u -> {
+            return u.getUid1() == uid ? u.getUid2() : u.getUid1();
+        }).collect(Collectors.toList());
+    }
+
+    public UserFriend get(Long uid, Long targetUid) {
+        return lambdaQuery()
+                .eq(UserFriend::getUid1, Math.min(uid,targetUid))
+                .eq(UserFriend::getUid2,Math.max(uid,targetUid))
+                .one();
     }
 }
