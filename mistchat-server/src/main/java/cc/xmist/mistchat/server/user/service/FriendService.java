@@ -2,7 +2,6 @@ package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.user.dao.UserFriendDao;
 import cc.xmist.mistchat.server.user.model.entity.UserFriend;
-import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -15,15 +14,18 @@ public class FriendService {
     private UserFriendDao userFriendDao;
     @Resource
     private UserService userService;
+
+
+    /**
+     * 获取好友列表
+     *
+     * @param uid
+     * @return
+     */
     public List<Long> getFriendIdList(Long uid) {
         List<UserFriend> friendList = userFriendDao.getFriendList(uid);
         return friendList.stream()
                 .map(UserFriend::getFriendUid)
                 .collect(Collectors.toList());
-    }
-
-    public List<SummaryUser> getFriendInfoList(Long uid) {
-        List<Long> friendIdList = getFriendIdList(uid);
-        return userService.getSummaryUsers(friendIdList);
     }
 }

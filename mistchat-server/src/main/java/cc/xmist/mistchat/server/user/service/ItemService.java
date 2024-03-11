@@ -3,12 +3,12 @@ package cc.xmist.mistchat.server.user.service;
 import cc.xmist.mistchat.server.common.constant.StatusType;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.user.UserAdapter;
-import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
 import cc.xmist.mistchat.server.user.model.enums.Item;
 import cc.xmist.mistchat.server.user.model.vo.BadgeVo;
+import cc.xmist.mistchat.server.user.model.vo.WearingBadgeVo;
 import jakarta.annotation.Resource;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -30,7 +30,7 @@ public class ItemService extends UserServiceSupport {
      */
     public List<BadgeVo> getBadgeList(Long uid) {
         // 徽章详细信息
-        List<ItemConfig> allBadges = itemConfigDao.getAllBadges();
+        List<Item> allItems = Item.all;
         // 用户徽章列表
         List<UserBackpack> userBadges = userBackpackDao.getBadges(uid);
 
@@ -38,7 +38,7 @@ public class ItemService extends UserServiceSupport {
         User user = userDao.getUser(uid);
         Long usedItemId = user.getItemId();
 
-        return UserAdapter.buildBadgeResponse(uid, usedItemId, allBadges, userBadges);
+        return UserAdapter.buildBadgeResponse(uid, usedItemId, allItems, userBadges);
     }
 
     /**
@@ -98,4 +98,26 @@ public class ItemService extends UserServiceSupport {
         }
     }
 
+    /**
+     * 批量获取用户穿戴的徽章
+     * @param uidList
+     * @return
+     */
+    public List<WearingBadgeVo> getWaringBadgeInfo(List<Long> uidList) {
+        List<WearingBadgeVo> list = userDao.getUserBatch(uidList).stream()
+                .map(u -> {
+                    if (u.getItemId() == null) {
+                        return WearingBadgeVo.builder().uid(u.getId()).build();
+                    }
+
+                    Item item = Item.getById(u.getItemId());
+                    return WearingBadgeVo.builder()
+                            .uid(u.getId())
+                            .itemId(item.getId())
+                            .img(item.getImg())
+                            .description(item.getDescription())
+                            .build();
+                }).collect(Collectors.toList());
+        return list;
+    }
 }

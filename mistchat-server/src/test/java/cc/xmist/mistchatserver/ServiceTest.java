@@ -5,7 +5,6 @@ import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.model.IpDetail;
 import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
 import cc.xmist.mistchat.server.user.model.enums.Item;
-import cc.xmist.mistchat.server.user.model.enums.ItemType;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.IpService;
 import cc.xmist.mistchat.server.user.service.ItemService;

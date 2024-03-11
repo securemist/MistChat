@@ -1,15 +1,20 @@
 package cc.xmist.mistchatserver;
 
-import cc.xmist.mistchat.server.user.model.req.LoginRequest;
+import cc.xmist.mistchat.server.user.model.enums.Item;
+import cc.xmist.mistchat.server.user.model.req.LoginReq;
 import com.google.gson.Gson;
 import org.junit.Test;
 
 public class UtilTest {
     @Test
     public void testJson(){
-        LoginRequest loginReq = new LoginRequest("18115168320", "123456");
+        LoginReq loginReq = new LoginReq("18115168320", "123456");
         String json = new Gson().toJson(loginReq);
         System.out.println(json);
+
+        for (Item value : Item.values()) {
+            System.out.println(value);
+        }
     }
     @Test
     public void testIpUtil(){
@@ -17,8 +22,4 @@ public class UtilTest {
 //        System.out.println(ipDetail);
     }
 
-    @Test
-    public void testEnum() {
-        System.out.println(SexType.M == SexType.M);
-    }
 }

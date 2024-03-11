@@ -4,6 +4,7 @@ import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
+import cc.xmist.mistchat.server.user.model.enums.Item;
 import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
 import cc.xmist.mistchat.server.user.model.vo.BadgeVo;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserAdapter {
-    public static List<BadgeVo> buildBadgeResponse(Long uid, Long usedItemId, List<ItemConfig> allBadges, List<UserBackpack> userBadges) {
+    public static List<BadgeVo> buildBadgeResponse(Long uid, Long usedItemId, List<Item> allBadges, List<UserBackpack> userBadges) {
 
         // 用户徽章id列表
         List<Long> userBadgeIds = userBadges

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @TableName("user_apply")
-public class UserApply implements Serializable {
+public class UserApply  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,8 +57,11 @@ public class UserApply implements Serializable {
     /**
      * 申请信息
      */
-    @TableField("msg")
-    private String msg;
+    @TableField("apply_msg")
+    private String applyMsg;
+
+    @TableField("reply_msg")
+    private String replyMsg;
 
     /**
      * 申请状态 拒绝 待审批 同意

@@ -5,6 +5,7 @@ import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.user.UserAdapter;
+import cc.xmist.mistchat.server.user.dao.UserFriendDao;
 import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
@@ -29,7 +30,9 @@ import java.util.stream.Collectors;
 public class UserService extends UserServiceSupport {
 
     @Resource
-    ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher eventPublisher;
+    @Resource
+    private UserFriendDao userFriendDao;
     @Resource
     private ItemCache itemCache;
 
@@ -125,40 +128,32 @@ public class UserService extends UserServiceSupport {
         }
     }
 
+
     /**
-     * 获取其他人的用户信息
+     * 批量获取用户信息
      *
+     * @param uid
      * @param uidList
      * @return
      */
-    public List<SummaryUser> getSummaryUsers(List<Long> uidList) {
+    public List<UserInfoVo> getBatchedUserInfo(Long uid, List<Long> uidList) {
         if (uidList.size() == 0) return Collections.emptyList();
 
         List<User> users = userDao.getUserBatch(uidList);
         List<ItemConfig> allBadges = itemCache.getAllBadges();
 
         return users.stream()
-                .map(user -> {
-                    SummaryUser.Badge badgeVo = null;
-                    if (user.getItemId() != null) {
-                        ItemConfig badge = itemCache.getById(user.getItemId());
-                        badgeVo = SummaryUser.Badge
-                                .builder()
-                                .img(badge.getImg())
-                                .description(badge.getDescription())
-                                .itemId(badge.getId()).build();
-                    }
-
-                    IpInfo ipInfo = user.getIpInfo();
-                    String location = ipInfo == null ? null : ipInfo.getLastIpDetail().getCity();
-                    return SummaryUser.builder()
-                            .gender(user.getGender())
-                            .uid(user.getId())
-                            .avatar(user.getAvatar())
-                            .location(location)
-                            .name(user.getName())
-                            .wearingBadge(badgeVo).build();
-                })
-                .collect(Collectors.toList());
+                .filter(u -> u.getId() != uid)
+                .map(u -> {
+                    return UserInfoVo.builder()
+                            .id(u.getId())
+                            .gender(u.getGender())
+                            .avatar(u.getAvatar())
+                            .name(u.getName())
+                            .role(u.getRole())
+                            .build();
+                }).collect(Collectors.toList());
     }
+
+
 }

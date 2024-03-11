@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.user.model.mapper;
 
 import cc.xmist.mistchat.server.user.model.entity.UserApply;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface UserApplyMapper extends BaseMapper<UserApply> {
 
+    boolean isFriend(@Param("uid1") Long uid1, @Param("uid2")Long uid2);
 }

@@ -2,10 +2,11 @@ package cc.xmist.mistchat.server.user.controller;
 
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.user.model.req.ApplyAddRequest;
-import cc.xmist.mistchat.server.user.model.req.ApplyHandleRequest;
+import cc.xmist.mistchat.server.user.model.req.ApplyAddReq;
+import cc.xmist.mistchat.server.user.model.req.ApplyHandleReq;
+import cc.xmist.mistchat.server.user.model.vo.ForwardApplyVo;
+import cc.xmist.mistchat.server.user.model.vo.ReceivedApplyVo;
 import cc.xmist.mistchat.server.user.model.vo.SummaryUser;
-import cc.xmist.mistchat.server.user.model.vo.FriendApplyVo;
 import cc.xmist.mistchat.server.user.service.ApplyService;
 import cc.xmist.mistchat.server.user.service.FriendService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,23 +28,31 @@ public class FriendController {
 
     @PostMapping("/apply/add")
     @Operation(summary = "添加好友申请")
-    public R<Void> add(@RequestBody @Valid ApplyAddRequest request) {
+    public R<Void> add(@RequestBody @Valid ApplyAddReq request) {
         Long uid = RequestContext.getUid();
         applyService.createApply(uid, request);
         return R.ok();
     }
 
-    @GetMapping("/apply/list")
-    @Operation(summary = "获取好友申请列表")
-    public R<List<FriendApplyVo>> getApplyList() {
+    @GetMapping("/rApply/list")
+    @Operation(summary = "获取收到的好友申请")
+    public R<List<ReceivedApplyVo>> getReceivedApplyList() {
         Long uid = RequestContext.getUid();
-        List<FriendApplyVo> applyList = applyService.getApplyList(uid);
+        List<ReceivedApplyVo> applyList = applyService.getReceivedApplyList(uid);
+        return R.ok(applyList);
+    }
+
+    @GetMapping("/fApply/list")
+    @Operation(summary = "获取发送出好友申请")
+    public R<List<ForwardApplyVo>> getForwardApplyList() {
+        Long uid = RequestContext.getUid();
+        List<ForwardApplyVo> applyList = applyService.getForwardApplyList(uid);
         return R.ok(applyList);
     }
 
     @PostMapping("/apply/handle")
     @Operation(summary = "处理申请")
-    public R<Void> handle(@RequestBody @Valid ApplyHandleRequest request) {
+    public R<Void> handle(@RequestBody @Valid ApplyHandleReq request) {
         Long uid = RequestContext.getUid();
         applyService.handleApply(uid, request);
         return R.ok();
@@ -53,7 +62,7 @@ public class FriendController {
     @Operation(summary = "获取好友列表")
     public R<List<SummaryUser>> getFriendList() {
         Long uid = RequestContext.getUid();
-        List<SummaryUser> friendInfoList = friendService.getFriendInfoList(uid);
+        List<Long> friendInfoList = friendService.getFriendIdList(uid);
         return R.ok(friendInfoList);
     }
 

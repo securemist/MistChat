@@ -3,6 +3,8 @@ package cc.xmist.mistchat.server.user.dao;
 import cc.xmist.mistchat.server.user.model.entity.UserFriend;
 import cc.xmist.mistchat.server.user.model.mapper.UserFriendMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -33,16 +35,10 @@ public class UserFriendDao extends ServiceImpl<UserFriendMapper, UserFriend> {
         saveBatch(Arrays.asList(friend1, friend2));
     }
 
-    public Boolean isFriend(Long uid, Long friendId) {
-        return lambdaQuery()
-                .eq(UserFriend::getUid, uid)
-                .eq(UserFriend::getFriendUid, friendId)
-                .exists();
-    }
 
     public List<UserFriend> getFriendList(Long uid) {
         return lambdaQuery()
-                .eq(UserFriend::getUid,uid)
+                .eq(UserFriend::getUid, uid)
                 .isNull(UserFriend::getDeleteTime)
                 .list();
     }

@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ApplyAddRequest {
+public class ApplyAddReq {
     @NotNull
     private ApplyType type;
     @NotNull

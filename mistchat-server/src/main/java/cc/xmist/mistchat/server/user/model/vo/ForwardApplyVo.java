@@ -7,11 +7,10 @@ import lombok.Data;
 
 @Builder
 @Data
-public class FriendApplyVo {
+public class ForwardApplyVo {
     private Long applyId;
     @Schema(description = "申请人")
-    private SummaryUser user;
-
+    private Long targetUserId;
     @Schema(description = "申请状态")
     private ApplyStatus status;
     @Schema(description = "申请信息")
