@@ -1,7 +1,6 @@
 package cc.xmist.mistchat.server.chat.model.enums;
 
 import cc.xmist.mistchat.server.common.config.convert.BaseEnum;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

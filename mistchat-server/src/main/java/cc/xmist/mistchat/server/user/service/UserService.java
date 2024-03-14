@@ -4,11 +4,11 @@ import cc.xmist.mistchat.server.common.cache.ItemCache;
 import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
-import cc.xmist.mistchat.server.user.dao.UserFriendDao;
+import cc.xmist.mistchat.server.user.dao.FriendDao;
+import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
-import cc.xmist.mistchat.server.user.model.IpInfo;
 import cc.xmist.mistchat.server.user.model.enums.Item;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
 import cn.hutool.core.util.StrUtil;
@@ -29,7 +29,7 @@ public class UserService extends UserServiceSupport {
     @Resource
     private ApplicationEventPublisher eventPublisher;
     @Resource
-    private UserFriendDao userFriendDao;
+    private FriendDao userFriendDao;
     @Resource
     private ItemCache itemCache;
 

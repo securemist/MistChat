@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.chat.model.resp;
 
-import cc.xmist.mistchat.server.chat.model.enums.MessageType;
 import cc.xmist.mistchat.server.chat.model.enums.ChatType;
+import cc.xmist.mistchat.server.chat.model.enums.MessageType;
 import lombok.Builder;
 import lombok.Data;
 

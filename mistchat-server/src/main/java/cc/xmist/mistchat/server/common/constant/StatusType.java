@@ -1,7 +1,6 @@
 package cc.xmist.mistchat.server.common.constant;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 @AllArgsConstructor
 public enum StatusType {

@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.xmist.mistchat.server.chat.model.mapper.FriendContactMapper">
+    <sql id="selectJoin">
+        select fc.id,
+               fc.uid,
+               fc.friend_id,
+               CASE
+                   WHEN fc.uid = f.uid1 THEN f.uid2
+                   WHEN fc.uid = f.uid2 THEN f.uid1
+                   END AS targetUid,
+               fc.last_msg_id,
+               fc.read_msg_id,
+               fc.create_time,
+               fc.update_time
+        from friend_contact fc
+                 join friend f on fc.friend_id = f.id
+    </sql>
 
+    <select id="selectByUid" resultType="FriendContact">
+        <include refid="selectJoin"></include>
+        where uid = 20001
+        ;
+    </select>
+
+    <select id="selectById" resultType="FriendContact">
+        <include refid="selectJoin"></include>
+        where id = #{id}
+        ;
+    </select>
 </mapper>

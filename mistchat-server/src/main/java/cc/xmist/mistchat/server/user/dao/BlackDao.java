@@ -1,8 +1,8 @@
 package cc.xmist.mistchat.server.user.dao;
 
 import cc.xmist.mistchat.server.user.model.entity.Black;
-import cc.xmist.mistchat.server.user.model.mapper.BlackMapper;
 import cc.xmist.mistchat.server.user.model.enums.BlackType;
+import cc.xmist.mistchat.server.user.model.mapper.BlackMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

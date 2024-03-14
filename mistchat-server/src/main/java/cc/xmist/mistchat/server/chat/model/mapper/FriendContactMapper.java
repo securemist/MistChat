@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.chat.model.mapper;
 
 import cc.xmist.mistchat.server.chat.model.entity.FriendContact;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface FriendContactMapper extends BaseMapper<FriendContact> {
 
+    FriendContact selectByUid(@Param("uid") Long uid);
+
+    FriendContact selectById(@Param("id") Long id);
 }

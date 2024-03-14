@@ -1,6 +1,5 @@
 package cc.xmist.mistchatserver;
 
-import cc.xmist.mistchat.server.chat.service.RoomService;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.model.IpDetail;
 import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
@@ -26,8 +25,6 @@ public class ServiceTest {
     ItemService itemService;
     @Resource
     IpService ipService;
-    @Resource
-    private RoomService roomService;
 
     private JwtUtil jwtUtil = new JwtUtil("adsa");
 
@@ -63,7 +60,6 @@ public class ServiceTest {
         Long uid1 = jwtUtil.getUid(token);
         System.out.println(uid1);
     }
-
 
     @Test
     public void testAcquireItem() {

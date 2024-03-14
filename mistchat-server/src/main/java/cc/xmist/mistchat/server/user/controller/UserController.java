@@ -2,7 +2,8 @@ package cc.xmist.mistchat.server.user.controller;
 
 
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.user.model.req.*;
+import cc.xmist.mistchat.server.user.model.req.ModifyNameReq;
+import cc.xmist.mistchat.server.user.model.req.UidListReq;
 import cc.xmist.mistchat.server.user.model.resp.SummaryUser;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
 import cc.xmist.mistchat.server.user.service.AuthService;
@@ -25,8 +26,7 @@ public class UserController {
     @Resource
     private AuthService authService;
 
-
-    @Operation(summary = "获取用户信息")
+    @Operation(summary = "获取当前用户信息")
     @GetMapping("/info")
     public R<UserInfoVo> getUserInfo(Long uid) {
         UserInfoVo userInfo = userService.getUserInfo(uid);

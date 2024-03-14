@@ -6,17 +6,15 @@ import cc.xmist.mistchat.server.user.model.enums.ActiveType;
 import cc.xmist.mistchat.server.user.model.enums.Gender;
 import cc.xmist.mistchat.server.user.model.enums.Role;
 import cc.xmist.mistchat.server.user.model.enums.UserStatus;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
-import lombok.Builder;
-import lombok.Data;
 
 /**
  * <p>

@@ -21,4 +21,19 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
                 .map(member -> member.getUid())
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 用户加入的群聊
+     *
+     * @param uid
+     * @return
+     */
+    public List<Long> getBelongingGroupsId(Long uid) {
+        List<GroupMember> list = lambdaQuery()
+                .eq(GroupMember::getUid, uid)
+                .select(GroupMember::getGroupId)
+                .list();
+
+        return  list.stream().map(GroupMember::getGroupId).collect(Collectors.toList());
+    }
 }

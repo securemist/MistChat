@@ -2,8 +2,6 @@ package cc.xmist.mistchat.server.common.interceptor;
 
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.exception.BlackException;
-import cc.xmist.mistchat.server.user.dao.BlackDao;
-import cc.xmist.mistchat.server.user.model.entity.Black;
 import cc.xmist.mistchat.server.user.service.BlackService;
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import jakarta.annotation.Resource;

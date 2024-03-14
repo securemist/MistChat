@@ -1,14 +1,9 @@
 package cc.xmist.mistchat.server.chat.model.dao;
 
 import cc.xmist.mistchat.server.chat.model.entity.GroupContact;
-import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import cc.xmist.mistchat.server.chat.model.mapper.GroupContactMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class GroupContactDao extends ServiceImpl<GroupContactMapper, GroupContact> {

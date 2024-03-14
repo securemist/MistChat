@@ -1,16 +1,18 @@
 package cc.xmist.mistchat.server.chat.model.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author securemist
@@ -23,7 +25,7 @@ public class GroupContact implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @TableId("id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -31,12 +33,6 @@ public class GroupContact implements Serializable {
      */
     @TableField("uid")
     private Long uid;
-
-    /**
-     * 群组 id
-     */
-    @TableField("group_id")
-    private Long groupId;
 
     /**
      * 已经阅读到的消息 id

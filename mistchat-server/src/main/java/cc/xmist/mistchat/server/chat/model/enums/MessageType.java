@@ -2,7 +2,6 @@ package cc.xmist.mistchat.server.chat.model.enums;
 
 import cc.xmist.mistchat.server.common.config.convert.BaseEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

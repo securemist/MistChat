@@ -1,9 +1,10 @@
 package cc.xmist.mistchat.server.socketio;
 
-import cc.xmist.mistchat.server.common.event.UserOfflineEvent;
-import cc.xmist.mistchat.server.common.event.UserOnlineEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
-import cc.xmist.mistchat.server.socketio.model.*;
+import cc.xmist.mistchat.server.socketio.model.LoginRequest;
+import cc.xmist.mistchat.server.socketio.model.SEvent;
+import cc.xmist.mistchat.server.socketio.model.SocketResponse;
+import cc.xmist.mistchat.server.socketio.model.SocketResponseType;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.UserService;
@@ -17,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import java.net.InetSocketAddress;
 import java.util.UUID;
 
 @Component

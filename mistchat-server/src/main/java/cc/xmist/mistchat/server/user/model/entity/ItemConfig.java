@@ -4,13 +4,11 @@ import cc.xmist.mistchat.server.user.model.enums.Item;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * <p>

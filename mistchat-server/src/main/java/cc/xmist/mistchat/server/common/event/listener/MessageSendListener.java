@@ -6,7 +6,6 @@ import cc.xmist.mistchat.server.chat.model.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.chat.model.entity.Message;
 import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import cc.xmist.mistchat.server.chat.service.ContactService;
-import cc.xmist.mistchat.server.chat.service.RoomService;
 import cc.xmist.mistchat.server.common.event.MessageSendEvent;
 import cc.xmist.mistchat.server.socketio.SocketService;
 import jakarta.annotation.Resource;
@@ -21,8 +20,6 @@ import java.util.List;
 public class MessageSendListener {
     @Resource
     private SocketService socketService;
-    @Resource
-    private RoomService roomService;
     @Resource
     private ContactService contactService;
     @Resource
@@ -66,7 +63,7 @@ public class MessageSendListener {
 
         switch (chatType) {
             case FRIEND: {
-                contactService.updateFriendContact(uid,chatId, message.getId());
+//                contactService.updateFriendContact(uid,chatId, message.getId());
             }
             case GROUP: {
                 socketService.sendToGroup(targetIds, message);

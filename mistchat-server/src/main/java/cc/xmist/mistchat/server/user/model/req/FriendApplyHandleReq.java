@@ -6,9 +6,8 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ApplyHandleReq {
+public class FriendApplyHandleReq {
     private Long applyId;
-    private ApplyType type;
     @NotNull
     private Boolean pass;
     private String msg;

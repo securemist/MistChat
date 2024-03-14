@@ -1,7 +1,6 @@
 package cc.xmist.mistchat.server.socketio.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @AllArgsConstructor

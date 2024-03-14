@@ -1,15 +1,12 @@
 package cc.xmist.mistchat.server.common.config.resolver;
 
 import cc.xmist.mistchat.server.common.context.RequestContext;
-import cc.xmist.mistchat.server.common.exception.NotLoginException;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cn.hutool.extra.spring.SpringUtil;
-import jakarta.annotation.Resource;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 

@@ -2,7 +2,6 @@ package cc.xmist.mistchat.server.common.cache;
 
 import cc.xmist.mistchat.server.user.dao.ItemConfigDao;
 import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
-import cc.xmist.mistchat.server.user.model.enums.Item;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 

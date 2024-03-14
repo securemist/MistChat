@@ -4,54 +4,68 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * <p>
- * 用户联系人表
+ * 用户申请表
  * </p>
  *
  * @author securemist
- * @since 2024-01-27
+ * @since 2024-03-11
  */
 @Getter
 @Setter
-@Builder
-@TableName("user_friend")
-public class UserFriend implements Serializable {
+@TableName("group_apply")
+public class GroupApply implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-    @TableId(value = "id", type = IdType.AUTO)
+      @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * uid
+     * 申请人uid
      */
-    @TableField("uid1")
-    private Long uid1;
+    @TableField("uid")
+    private Long uid;
 
     /**
-     * 好友uid
+     * 接收人uid
      */
-    @TableField("uid2")
-    private Long uid2;
-
+    @TableField("group_id")
+    private Long groupId;
 
     /**
-     * 逻辑删除时间
+     * 申请信息
      */
-    @TableField("delete_time")
-    private LocalDateTime deleteTime;
+    @TableField("apply_msg")
+    private String applyMsg;
+
+    /**
+     * 回复消息
+     */
+    @TableField("reply_msg")
+    private String replyMsg;
+
+    /**
+     * 申请状态 拒绝 待审批 同意
+     */
+    @TableField("status")
+    private Integer status;
+
+    /**
+     * 阅读时间
+     */
+    @TableField("read_time")
+    private LocalDateTime readTime;
 
     /**
      * 创建时间

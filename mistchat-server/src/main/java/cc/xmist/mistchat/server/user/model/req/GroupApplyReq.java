@@ -1,15 +1,14 @@
 package cc.xmist.mistchat.server.user.model.req;
 
-import cc.xmist.mistchat.server.user.model.enums.ApplyType;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ApplyAddReq {
+@Builder
+public class GroupApplyReq {
     @NotNull
-    private ApplyType type;
-    @NotNull
-    private Long targetId;
+    private Long groupId;
     private String msg;
 }

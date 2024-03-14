@@ -1,7 +1,6 @@
 package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.cache.ItemCache;
-import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.dao.ItemConfigDao;
 import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;

@@ -1,36 +1,34 @@
-package cc.xmist.mistchat.server.chat.model.entity;
+package cc.xmist.mistchat.server.user.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- *
+ * 
  * </p>
  *
  * @author securemist
- * @since 2024-01-26
+ * @since 2024-03-14
  */
 @Getter
 @Setter
-@TableName("room_group")
-public class RoomGroup implements Serializable {
+@TableName("group")
+public class Group implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 房间号
      */
-    @TableId(value = "room_id", type = IdType.INPUT)
-    private Long roomId;
+      @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     /**
      * 群聊名

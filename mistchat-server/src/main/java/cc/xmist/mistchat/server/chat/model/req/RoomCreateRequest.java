@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.chat.model.req;
 
-import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

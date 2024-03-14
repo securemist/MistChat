@@ -1,18 +1,15 @@
 package cc.xmist.mistchat.server.user.model.entity;
 
 import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
-import cc.xmist.mistchat.server.user.model.enums.ApplyType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -20,13 +17,12 @@ import lombok.Setter;
  * </p>
  *
  * @author securemist
- * @since 2024-01-27
+ * @since 2024-03-11
  */
 @Getter
-@Setter
 @Builder
-@TableName("user_apply")
-public class UserApply  implements Serializable {
+@TableName("friend_apply")
+public class FriendApply implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,16 +39,10 @@ public class UserApply  implements Serializable {
     private Long uid;
 
     /**
-     * 申请类型 加好友与加群聊，退出群聊
-     */
-    @TableField("type")
-    private ApplyType type;
-
-    /**
      * 接收人uid
      */
-    @TableField("target_id")
-    private Long targetId;
+    @TableField("target_uid")
+    private Long targetUid;
 
     /**
      * 申请信息
@@ -60,6 +50,9 @@ public class UserApply  implements Serializable {
     @TableField("apply_msg")
     private String applyMsg;
 
+    /**
+     * 回复消息
+     */
     @TableField("reply_msg")
     private String replyMsg;
 
