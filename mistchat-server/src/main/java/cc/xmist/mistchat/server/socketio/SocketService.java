@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.socketio;
 
-import cc.xmist.mistchat.server.chat.model.entity.Message;
+import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.socketio.model.SEvent;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;

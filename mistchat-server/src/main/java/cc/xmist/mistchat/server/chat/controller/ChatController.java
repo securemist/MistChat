@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.chat.controller;
 
-import cc.xmist.mistchat.server.chat.model.req.ChatMessageReq;
 import cc.xmist.mistchat.server.chat.service.ChatService;
 import cc.xmist.mistchat.server.common.util.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +27,7 @@ public class ChatController {
 
     @PostMapping("/send")
     @Operation(summary = "发送消息")
-    public R sendMsg(@RequestBody ChatMessageReq req, Long uid) {
+    public R sendMsg(@RequestBody cc.xmist.mistchat.server.chat.model.req.ChatMessageReq req, Long uid) {
         chatService.sendMsg(uid, req);
         return R.ok();
     }

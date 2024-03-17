@@ -1,10 +1,10 @@
 package cc.xmist.mistchat.server.chat.message;
 
+import cc.xmist.mistchat.server.chat.dao.MessageDao;
+import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.model.ChatMessage;
-import cc.xmist.mistchat.server.chat.model.dao.MessageDao;
-import cc.xmist.mistchat.server.chat.model.entity.Message;
-import cc.xmist.mistchat.server.chat.model.enums.ChatType;
-import cc.xmist.mistchat.server.chat.model.enums.MessageType;
+import cc.xmist.mistchat.server.common.enums.ChatType;
+import cc.xmist.mistchat.server.common.enums.MessageType;
 import cn.hutool.core.bean.BeanUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;

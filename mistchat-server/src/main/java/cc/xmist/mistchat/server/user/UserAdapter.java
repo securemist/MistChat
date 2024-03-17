@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.user;
 
-import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import cc.xmist.mistchat.server.common.enums.Item;
+import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
 import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 
 import java.util.Comparator;
@@ -40,14 +40,4 @@ public class UserAdapter {
     }
 
 
-//    public static FriendApplyVo.User buildUserInfo(User user) {
-//        return FriendApplyVo.User
-//                .builder()
-//                .id(user.getId())
-//                .name(user.getName())
-//                .sex(user.getSex())
-//                .avatar(user.getAvatar())
-//                .role(user.getRole())
-//                .build();
-//    }
 }

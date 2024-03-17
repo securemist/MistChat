@@ -1,8 +1,8 @@
 package cc.xmist.mistchat.server.common.event;
 
-import cc.xmist.mistchat.server.chat.model.entity.Message;
-import cc.xmist.mistchat.server.chat.model.enums.ChatType;
+import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.service.ChatService;
+import cc.xmist.mistchat.server.common.enums.ChatType;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

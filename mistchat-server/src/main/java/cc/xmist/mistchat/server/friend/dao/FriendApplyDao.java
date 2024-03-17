@@ -1,8 +1,8 @@
 package cc.xmist.mistchat.server.friend.dao;
 
-import cc.xmist.mistchat.server.friend.entity.FriendApply;
 import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import cc.xmist.mistchat.server.common.enums.ApplyType;
+import cc.xmist.mistchat.server.friend.entity.FriendApply;
 import cc.xmist.mistchat.server.friend.mapper.FriendApplyMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

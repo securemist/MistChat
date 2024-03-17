@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.chat.model;
 
-import cc.xmist.mistchat.server.chat.model.enums.MessageType;
+import cc.xmist.mistchat.server.common.enums.MessageType;
 import lombok.Data;
 
 @Data

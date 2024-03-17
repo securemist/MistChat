@@ -1,21 +1,19 @@
 package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.constant.StatusType;
+import cc.xmist.mistchat.server.common.enums.IdempotentType;
+import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.user.UserAdapter;
 import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
-import cc.xmist.mistchat.server.common.enums.IdempotentType;
-import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 import cc.xmist.mistchat.server.user.model.resp.WearingBadgeVo;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

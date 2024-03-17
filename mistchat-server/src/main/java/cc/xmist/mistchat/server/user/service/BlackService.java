@@ -1,10 +1,10 @@
 package cc.xmist.mistchat.server.user.service;
 
+import cc.xmist.mistchat.server.common.enums.BlackType;
 import cc.xmist.mistchat.server.user.dao.BlackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
-import cc.xmist.mistchat.server.user.model.IpInfo;
+import cc.xmist.mistchat.server.user.entity.IpInfo;
 import cc.xmist.mistchat.server.user.model.entity.Black;
-import cc.xmist.mistchat.server.common.enums.BlackType;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 

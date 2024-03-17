@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.friend.mapper;
 
 import cc.xmist.mistchat.server.friend.entity.Friend;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**

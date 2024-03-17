@@ -1,15 +1,13 @@
 package cc.xmist.mistchat.server.common.event.listener;
 
-import cc.xmist.mistchat.server.chat.model.enums.Groups;
+import cc.xmist.mistchat.server.common.enums.Groups;
+import cc.xmist.mistchat.server.common.enums.IdempotentType;
+import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.group.sevrice.GroupMemberService;
 import cc.xmist.mistchat.server.user.dao.UserDao;
-import cc.xmist.mistchat.server.user.model.entity.User;
-import cc.xmist.mistchat.server.common.enums.IdempotentType;
-import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.user.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -31,7 +29,7 @@ public class UserRegisterListener {
     @Async
     public void sendItem(UserRegisterEvent event) {
         // 用户注册发送改名卡
-        User user = event.getUser();
+        cc.xmist.mistchat.server.user.model.entity.User user = event.getUser();
         long userCount = userDao.count();
         Item badge = null;
 
@@ -51,7 +49,7 @@ public class UserRegisterListener {
     @Async
     public void joinGroup(UserRegisterEvent event) {
         // 注册成功加入所有群聊
-        User user = event.getUser();
+        cc.xmist.mistchat.server.user.model.entity.User user = event.getUser();
         Long uid = user.getId();
         groupMemberService.join(uid, Groups.ALL_USERS_GROUP.getId());
     }

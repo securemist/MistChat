@@ -1,22 +1,21 @@
 package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.cache.ItemCache;
+import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.friend.dao.FriendDao;
 import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
-import cc.xmist.mistchat.server.user.model.IpInfo;
+import cc.xmist.mistchat.server.user.entity.IpInfo;
 import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
-import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
 import cn.hutool.core.util.StrUtil;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,24 +26,16 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
 
-    private ApplicationEventPublisher eventPublisher;
-    private FriendDao userFriendDao;
-    private AuthService authService;
-    private UserDao userDao;
-    private ItemCache itemCache;
-    private UserBackpackDao userBackpackDao;
+    private final ApplicationEventPublisher eventPublisher;
+    private final FriendDao userFriendDao;
+    private final AuthService authService;
+    private final UserDao userDao;
+    private final ItemCache itemCache;
+    private final UserBackpackDao userBackpackDao;
 
-    @Autowired
-    public UserService(ApplicationEventPublisher eventPublisher, FriendDao userFriendDao, AuthService authService, UserDao userDao, ItemCache itemCache, UserBackpackDao userBackpackDao) {
-        this.eventPublisher = eventPublisher;
-        this.userFriendDao = userFriendDao;
-        this.authService = authService;
-        this.userDao = userDao;
-        this.itemCache = itemCache;
-        this.userBackpackDao = userBackpackDao;
-    }
 
     @Transactional(rollbackFor = Exception.class)
     public void register(String username, String password, String name) {

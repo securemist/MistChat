@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.common.event;
 
-import cc.xmist.mistchat.server.group.model.entity.Group;
+import cc.xmist.mistchat.server.group.entity.Group;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

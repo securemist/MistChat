@@ -1,6 +1,6 @@
 package cc.xmist.mistchatserver;
 
-import cc.xmist.mistchat.server.chat.model.dao.FriendContactDao;
+import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

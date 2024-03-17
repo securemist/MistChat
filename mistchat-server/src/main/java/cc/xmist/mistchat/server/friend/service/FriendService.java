@@ -1,6 +1,8 @@
 package cc.xmist.mistchat.server.friend.service;
 
-import cc.xmist.mistchat.server.chat.model.dao.FriendContactDao;
+import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
+import cc.xmist.mistchat.server.common.enums.ApplyStatus;
+import cc.xmist.mistchat.server.common.enums.ApplyType;
 import cc.xmist.mistchat.server.common.event.FriendApplyEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
@@ -8,16 +10,8 @@ import cc.xmist.mistchat.server.friend.dao.FriendApplyDao;
 import cc.xmist.mistchat.server.friend.dao.FriendDao;
 import cc.xmist.mistchat.server.friend.entity.Friend;
 import cc.xmist.mistchat.server.friend.entity.FriendApply;
-import cc.xmist.mistchat.server.common.enums.ApplyStatus;
-import cc.xmist.mistchat.server.common.enums.ApplyType;
-import cc.xmist.mistchat.server.user.model.req.FriendApplyHandleReq;
-import cc.xmist.mistchat.server.user.model.req.FriendApplyReq;
-import cc.xmist.mistchat.server.user.model.resp.ForwardApplyVo;
-import cc.xmist.mistchat.server.user.model.resp.FriendApplyResp;
-import cc.xmist.mistchat.server.user.model.resp.ReceivedApplyVo;
 import cc.xmist.mistchat.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +39,7 @@ public class FriendService {
         return friendDao.getFriendIdList(uid);
     }
 
-    public FriendApplyResp apply(Long uid, FriendApplyReq req) {
+    public cc.xmist.mistchat.server.user.model.resp.FriendApplyResp apply(Long uid, cc.xmist.mistchat.server.user.model.req.FriendApplyReq req) {
         Long targetUid = req.getTargetUid();
         if (uid == targetUid) throw new ParamException();
         if (friendDao.isFriend(uid, targetUid)) throw new BusinessException("你们已经是好友了，请勿重复添加");
@@ -55,11 +49,11 @@ public class FriendService {
         if (apply != null) {
             friendApplyDao.handle(apply.getId(), true, null);
             friendApplyPass(uid, targetUid);
-            return FriendApplyResp.build(apply);
+            return cc.xmist.mistchat.server.user.model.resp.FriendApplyResp.build(apply);
         }
 
         apply = friendApplyDao.addFriendApply(uid, targetUid, req.getMsg());
-        return FriendApplyResp.build(apply);
+        return cc.xmist.mistchat.server.user.model.resp.FriendApplyResp.build(apply);
     }
 
     /**
@@ -82,7 +76,7 @@ public class FriendService {
      * @param uid
      * @param req
      */
-    public void handleApply(Long uid, FriendApplyHandleReq req) {
+    public void handleApply(Long uid, cc.xmist.mistchat.server.user.model.req.FriendApplyHandleReq req) {
         FriendApply apply = friendApplyDao.getById(req.getApplyId());
         if (apply == null || !apply.getTargetUid().equals(uid)) throw new ParamException();
         if (apply.getStatus().equals(ApplyStatus.PASS) || apply.getStatus().equals(ApplyStatus.FORBID))
@@ -100,14 +94,14 @@ public class FriendService {
      * @param uid
      * @return
      */
-    public List<ReceivedApplyVo> getReceivedApplyList(Long uid) {
+    public List<cc.xmist.mistchat.server.user.model.resp.ReceivedApplyVo> getReceivedApplyList(Long uid) {
         // 所有申请
         List<FriendApply> applyList = friendApplyDao.getReceivedApplyList(uid);
         List<FriendApply> forwardApplyList = friendApplyDao.getForwardApplyList(uid);
 
-        List<ReceivedApplyVo> applyVoList = applyList.stream()
+        List<cc.xmist.mistchat.server.user.model.resp.ReceivedApplyVo> applyVoList = applyList.stream()
                 .map(apply -> {
-                    return ReceivedApplyVo.builder()
+                    return cc.xmist.mistchat.server.user.model.resp.ReceivedApplyVo.builder()
                             .applyId(apply.getId())
                             .status(apply.getStatus())
                             .msg(apply.getApplyMsg())
@@ -119,12 +113,12 @@ public class FriendService {
         return applyVoList;
     }
 
-    public List<ForwardApplyVo> getForwardApplyList(Long uid) {
+    public List<cc.xmist.mistchat.server.user.model.resp.ForwardApplyVo> getForwardApplyList(Long uid) {
         List<FriendApply> applyList = friendApplyDao.getForwardApplyList(uid);
 
-        List<ForwardApplyVo> applyVoList = applyList.stream()
+        List<cc.xmist.mistchat.server.user.model.resp.ForwardApplyVo> applyVoList = applyList.stream()
                 .map(apply -> {
-                    return ForwardApplyVo.builder()
+                    return cc.xmist.mistchat.server.user.model.resp.ForwardApplyVo.builder()
                             .applyId(apply.getId())
                             .status(apply.getStatus())
                             .msg(apply.getApplyMsg())

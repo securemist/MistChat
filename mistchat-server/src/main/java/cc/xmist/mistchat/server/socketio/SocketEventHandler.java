@@ -59,7 +59,7 @@ public class SocketEventHandler {
      */
     @OnEvent(value = "login")
     public void onLoginEvent(SocketIOClient client, AckRequest request, LoginRequest loginRequest) {
-        User user = null;
+      User user = null;
 
         try {
             user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());

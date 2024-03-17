@@ -1,12 +1,11 @@
 package cc.xmist.mistchat.server.group.sevrice;
 
-import cc.xmist.mistchat.server.chat.model.dao.GroupContactDao;
+import cc.xmist.mistchat.server.chat.dao.GroupContactDao;
 import cc.xmist.mistchat.server.common.event.MemberChangeEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
-import cc.xmist.mistchat.server.group.model.dao.GroupDao;
-import cc.xmist.mistchat.server.group.model.dao.GroupMemberDao;
-import cc.xmist.mistchat.server.group.model.entity.Group;
-import jakarta.annotation.Resource;
+import cc.xmist.mistchat.server.group.dao.GroupDao;
+import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
+import cc.xmist.mistchat.server.group.entity.Group;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

@@ -1,12 +1,12 @@
 package cc.xmist.mistchat.server.common.event.listener;
 
-import cc.xmist.mistchat.server.chat.model.dao.FriendContactDao;
-import cc.xmist.mistchat.server.chat.model.dao.GroupContactDao;
-import cc.xmist.mistchat.server.group.model.dao.GroupMemberDao;
-import cc.xmist.mistchat.server.chat.model.entity.Message;
-import cc.xmist.mistchat.server.chat.model.enums.ChatType;
+import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
+import cc.xmist.mistchat.server.chat.dao.GroupContactDao;
+import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.service.ContactService;
+import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.event.MessageSendEvent;
+import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.socketio.SocketService;
 import jakarta.annotation.Resource;
 import org.springframework.context.event.EventListener;

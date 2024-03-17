@@ -1,14 +1,12 @@
 package cc.xmist.mistchat.server.group.controller;
 
 import cc.xmist.mistchat.server.common.context.RequestContext;
-import cc.xmist.mistchat.server.common.util.Cursor;
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.group.model.req.GroupCreateReq;
+import cc.xmist.mistchat.server.group.req.GroupCreateReq;
 import cc.xmist.mistchat.server.group.sevrice.GroupMemberService;
 import cc.xmist.mistchat.server.group.sevrice.GroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

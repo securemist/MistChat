@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.chat.controller;
 
-import cc.xmist.mistchat.server.chat.model.resp.ContactListResp;
 import cc.xmist.mistchat.server.chat.service.ContactService;
 import cc.xmist.mistchat.server.common.util.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,8 +18,8 @@ public class ContactController {
 
     @GetMapping("/list")
     @Operation(summary = "会话列表")
-    public R<ContactListResp> list(Long uid) {
-        ContactListResp res = contactService.getContactList(uid);
+    public R<cc.xmist.mistchat.server.chat.model.resp.ContactListResp> list(Long uid) {
+        cc.xmist.mistchat.server.chat.model.resp.ContactListResp res = contactService.getContactList(uid);
         return R.ok(res);
     }
 }

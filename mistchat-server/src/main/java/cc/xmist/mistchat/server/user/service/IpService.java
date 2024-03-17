@@ -2,8 +2,8 @@ package cc.xmist.mistchat.server.user.service;
 
 import cc.xmist.mistchat.server.common.util.JsonUtil;
 import cc.xmist.mistchat.server.user.dao.UserDao;
-import cc.xmist.mistchat.server.user.model.IpDetail;
-import cc.xmist.mistchat.server.user.model.IpInfo;
+import cc.xmist.mistchat.server.user.entity.IpDetail;
+import cc.xmist.mistchat.server.user.entity.IpInfo;
 import cn.hutool.core.thread.NamedThreadFactory;
 import cn.hutool.http.HttpUtil;
 import com.google.gson.annotations.SerializedName;
@@ -94,4 +94,5 @@ public class IpService {
         ERROR(2);
         public Integer key;
     }
+
 }

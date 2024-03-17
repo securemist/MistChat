@@ -1,11 +1,10 @@
 package cc.xmist.mistchat.server.common.event.listener;
 
 import cc.xmist.mistchat.server.common.event.GroupAddEvent;
-import cc.xmist.mistchat.server.group.model.entity.Group;
+import cc.xmist.mistchat.server.group.entity.Group;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
