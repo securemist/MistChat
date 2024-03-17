@@ -6,7 +6,7 @@ import cc.xmist.mistchat.server.user.model.req.FriendApplyReq;
 import cc.xmist.mistchat.server.user.model.resp.ForwardApplyVo;
 import cc.xmist.mistchat.server.user.model.resp.ReceivedApplyVo;
 import cc.xmist.mistchat.server.user.model.resp.SummaryUser;
-import cc.xmist.mistchat.server.user.service.FriendService;
+import cc.xmist.mistchat.server.friend.service.FriendService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;

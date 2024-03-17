@@ -3,7 +3,7 @@ package cc.xmist.mistchat.server.user.controller;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.ErrorType;
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.user.model.enums.Role;
+import cc.xmist.mistchat.server.common.enums.Role;
 import cc.xmist.mistchat.server.user.model.req.BlockReq;
 import cc.xmist.mistchat.server.user.service.BlackService;
 import io.swagger.v3.oas.annotations.Operation;

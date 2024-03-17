@@ -1,7 +1,7 @@
-package cc.xmist.mistchat.server.user.dao;
+package cc.xmist.mistchat.server.friend.dao;
 
-import cc.xmist.mistchat.server.user.model.entity.Friend;
-import cc.xmist.mistchat.server.user.model.mapper.FriendMapper;
+import cc.xmist.mistchat.server.friend.entity.Friend;
+import cc.xmist.mistchat.server.friend.mapper.FriendMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;

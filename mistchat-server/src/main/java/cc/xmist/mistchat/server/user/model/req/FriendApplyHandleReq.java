@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.user.model.req;
 
-import cc.xmist.mistchat.server.user.model.enums.ApplyType;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

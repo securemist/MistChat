@@ -2,10 +2,10 @@ package cc.xmist.mistchat.server.user.model.entity;
 
 import cc.xmist.mistchat.server.common.util.JsonUtil;
 import cc.xmist.mistchat.server.user.model.IpInfo;
-import cc.xmist.mistchat.server.user.model.enums.ActiveType;
-import cc.xmist.mistchat.server.user.model.enums.Gender;
-import cc.xmist.mistchat.server.user.model.enums.Role;
-import cc.xmist.mistchat.server.user.model.enums.UserStatus;
+import cc.xmist.mistchat.server.common.enums.ActiveType;
+import cc.xmist.mistchat.server.common.enums.Gender;
+import cc.xmist.mistchat.server.common.enums.Role;
+import cc.xmist.mistchat.server.common.enums.UserStatus;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -1,8 +1,7 @@
 package cc.xmist.mistchat.server.common.event.listener;
 
 import cc.xmist.mistchat.server.common.event.FriendApplyEvent;
-import cc.xmist.mistchat.server.user.dao.FriendApplyDao;
-import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
+import cc.xmist.mistchat.server.friend.dao.FriendApplyDao;
 import jakarta.annotation.Resource;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

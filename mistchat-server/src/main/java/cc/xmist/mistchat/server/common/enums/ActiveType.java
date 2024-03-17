@@ -1,18 +1,19 @@
-package cc.xmist.mistchat.server.user.model.enums;
+package cc.xmist.mistchat.server.common.enums;
 
-import cc.xmist.mistchat.server.common.config.convert.BaseEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 用户在线状态
+ */
 @Getter
 @AllArgsConstructor
-public enum ApplyType implements BaseEnum {
-    FRIEND(1),
-    GROUP(2);
-
-    @JsonValue
+public enum ActiveType {
+    ON(1),
+    OFF(0);
     @EnumValue
+    @JsonValue
     private Integer code;
 }

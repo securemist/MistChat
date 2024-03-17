@@ -1,6 +1,6 @@
-package cc.xmist.mistchat.server.user.model.entity;
+package cc.xmist.mistchat.server.friend.entity;
 
-import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
+import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

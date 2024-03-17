@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.user;
 
 import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
-import cc.xmist.mistchat.server.user.model.enums.Item;
+import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
 
 import java.util.Comparator;

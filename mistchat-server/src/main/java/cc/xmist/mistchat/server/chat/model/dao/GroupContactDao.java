@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.chat.model.dao;
 
 import cc.xmist.mistchat.server.chat.model.entity.GroupContact;
 import cc.xmist.mistchat.server.chat.model.mapper.GroupContactMapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,13 @@ public class GroupContactDao extends ServiceImpl<GroupContactMapper, GroupContac
                 })
                 .collect(Collectors.toList());
         saveBatch(contactList);
+    }
+
+    public void remove(Long uid, Long groupId) {
+        LambdaQueryWrapper<GroupContact> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(GroupContact::getUid, uid);
+        wrapper.eq(GroupContact::getGroupId, groupId);
+        baseMapper.delete(wrapper);
     }
 
 //    public void friendContactCreate(Long uid, Long friendId) {

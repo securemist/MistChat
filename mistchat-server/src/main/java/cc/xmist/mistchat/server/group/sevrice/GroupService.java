@@ -6,6 +6,7 @@ import cc.xmist.mistchat.server.group.model.dao.GroupApplyDao;
 import cc.xmist.mistchat.server.group.model.dao.GroupDao;
 import cc.xmist.mistchat.server.group.model.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.group.model.entity.Group;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -14,22 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class GroupService {
-    private GroupMemberDao groupMemberDao;
-    private GroupDao groupDao;
-    private GroupApplyDao groupApplyDao;
-    private GroupContactDao groupContactDao;
-    private ApplicationEventPublisher eventPublisher;
-
-    @Autowired
-    public GroupService(GroupMemberDao groupMemberDao, GroupDao groupDao, GroupApplyDao groupApplyDao, GroupContactDao groupContactDao, ApplicationEventPublisher eventPublisher) {
-        this.groupMemberDao = groupMemberDao;
-        this.groupDao = groupDao;
-        this.groupApplyDao = groupApplyDao;
-        this.groupContactDao = groupContactDao;
-        this.eventPublisher = eventPublisher;
-    }
-
+    private final GroupMemberDao groupMemberDao;
+    private final GroupDao groupDao;
+    private final GroupApplyDao groupApplyDao;
+    private final GroupContactDao groupContactDao;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 获取群聊所有成员

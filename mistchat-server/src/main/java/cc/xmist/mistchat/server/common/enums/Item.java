@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.model.enums;
+package cc.xmist.mistchat.server.common.enums;
 
 import cc.xmist.mistchat.server.common.config.convert.BaseEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;

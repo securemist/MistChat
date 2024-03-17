@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.model.enums;
+package cc.xmist.mistchat.server.common.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -6,14 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 用户在线状态
+ * 幂等类型
  */
-@Getter
 @AllArgsConstructor
-public enum ActiveType {
-    ON(1),
-    OFF(0);
-    @EnumValue
+@Getter
+public enum IdempotentType {
+    UID(1),
+    MSG_ID(2);
     @JsonValue
-    private Integer code;
+    @EnumValue
+    public Integer code;
 }

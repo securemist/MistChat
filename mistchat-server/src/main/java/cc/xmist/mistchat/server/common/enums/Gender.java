@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.model.enums;
+package cc.xmist.mistchat.server.common.enums;
 
 import cc.xmist.mistchat.server.common.config.convert.BaseEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
@@ -8,10 +8,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Role implements BaseEnum {
-    ADMIN(0),
-    USER(1),
-    BOT(2);
+public enum Gender implements BaseEnum {
+
+    MALE(1),
+    FEMALE(0);
 
     @EnumValue
     @JsonValue

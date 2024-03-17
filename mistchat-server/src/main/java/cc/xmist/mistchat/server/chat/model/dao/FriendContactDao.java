@@ -2,7 +2,7 @@ package cc.xmist.mistchat.server.chat.model.dao;
 
 import cc.xmist.mistchat.server.chat.model.entity.FriendContact;
 import cc.xmist.mistchat.server.chat.model.mapper.FriendContactMapper;
-import cc.xmist.mistchat.server.user.dao.FriendDao;
+import cc.xmist.mistchat.server.friend.dao.FriendDao;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;

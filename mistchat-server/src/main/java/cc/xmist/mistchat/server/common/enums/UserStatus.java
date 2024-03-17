@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.model.enums;
+package cc.xmist.mistchat.server.common.enums;
 
 import cc.xmist.mistchat.server.common.config.convert.BaseEnum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
@@ -8,13 +8,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ApplyStatus implements BaseEnum {
-    WAIT(0),
-    PASS(1),
-    FORBID(2),
-    READ(3);
+public enum UserStatus implements BaseEnum {
 
-    @JsonValue
+    NORMAL(1),
+    BLACK(0);
+
     @EnumValue
+    @JsonValue
     private Integer code;
 }

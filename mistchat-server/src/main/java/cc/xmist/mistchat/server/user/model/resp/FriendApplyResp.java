@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.user.model.resp;
 
-import cc.xmist.mistchat.server.user.model.entity.FriendApply;
-import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
+import cc.xmist.mistchat.server.friend.entity.FriendApply;
+import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import lombok.Builder;
 import lombok.Data;
 

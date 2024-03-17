@@ -1,20 +1,22 @@
-package cc.xmist.mistchat.server.user.service;
+package cc.xmist.mistchat.server.friend.service;
 
 import cc.xmist.mistchat.server.chat.model.dao.FriendContactDao;
 import cc.xmist.mistchat.server.common.event.FriendApplyEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.common.exception.ParamException;
-import cc.xmist.mistchat.server.user.dao.FriendApplyDao;
-import cc.xmist.mistchat.server.user.dao.FriendDao;
-import cc.xmist.mistchat.server.user.model.entity.Friend;
-import cc.xmist.mistchat.server.user.model.entity.FriendApply;
-import cc.xmist.mistchat.server.user.model.enums.ApplyStatus;
-import cc.xmist.mistchat.server.user.model.enums.ApplyType;
+import cc.xmist.mistchat.server.friend.dao.FriendApplyDao;
+import cc.xmist.mistchat.server.friend.dao.FriendDao;
+import cc.xmist.mistchat.server.friend.entity.Friend;
+import cc.xmist.mistchat.server.friend.entity.FriendApply;
+import cc.xmist.mistchat.server.common.enums.ApplyStatus;
+import cc.xmist.mistchat.server.common.enums.ApplyType;
 import cc.xmist.mistchat.server.user.model.req.FriendApplyHandleReq;
 import cc.xmist.mistchat.server.user.model.req.FriendApplyReq;
 import cc.xmist.mistchat.server.user.model.resp.ForwardApplyVo;
 import cc.xmist.mistchat.server.user.model.resp.FriendApplyResp;
 import cc.xmist.mistchat.server.user.model.resp.ReceivedApplyVo;
+import cc.xmist.mistchat.server.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -23,21 +25,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class FriendService {
-    private FriendDao friendDao;
-    private UserService userService;
-    private FriendApplyDao friendApplyDao;
-    private FriendContactDao friendContactDao;
-    private ApplicationEventPublisher eventPublisher;
+    private final FriendDao friendDao;
+    private final UserService userService;
+    private final FriendApplyDao friendApplyDao;
+    private final FriendContactDao friendContactDao;
+    private final ApplicationEventPublisher eventPublisher;
 
-    @Autowired
-    public FriendService(FriendDao friendDao, UserService userService, FriendApplyDao friendApplyDao, FriendContactDao friendContactDao, ApplicationEventPublisher eventPublisher) {
-        this.friendDao = friendDao;
-        this.userService = userService;
-        this.friendApplyDao = friendApplyDao;
-        this.friendContactDao = friendContactDao;
-        this.eventPublisher = eventPublisher;
-    }
 
 
     /**

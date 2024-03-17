@@ -4,6 +4,7 @@ import cc.xmist.mistchat.server.group.model.entity.Group;
 import cc.xmist.mistchat.server.group.model.entity.GroupMember;
 import cc.xmist.mistchat.server.group.model.mapper.GroupMemberMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
 
     /**
      * 获取一个群聊的所有成员
+     *
      * @param groupId
      * @return
      */
@@ -30,6 +32,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
 
     /**
      * 获取用户加入的群聊列表
+     *
      * @param uid
      * @return
      */
@@ -44,6 +47,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
 
     /**
      * 用户加入群聊
+     *
      * @param uid
      * @param groupId
      */
@@ -58,6 +62,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
 
     /**
      * 判断某个用户是否属于某个群聊
+     *
      * @param uid
      * @param groupId
      * @return
@@ -71,6 +76,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
 
     /**
      * 首次创建的群聊，将初始用户拉入群聊
+     *
      * @param groupId
      * @param uidList
      */
@@ -83,5 +89,18 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
                             .build();
                 }).collect(Collectors.toList());
         saveBatch(groupMembers);
+    }
+
+    /**
+     * 将用户移出群聊
+     *
+     * @param uid
+     * @param groupId
+     */
+    public void removeUser(Long uid, Long groupId) {
+        LambdaQueryWrapper<GroupMember> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(GroupMember::getGroupId, groupId);
+        wrapper.eq(GroupMember::getUid, uid);
+        baseMapper.delete(wrapper);
     }
 }

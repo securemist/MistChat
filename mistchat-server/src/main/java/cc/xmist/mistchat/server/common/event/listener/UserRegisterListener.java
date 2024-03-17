@@ -5,27 +5,21 @@ import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.group.sevrice.GroupMemberService;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.model.entity.User;
-import cc.xmist.mistchat.server.user.model.enums.IdempotentType;
-import cc.xmist.mistchat.server.user.model.enums.Item;
+import cc.xmist.mistchat.server.common.enums.IdempotentType;
+import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.user.service.ItemService;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
+@RequiredArgsConstructor
 public class UserRegisterListener {
-    private ItemService itemService;
-    private UserDao userDao;
-    private GroupMemberService groupMemberService;
-    @Autowired
-    public UserRegisterListener(ItemService itemService, UserDao userDao, GroupMemberService groupMemberService) {
-        this.itemService = itemService;
-        this.userDao = userDao;
-        this.groupMemberService = groupMemberService;
-    }
+    private final ItemService itemService;
+    private final UserDao userDao;
+    private final GroupMemberService groupMemberService;
 
     /**
      * 用户注册后发送物品
