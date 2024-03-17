@@ -1,6 +1,6 @@
-package cc.xmist.mistchat.server.chat.model.mapper;
+package cc.xmist.mistchat.server.group.model.mapper;
 
-import cc.xmist.mistchat.server.chat.model.entity.GroupMember;
+import cc.xmist.mistchat.server.group.model.entity.GroupMember;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

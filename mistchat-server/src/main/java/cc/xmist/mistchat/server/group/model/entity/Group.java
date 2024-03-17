@@ -1,11 +1,15 @@
-package cc.xmist.mistchat.server.user.model.entity;
+package cc.xmist.mistchat.server.group.model.entity;
 
+import cc.xmist.mistchat.server.group.model.enums.GroupStatus;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,9 +21,9 @@ import lombok.Setter;
  * @author securemist
  * @since 2024-03-14
  */
-@Getter
-@Setter
-@TableName("group")
+@Data
+@Builder
+@TableName("`group`")
 public class Group implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,9 +40,12 @@ public class Group implements Serializable {
     @TableField("name")
     private String name;
 
-    /**
-     * 群聊头像
-     */
+    @TableField("creater_uid")
+    private Long createrUid;
+
+    @TableField("owner_uid")
+    private Long ownerUid;
+
     @TableField("avatar")
     private String avatar;
 
@@ -46,7 +53,7 @@ public class Group implements Serializable {
     private String extra;
 
     @TableField("status")
-    private String status;
+    private GroupStatus status;
 
     /**
      * 创建时间

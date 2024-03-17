@@ -1,9 +1,11 @@
-package cc.xmist.mistchat.server.chat.model.entity;
+package cc.xmist.mistchat.server.group.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,9 +20,9 @@ import java.time.LocalDateTime;
  * @author securemist
  * @since 2024-01-26
  */
-@Getter
-@Setter
 @TableName("group_member")
+@Data
+@Builder
 public class GroupMember implements Serializable {
 
     private static final long serialVersionUID = 1L;

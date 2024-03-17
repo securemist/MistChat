@@ -71,7 +71,7 @@ public class ItemService extends UserServiceSupport {
      * @param businessId     业务id
      */
     public void acquireItem(Long uid, Item item, IdempotentType idempotentType, String businessId) {
-        String idempotent = String.format("%d_%d_%s", item.getCode(), idempotentType, businessId);
+        String idempotent = String.format("%d_%d_%s", item.getCode(), idempotentType.getCode(), businessId);
         RLock lock = redissonClient.getLock("acquire" + idempotent);
         lock.tryLock();
 

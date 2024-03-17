@@ -54,6 +54,4 @@ public class FriendController {
     public R<List<SummaryUser>> getFriendList(Long uid) {
         return R.ok(friendService.getFriendIdList(uid));
     }
-
-
 }

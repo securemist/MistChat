@@ -1,7 +1,7 @@
-package cc.xmist.mistchat.server.user.dao;
+package cc.xmist.mistchat.server.group.model.dao;
 
-import cc.xmist.mistchat.server.user.model.entity.GroupApply;
-import cc.xmist.mistchat.server.user.model.mapper.GroupApplyMapper;
+import cc.xmist.mistchat.server.group.model.entity.GroupApply;
+import cc.xmist.mistchat.server.group.model.mapper.GroupApplyMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package cc.xmist.mistchat.server.common.event.listener;
 
 import cc.xmist.mistchat.server.chat.model.dao.FriendContactDao;
 import cc.xmist.mistchat.server.chat.model.dao.GroupContactDao;
-import cc.xmist.mistchat.server.chat.model.dao.GroupMemberDao;
+import cc.xmist.mistchat.server.group.model.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.chat.model.entity.Message;
 import cc.xmist.mistchat.server.chat.model.enums.ChatType;
 import cc.xmist.mistchat.server.chat.service.ContactService;
