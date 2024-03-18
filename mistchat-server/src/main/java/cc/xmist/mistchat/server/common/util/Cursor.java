@@ -9,9 +9,8 @@ public class Cursor<T> {
     private T value;
     private Class<T> type;
 
-    public static Cursor<Long> buildLong(String value, Long pageSize) {
+    public static Cursor<Long> buildLong(String value, Integer pageSize) {
         Cursor<Long> c = new Cursor<>();
-        c.pageSize = pageSize;
         c.type = Long.class;
         c.value = StrUtil.isNotBlank(value) ? Long.valueOf(value) : null;
         return c;

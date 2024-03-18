@@ -14,7 +14,4 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface FriendContactMapper extends BaseMapper<FriendContact> {
 
-    FriendContact selectByUid(@Param("uid") Long uid);
-
-    FriendContact selectById(@Param("id") Long id);
 }

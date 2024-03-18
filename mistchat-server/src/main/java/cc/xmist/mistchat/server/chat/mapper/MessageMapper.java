@@ -18,6 +18,6 @@ public interface MessageMapper extends BaseMapper<Message> {
 
     List<Message> selectByIdCursorable(@Param("chatId") Long chatId,
                                  @Param("chatType") Integer chatType,
-                                 @Param("cursor") Long cursor,
-                                 @Param("pageSize") Long pageSize);
+                                 @Param("cursor") String cursor,
+                                 @Param("pageSize") Integer pageSize);
 }

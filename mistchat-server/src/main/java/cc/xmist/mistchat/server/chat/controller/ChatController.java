@@ -38,10 +38,10 @@ public class ChatController {
     @GetMapping("/list/page")
     @Operation(summary = "消息记录")
     public R<CursorResult<Message>> list(@RequestParam("chatId") Long chatId,
-                                         @RequestParam ChatType type,
+                                         @RequestParam ChatType chatType,
                                          @RequestParam(required = false) String cursor,
-                                         @RequestParam Long pageSize) {
-        CursorResult result = messageService.list(chatId, type, cursor, pageSize);
+                                         @RequestParam Integer pageSize) {
+        CursorResult result = messageService.list(chatId, chatType, cursor, pageSize);
         return R.ok(result);
     }
 }

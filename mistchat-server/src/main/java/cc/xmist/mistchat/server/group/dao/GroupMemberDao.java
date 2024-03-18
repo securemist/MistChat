@@ -18,16 +18,30 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * 获取一个群聊的所有成员
      *
      * @param groupId
+     * @param cursor
+     * @param pageSize
+     * @return
+     */
+    public List<GroupMember> getMembersCursorable(Long groupId, String cursor, Integer pageSize) {
+        return lambdaQuery()
+                .select(GroupMember::getId, GroupMember::getUid)
+                .lt(cursor != null, GroupMember::getId, cursor)
+                .orderByDesc(GroupMember::getId)
+                .last("LIMIT " + pageSize)
+                .list();
+    }
+
+    /**
+     * 直接获取群聊所有成员
+     *
+     * @param groupId
      * @return
      */
     public List<Long> getMembers(Long groupId) {
-        List<GroupMember> members = lambdaQuery()
+        List<GroupMember> list = lambdaQuery()
                 .eq(GroupMember::getGroupId, groupId)
                 .list();
-
-        return members.stream()
-                .map(member -> member.getUid())
-                .collect(Collectors.toList());
+        return list.stream().map(GroupMember::getUid).collect(Collectors.toList());
     }
 
     /**
@@ -51,12 +65,11 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param groupId
      */
     public void join(Long uid, Long groupId) {
-        GroupMember groupMember = GroupMember.builder()
-                .uid(uid)
+        GroupMember member = GroupMember.builder()
                 .groupId(groupId)
+                .uid(uid)
                 .build();
-
-        save(groupMember);
+        save(member);
     }
 
     /**
@@ -82,7 +95,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
     public void addMembers(Long groupId, List<Long> uidList) {
         List<GroupMember> groupMembers = uidList.stream()
                 .map(uid -> {
-                    return GroupMember.builder()
+                    return  GroupMember.builder()
                             .groupId(groupId)
                             .uid(uid)
                             .build();
@@ -105,6 +118,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
 
     /**
      * 批量获取所有群的群成员
+     *
      * @param groupsId
      * @return
      */
@@ -120,7 +134,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
         Map<Long, List<Long>> res = new HashMap<>();
         memberMap.forEach((groupId, members) -> {
             List<Long> uids = members.stream().map(GroupMember::getUid).collect(Collectors.toList());
-            res.put(groupId,uids);
+            res.put(groupId, uids);
         });
         return res;
     }

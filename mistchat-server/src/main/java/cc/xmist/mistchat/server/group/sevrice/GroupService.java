@@ -2,16 +2,20 @@ package cc.xmist.mistchat.server.group.sevrice;
 
 import cc.xmist.mistchat.server.chat.dao.GroupContactDao;
 import cc.xmist.mistchat.server.common.event.GroupAddEvent;
+import cc.xmist.mistchat.server.common.util.CursorResult;
 import cc.xmist.mistchat.server.group.dao.GroupApplyDao;
 import cc.xmist.mistchat.server.group.dao.GroupDao;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.group.entity.Group;
+import cc.xmist.mistchat.server.group.entity.GroupMember;
+import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +28,27 @@ public class GroupService {
 
     /**
      * 获取群聊所有成员
+     *
      * @param groupId
+     * @param cursor
+     * @param pageSize
      * @return
      */
-    public List<Long> getMembers(Long groupId) {
-       return groupMemberDao.getMembers(groupId);
+    public CursorResult<Long> getMembersCursorabler(Long groupId, String cursor, Integer pageSize) {
+        List<GroupMember> data = groupMemberDao.getMembersCursorable(groupId, cursor, pageSize);
+
+        List<Long> uids = data.stream().map(GroupMember::getUid).collect(Collectors.toList());
+
+        Boolean isLast = false;
+        String newCursor = null;
+        if (data.size() != pageSize || CollectionUtil.isEmpty(data)) {
+            isLast = true;
+            newCursor = null;
+        } else {
+            Long last = CollectionUtil.getLast(data).getId();
+            newCursor = last == null ? null : last.toString();
+        }
+        return new CursorResult<Long>(newCursor, isLast, uids);
     }
 
 

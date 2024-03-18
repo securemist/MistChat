@@ -39,19 +39,19 @@ public class MessageService {
         eventPublisher.publishEvent(new MessageSendEvent(this, req.getChatType(), targetId, m));
     }
 
-    public CursorResult list(Long chatId, ChatType chatType, String cursorValue, Long pageSize) {
-        Cursor<Long> cursor = Cursor.buildLong(cursorValue, pageSize);
-        List<Message> data = messageDao.listCursorable(chatId, chatType, cursor);
+    public CursorResult list(Long chatId, ChatType chatType, String cursor, Integer pageSize) {
+        List<Message> data = messageDao.listCursorable(chatId, chatType, cursor, pageSize);
 
         Boolean isLast = false;
-        if (data.size() != cursor.getPageSize() || CollectionUtil.isEmpty(data)) {
+        String newCursor = null;
+        if (data.size() != pageSize || CollectionUtil.isEmpty(data)) {
             isLast = true;
             cursor = null;
+        } else {
+            Message last = CollectionUtil.getLast(data);
+            newCursor = last.getId().toString();
         }
 
-        // 本次所有数据的最后一条的index，即为确认下一次游标的起始位置
-        Message last = CollectionUtil.getLast(data);
-        String newCursor = last == null ? null : last.getId().toString();
         return new CursorResult(newCursor, isLast, data);
     }
 }

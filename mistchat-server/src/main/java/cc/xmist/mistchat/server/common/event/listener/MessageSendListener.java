@@ -9,7 +9,6 @@ import cc.xmist.mistchat.server.common.event.MessageSendEvent;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.socketio.EventEmitter;
 import cc.xmist.mistchat.server.socketio.event.MessageEvent;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

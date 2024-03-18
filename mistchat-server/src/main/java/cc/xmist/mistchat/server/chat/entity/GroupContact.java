@@ -49,12 +49,6 @@ public class GroupContact implements Serializable {
     @TableField("last_msg_id")
     private Long lastMsgId;
 
-    /**
-     * 在群聊中的最后一次活跃时间
-     */
-    @TableField("active_time")
-    private LocalDateTime activeTime;
-
     @TableField("create_time")
     private LocalDateTime createTime;
 

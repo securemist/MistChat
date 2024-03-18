@@ -1,6 +1,7 @@
 package cc.xmist.mistchat.server.group.controller;
 
 import cc.xmist.mistchat.server.common.context.RequestContext;
+import cc.xmist.mistchat.server.common.util.CursorResult;
 import cc.xmist.mistchat.server.common.util.R;
 import cc.xmist.mistchat.server.group.req.GroupCreateReq;
 import cc.xmist.mistchat.server.group.sevrice.GroupMemberService;
@@ -22,9 +23,11 @@ public class GroupController {
 
     @GetMapping("/members")
     @Operation(summary = "获取群聊的成员")
-    public R members(Long groupId) {
-        List<Long> list = groupService.getMembers(groupId);
-        return R.ok(list);
+    public R<CursorResult<Long> > members(@RequestParam Long groupId,
+                     @RequestParam(required = false) String cursor,
+                     @RequestParam Integer pageSize) {
+        CursorResult<Long> result = groupService.getMembersCursorabler(groupId,cursor,pageSize);
+        return R.ok(result);
     }
 
     @PostMapping("/create")
@@ -39,7 +42,7 @@ public class GroupController {
     @Operation(summary = "退出群聊")
     public R exit(Long groupId) {
         Long uid = RequestContext.getUid();
-        groupMemberService.exit(uid,groupId);
+        groupMemberService.exit(uid, groupId);
         return R.ok();
     }
 }
