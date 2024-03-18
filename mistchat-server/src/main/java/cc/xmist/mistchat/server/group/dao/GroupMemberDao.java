@@ -39,7 +39,6 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
     public List<Long> getBelongingGroupsId(Long uid) {
         List<GroupMember> list = lambdaQuery()
                 .eq(GroupMember::getUid, uid)
-                .select(GroupMember::getGroupId)
                 .list();
 
         return list.stream().map(GroupMember::getGroupId).collect(Collectors.toList());
@@ -112,7 +111,6 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
     public Map<Long, List<Long>> getMembersBatch(List<Long> groupsId) {
         List<GroupMember> list = lambdaQuery()
                 .in(GroupMember::getGroupId, groupsId)
-                .select(GroupMember::getUid)
                 .list();
 
 

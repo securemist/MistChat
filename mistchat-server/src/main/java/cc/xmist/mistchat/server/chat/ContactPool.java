@@ -12,26 +12,29 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class ContactPool {
-    private Map<Long, Long> openedConcat = new ConcurrentHashMap<>();
+    private Map<Long, Long> friendConcat = new ConcurrentHashMap<>();
+    private Map<Long, Long> groupConcat = new ConcurrentHashMap<>();
 
     public void openFriend(Long uid, Long friendId) {
-
+        closeGroup(uid);
+        friendConcat.put(uid, friendId);
     }
 
-    public void closeFriend() {
-
+    public void closeFriend(Long uid) {
+        friendConcat.remove(uid);
     }
 
-    public void openGroup(Long uid, Long contactId) {
-
+    public void openGroup(Long uid, Long groupId) {
+        closeFriend(uid);
+        groupConcat.put(uid,groupId);
     }
 
-    public void closeGroup() {
-
+    public void closeGroup(Long uid) {
+        groupConcat.remove(uid);
     }
 
-    public void remove() {
-
+    public void remove(Long uid) {
+        closeFriend(uid);
+        closeGroup(uid);
     }
-
 }

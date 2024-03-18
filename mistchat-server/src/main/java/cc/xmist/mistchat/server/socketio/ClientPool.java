@@ -33,7 +33,7 @@ public class ClientPool {
     }
 
     public boolean isOnline(Long uid) {
-        return clientMap.containsValue(uid);
+        return clientMap.containsKey(uid);
     }
 
     public SocketIOClient get(Long uid) {

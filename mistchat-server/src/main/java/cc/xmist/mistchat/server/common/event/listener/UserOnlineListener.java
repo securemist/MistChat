@@ -5,10 +5,12 @@ import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.socketio.ClientPool;
 import cc.xmist.mistchat.server.socketio.EventEmitter;
 import cc.xmist.mistchat.server.socketio.enums.SEvent;
+import cc.xmist.mistchat.server.socketio.event.OnlineEvent;
 import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
 import cc.xmist.mistchat.server.user.service.IpService;
 import cc.xmist.mistchat.server.user.service.UserService;
+import cn.hutool.core.collection.CollectionUtil;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,9 +18,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -37,12 +37,17 @@ public class UserOnlineListener {
     public void groupPush(UserOnlineEvent event) {
         Long uid = event.getUid();
         List<Long> groupsId = groupMemberDao.getBelongingGroupsId(uid);
-        UserInfoVo userInfo = userService.getUserInfo(uid);
 
+        // 用户加入的群聊的所有用户
+        ArrayList<Long> users = new ArrayList<>();
         Map<Long, List<Long>> membersMap = groupMemberDao.getMembersBatch(groupsId);
-        membersMap.values().forEach(userId -> {
-            eventEmitter.emit();
+        membersMap.forEach((k,v) -> {
+            v.forEach(i -> users.add(i));
         });
+
+        // TODO 只推送会话打开的用户
+
+        eventEmitter.emits(users, new OnlineEvent(uid));
     }
 
     @EventListener(classes = UserOnlineEvent.class)

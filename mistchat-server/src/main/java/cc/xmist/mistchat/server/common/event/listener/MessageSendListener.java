@@ -30,20 +30,20 @@ public class MessageSendListener {
     @EventListener(MessageSendEvent.class)
     public void send(MessageSendEvent event) {
         Message message = event.getMessage();
-        List<Long> targetIds = new ArrayList();
+        List<Long> uids = new ArrayList();
         Long uid = message.getUid();
 
         if (event.getChatType() == ChatType.FRIEND) {
-            targetIds = Arrays.asList(event.getChatId());
+            uids = Arrays.asList(event.getChatId());
         } else {
             // 获取群所有成员
-            targetIds = groupMemberDao.getMembers(event.getChatId());
+            uids = groupMemberDao.getMembers(event.getChatId());
         }
 
         MessageEvent.Data data = new MessageEvent.Data();
         data.setMessage(message);
 
-        eventEmitter.emitOr(new MessageEvent(targetIds,data), uidList -> {});
+        eventEmitter.emits(uids, new MessageEvent(data));
     }
 
     @EventListener(MessageSendEvent.class)

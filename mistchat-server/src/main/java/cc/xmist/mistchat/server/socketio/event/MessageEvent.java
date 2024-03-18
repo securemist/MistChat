@@ -11,8 +11,8 @@ import java.util.List;
 public class MessageEvent extends BaseEvent {
     private Data data;
 
-    public MessageEvent(List<Long> uids, Data data) {
-        super(SEvent.MESSAGE, uids);
+    public MessageEvent(Data data) {
+        super(SEvent.MESSAGE);
         this.data = data;
     }
 
