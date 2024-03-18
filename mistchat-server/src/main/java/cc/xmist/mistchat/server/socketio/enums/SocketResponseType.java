@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.socketio.model;
+package cc.xmist.mistchat.server.socketio.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

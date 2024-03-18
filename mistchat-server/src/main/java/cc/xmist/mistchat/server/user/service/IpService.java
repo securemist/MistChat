@@ -36,13 +36,11 @@ public class IpService {
 
             IpDetail ipDetail = null;
             // 当前ip与数据库中最新ip一致，不需要更新信息
-            if (old != null && ip.equals(old.getLastIp())) {
-                return;
-            }
+            if (old != null && ip.equals(old.getLastIp())) return;
 
             ipDetail = getIpDetailOrNull(ip);
             if (ipDetail == null) {
-                log.info("用户{} 获取ip归属地失败, ip:{}", uid, ip);
+                log.error("用户{} 获取ip归属地失败, ip:{}", uid, ip);
                 return;
             }
 

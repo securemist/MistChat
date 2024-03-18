@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -100,5 +102,43 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
         wrapper.eq(GroupMember::getGroupId, groupId);
         wrapper.eq(GroupMember::getUid, uid);
         baseMapper.delete(wrapper);
+    }
+
+    /**
+     * 批量获取所有群的群成员
+     * @param groupsId
+     * @return
+     */
+    public Map<Long, List<Long>> getMembersBatch(List<Long> groupsId) {
+        List<GroupMember> list = lambdaQuery()
+                .in(GroupMember::getGroupId, groupsId)
+                .select(GroupMember::getUid)
+                .list();
+
+
+        Map<Long, List<GroupMember>> memberMap = list.stream()
+                .collect(Collectors.groupingBy(GroupMember::getGroupId));
+
+        Map<Long, List<Long>> res = new HashMap<>();
+        memberMap.forEach((groupId, members) -> {
+            List<Long> uids = members.stream().map(GroupMember::getUid).collect(Collectors.toList());
+            res.put(groupId,uids);
+        });
+        return res;
+    }
+
+    /**
+     * 获取用户加入的所有群聊的 id
+     *
+     * @param uid
+     * @return
+     */
+    public List<Long> getGroupsId(Long uid) {
+        List<GroupMember> list = lambdaQuery()
+                .eq(GroupMember::getId, uid)
+                .select(GroupMember::getGroupId)
+                .list();
+
+        return list.stream().map(GroupMember::getGroupId).collect(Collectors.toList());
     }
 }

@@ -4,44 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>user1</title>
+    <title>user4</title>
 
 </head>
 <script src="socket.io/socket.io.js"></script>
 <script>
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIwMDAxfQ.nZNYNJwxjYurAS-43DqbgFe-StMtAAoxmyWmzTONt38"
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIwMDA0fQ.D5Okv9kAFfyFKqtrAs4kExQmgk5_5AR3RV0Z8SFYqkg"
     let socket = new io("ws://127.0.0.1:8201?token=" + token);
     socket.connect()
 
     function send() {
         socket.emit("login", {
-            username: 20001,
-            password: 20001
+            username: 18115168320,
+            password: 12345
         }, function (data) {
             token = data.data
             console.log("token:" + token)
         })
     }
 
-    socket.on("AUTH", function (data) {
+    socket.on("auth", function (data) {
         console.log(data)
     })
+    //
+    // function loginByToken() {
+    //     socket.emit("verifyToken", token, function (data) {
+    //         console.log(data)
+    //     })
+    // }
 
-    socket.on("MESSAGE",function(data) {
+    socket.on("MESSAGE", function (data) {
         console.log("收到消息" + JSON.stringify(data))
     })
 
     function loginByPwd() {
-        socket.emit("login",
-            {username: "10000", password: "10000"},
-            function (data) {
-                console.log(data.data)
-            })
+        socket.emit("login", {username: "10001", password: "10001"}, function (data) {
+            console.log(data.data)
+        })
     }
-
-    socket.on("APPLY",function (data) {
-        console.log(data.data)
-    })
 
     socket.on('ONLINE', data => {
         console.log(data, '上线')
@@ -56,10 +56,6 @@
 <button onclick="loginByToken()">loginByToken</button>
 <button onclick="loginByPwd()">loginByPwd</button>
 <br>
-<br>
-<br>
-
-<button onclick="applyFriend()">添加好友10002</button>
 
 </body>
 </html>

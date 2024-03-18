@@ -25,10 +25,8 @@ public class ChatService {
         Long targetId = req.getTargetId();
         AbstractMsgHandler messageHandler = MessageHandleFactory.getHandle(message.getType());
 
-        Message m = switch (req.getChatType()) {
-            case FRIEND -> messageHandler.saveMsg(uid, ChatType.FRIEND, targetId, message);
-            case GROUP -> messageHandler.saveMsg(uid, ChatType.GROUP, targetId, message);
-        };
+        Message m = messageHandler.saveMsg(uid, req.getChatType(), targetId, message);
+
         eventPublisher.publishEvent(new MessageSendEvent(this, req.getChatType(), targetId, m));
     }
 }

@@ -4,7 +4,7 @@ server:
     context-path: /api/v1
 
 ws:
-  enabled: false
+  enabled: true
   port: 8201
   context: /
 
@@ -39,3 +39,8 @@ springdoc:
     - group: 'default'
       paths-to-match: '/**'
       packages-to-scan: cc.xmist.mistchat
+
+config:
+  ip:
+    parse-when-login: false
+

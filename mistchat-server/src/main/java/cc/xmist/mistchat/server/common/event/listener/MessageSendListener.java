@@ -7,8 +7,10 @@ import cc.xmist.mistchat.server.chat.service.ContactService;
 import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.event.MessageSendEvent;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
-import cc.xmist.mistchat.server.socketio.SocketService;
+import cc.xmist.mistchat.server.socketio.EventEmitter;
+import cc.xmist.mistchat.server.socketio.event.MessageEvent;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -17,17 +19,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class MessageSendListener {
-    @Resource
-    private SocketService socketService;
-    @Resource
-    private ContactService contactService;
-    @Resource
-    private GroupMemberDao groupMemberDao;
-    @Resource
-    private GroupContactDao groupContactDao;
-    @Resource
-    private FriendContactDao friendContactDao;
+    private final EventEmitter eventEmitter;
+    private final ContactService contactService;
+    private final GroupMemberDao groupMemberDao;
+    private final GroupContactDao groupContactDao;
+    private final FriendContactDao friendContactDao;
 
     @EventListener(MessageSendEvent.class)
     public void send(MessageSendEvent event) {
@@ -42,14 +40,10 @@ public class MessageSendListener {
             targetIds = groupMemberDao.getMembers(event.getChatId());
         }
 
-        switch (event.getChatType()) {
-            case FRIEND: {
-                socketService.sendToUser(targetIds.get(0), message);
-            }
-            case GROUP: {
-                socketService.sendToGroup(targetIds, message);
-            }
-        }
+        MessageEvent.Data data = new MessageEvent.Data();
+        data.setMessage(message);
+
+        eventEmitter.emitOr(new MessageEvent(targetIds,data), uidList -> {});
     }
 
     @EventListener(MessageSendEvent.class)
@@ -58,16 +52,11 @@ public class MessageSendListener {
         Long chatId = event.getChatId();
         ChatType chatType = event.getChatType();
 
-        List<Long> targetIds = new ArrayList();
         Long uid = message.getUid();
 
         switch (chatType) {
-            case FRIEND: {
-//                contactService.updateFriendContact(uid,chatId, message.getId());
-            }
-            case GROUP: {
-                socketService.sendToGroup(targetIds, message);
-            }
+            case FRIEND: contactService.updateFriendContact(uid,chatId, message);
+            case GROUP: contactService.updateGroupContact(uid,chatId, message);
         }
     }
 }

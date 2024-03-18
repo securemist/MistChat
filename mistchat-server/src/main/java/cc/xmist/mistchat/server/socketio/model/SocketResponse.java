@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.socketio.model;
 
+import cc.xmist.mistchat.server.socketio.enums.SocketResponseType;
 import lombok.Data;
 
 @Data

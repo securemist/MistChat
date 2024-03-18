@@ -69,7 +69,7 @@ public class Message implements Serializable {
     private MessageType type;
 
     @TableField("extra")
-    private String extra;
+    private Object extra;
 
     /**
      * 创建时间

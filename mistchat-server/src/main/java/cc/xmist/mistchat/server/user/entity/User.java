@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -26,7 +27,7 @@ import java.util.Date;
  */
 @Data
 @TableName(value = "user")
-@Builder
+@NoArgsConstructor
 public class User {
 
     private static final long serialVersionUID = 1L;
@@ -128,5 +129,10 @@ public class User {
     @TableField("update_time")
     private LocalDateTime updateTime;
 
+    @TableField(exist = false)
+    private String token;
 
+    public User(String token) {
+        this.token = token;
+    }
 }

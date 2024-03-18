@@ -15,7 +15,7 @@ public class TextMessageHandle extends AbstractMsgHandler<TextMessageRequest> {
 
     @Override
     protected Message customSaveMsg(Message message, TextMessageRequest data) {
-        message.setContent(data.getContent());
+        message.setExtra(data);
         messageDao.save(message);
         return message;
     }

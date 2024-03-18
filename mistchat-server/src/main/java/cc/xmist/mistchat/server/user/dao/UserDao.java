@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.user.dao;
 
 import cc.xmist.mistchat.server.common.enums.ActiveType;
 import cc.xmist.mistchat.server.common.enums.Role;
+import cc.xmist.mistchat.server.common.enums.UserStatus;
 import cc.xmist.mistchat.server.common.util.JsonUtil;
 import cc.xmist.mistchat.server.user.entity.IpInfo;
 import cc.xmist.mistchat.server.user.model.entity.User;
@@ -33,13 +34,13 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
     }
 
     public User addUser(String username, String password, String name) {
-        User user = User.builder()
-                .username(username)
-                .password(password)
-                .role(Role.USER)
-                .activeStatus(ActiveType.OFF)
-                .name(name)
-                .build();
+        User user = new User();
+        user.setName(name);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRole(Role.USER);
+        user.setStatus(UserStatus.NORMAL);
+        user.setActiveStatus(ActiveType.OFF);
         save(user);
         return user;
     }
@@ -51,7 +52,9 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
     }
 
     public User getUser(Long uid) {
-        return getById(uid);
+        return lambdaQuery()
+                .eq(User::getId, uid)
+                .one();
     }
 
     public boolean modifyName(Long uid, String name) {

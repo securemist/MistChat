@@ -39,14 +39,13 @@ public abstract class AbstractMsgHandler<T> {
     public abstract void recall();
 
     public Message saveMsg(Long uid, ChatType chatType, Long chatId, ChatMessage message) {
-        T body = toBean(message);
+        T body = toBean(message.getBody());
         Message m = Message.builder()
                 .uid(uid)
                 .chatType(chatType)
                 .type(message.getType())
                 .chatId(chatId)
                 .build();
-
         customSaveMsg(m, body);
         return m;
     }

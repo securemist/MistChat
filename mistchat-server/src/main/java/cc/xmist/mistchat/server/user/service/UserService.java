@@ -54,16 +54,11 @@ public class UserService {
 
     public User login(String username, String password) {
         User user = userDao.getByUsername(username);
-        if (user == null) {
-            throw new BusinessException("用户名不存在");
-        }
-
-        if (!user.getPassword().equals(password)) {
-            throw new BusinessException("密码错误");
-        }
+        if (user == null) throw new BusinessException("用户名不存在");
+        if (!user.getPassword().equals(password)) throw new BusinessException("密码错误");
 
         String token = authService.login(user.getId());
-        log.info("用户 {} 登陆成功", user.getName());
+        user.setToken(token);
         return user;
     }
 
