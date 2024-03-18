@@ -3,12 +3,6 @@ package cc.xmist.mistchat.server.chat.dao;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.mapper.MessageMapper;
 import cc.xmist.mistchat.server.common.enums.ChatType;
-import cc.xmist.mistchat.server.common.util.Cursor;
-import cc.xmist.mistchat.server.common.util.CursorResult;
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

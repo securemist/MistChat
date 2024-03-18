@@ -1,9 +1,5 @@
 package cc.xmist.mistchat.server.socketio;
 
-import cc.xmist.mistchat.server.common.event.UserOfflineEvent;
-import cc.xmist.mistchat.server.common.event.UserOnlineEvent;
-import cc.xmist.mistchat.server.socketio.enums.SEvent;
-import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.Resource;
@@ -11,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-
-import java.net.InetSocketAddress;
 
 @Component
 @RequiredArgsConstructor

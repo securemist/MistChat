@@ -1,14 +1,10 @@
 package cc.xmist.mistchat.server.socketio;
 
-import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
-import cc.xmist.mistchat.server.socketio.enums.SEvent;
 import cc.xmist.mistchat.server.socketio.event.BaseEvent;
-import com.corundumstudio.socketio.SocketIOClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 @Component
 @RequiredArgsConstructor

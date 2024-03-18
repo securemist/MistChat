@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.chat.controller;
 
+import cc.xmist.mistchat.server.chat.model.resp.ContactListResp;
 import cc.xmist.mistchat.server.chat.service.ContactService;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.enums.ChatType;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import cc.xmist.mistchat.server.chat.model.resp.ContactListResp;
 
 @RestController
 @Tag(name = "会话接口")
@@ -22,7 +22,8 @@ public class ContactController {
 
     @GetMapping("/list")
     @Operation(summary = "会话列表")
-    public R<ContactListResp> list(Long uid) {
+    public R<ContactListResp> list() {
+        Long uid = RequestContext.getUid();
         ContactListResp res = contactService.getContactList(uid);
         return R.ok(res);
     }

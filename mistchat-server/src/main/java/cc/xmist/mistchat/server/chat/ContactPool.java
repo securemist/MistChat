@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.chat;
 
-import cc.xmist.mistchat.server.friend.entity.Friend;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

@@ -1,12 +1,8 @@
 package cc.xmist.mistchat.server.socketio.event;
 
 import cc.xmist.mistchat.server.socketio.enums.SEvent;
-import com.corundumstudio.socketio.SocketIOClient;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 public class AuthEvent extends BaseEvent {

@@ -2,9 +2,6 @@ package cc.xmist.mistchat.server.socketio.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Data

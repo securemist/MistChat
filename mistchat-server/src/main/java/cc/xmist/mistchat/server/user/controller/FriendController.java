@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.user.controller;
 
+import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.R;
 import cc.xmist.mistchat.server.friend.service.FriendService;
 import cc.xmist.mistchat.server.user.model.req.FriendApplyHandleReq;
@@ -24,34 +25,38 @@ public class FriendController {
 
     @PostMapping("/apply/add")
     @Operation(summary = "添加好友申请")
-    public R<Void> add(@RequestBody @Valid FriendApplyReq req, Long uid) {
+    public R<Void> add(@RequestBody @Valid FriendApplyReq req, ) {
         return R.ok(friendService.apply(uid, req));
     }
 
     @GetMapping("/rApply/list")
     @Operation(summary = "获取收到的好友申请")
-    public R<List<ReceivedApplyVo>> getReceivedApplyList(Long uid) {
+    public R<List<ReceivedApplyVo>> getReceivedApplyList() {
+        Long uid = RequestContext.getUid();
         List<ReceivedApplyVo> applyList = friendService.getReceivedApplyList(uid);
         return R.ok(applyList);
     }
 
     @GetMapping("/fApply/list")
     @Operation(summary = "获取发送出好友申请")
-    public R<List<ForwardApplyVo>> getForwardApplyList(Long uid) {
+    public R<List<ForwardApplyVo>> getForwardApplyList() {
+        Long uid = RequestContext.getUid();
         List<ForwardApplyVo> applyList = friendService.getForwardApplyList(uid);
         return R.ok(applyList);
     }
 
     @PostMapping("/apply/handle")
     @Operation(summary = "处理申请")
-    public R<Void> handle(@RequestBody @Valid FriendApplyHandleReq req, Long uid) {
+    public R<Void> handle(@RequestBody @Valid FriendApplyHandleReq req) {
+        Long uid = RequestContext.getUid();
         friendService.handleApply(uid, req);
         return R.ok();
     }
 
     @GetMapping("/list")
     @Operation(summary = "获取好友列表")
-    public R<List<SummaryUser>> getFriendList(Long uid) {
+    public R<List<SummaryUser>> getFriendList() {
+        Long uid = RequestContext.getUid();
         return R.ok(friendService.getFriendIdList(uid));
     }
 }

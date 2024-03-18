@@ -1,14 +1,12 @@
 package cc.xmist.mistchat.server.socketio;
 
-import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
-import cc.xmist.mistchat.server.user.dao.UserDao;
-import cc.xmist.mistchat.server.user.service.UserService;
-import cn.hutool.core.collection.CollectionUtil;
 import com.corundumstudio.socketio.SocketIOClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 

@@ -4,7 +4,6 @@ import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
 import cc.xmist.mistchat.server.chat.dao.GroupContactDao;
 import cc.xmist.mistchat.server.chat.entity.FriendContact;
 import cc.xmist.mistchat.server.chat.entity.GroupContact;
-import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.model.resp.ContactListResp;
 import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;

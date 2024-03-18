@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.user.controller;
 
+import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.R;
 import cc.xmist.mistchat.server.user.model.req.UidListReq;
 import cc.xmist.mistchat.server.user.model.resp.BadgeVo;
@@ -20,20 +21,23 @@ public class BadgeController {
 
     @Operation(summary = "当前用户徽章列表")
     @GetMapping("/list")
-    public R<List<BadgeVo>> getBadges(Long uid) {
+    public R<List<BadgeVo>> getBadges() {
+        Long uid = RequestContext.getUid();
         return R.ok(itemService.getBadgeList(uid));
     }
 
     @Operation(summary = "佩戴徽章")
     @PostMapping("wear/{badgeId}")
-    public R wearBadge(@PathVariable Long badgeId,Long uid) {
+    public R wearBadge(@PathVariable Long badgeId) {
+        Long uid = RequestContext.getUid();
         itemService.wearBadge(uid, badgeId);
         return R.ok();
     }
 
     @Operation(summary = "其他用户佩戴的徽章")
     @PostMapping("/another/list")
-    public R getUserBadgeInfo(@RequestBody UidListReq req,Long uid) {
+    public R getUserBadgeInfo(@RequestBody UidListReq req) {
+        Long uid = RequestContext.getUid();
         return R.ok(itemService.getWaringBadgeInfo(req.getUidList()));
     }
 

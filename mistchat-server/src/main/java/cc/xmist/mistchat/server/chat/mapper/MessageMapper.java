@@ -2,9 +2,6 @@ package cc.xmist.mistchat.server.chat.mapper;
 
 import cc.xmist.mistchat.server.chat.entity.Message;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * <p>
