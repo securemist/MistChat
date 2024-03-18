@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ActiveType {
+public enum ActiveStatus {
     ON(1),
     OFF(0);
     @EnumValue

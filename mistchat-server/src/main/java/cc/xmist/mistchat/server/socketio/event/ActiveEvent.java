@@ -1,19 +1,15 @@
 package cc.xmist.mistchat.server.socketio.event;
 
-import cc.xmist.mistchat.server.common.enums.Role;
+import cc.xmist.mistchat.server.common.enums.ActiveStatus;
 import cc.xmist.mistchat.server.socketio.enums.SEvent;
-import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
-import java.util.List;
-
-public class OnlineEvent extends BaseEvent {
+public class ActiveEvent extends BaseEvent {
     private Data data;
 
-    public OnlineEvent(Long uid) {
-        super(SEvent.ONLINE);
-        this.data = new Data(uid);
+    public ActiveEvent(Long uid, ActiveStatus status) {
+        super(SEvent.ACTIVE);
+        this.data = new Data(uid, status);
     }
 
     @Override
@@ -25,5 +21,6 @@ public class OnlineEvent extends BaseEvent {
     @AllArgsConstructor
     public static class Data {
         private Long uid;
+        private ActiveStatus status;
     }
 }

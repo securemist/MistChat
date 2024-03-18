@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.user.model.entity;
 
-import cc.xmist.mistchat.server.common.enums.ActiveType;
+import cc.xmist.mistchat.server.common.enums.ActiveStatus;
 import cc.xmist.mistchat.server.common.enums.Gender;
 import cc.xmist.mistchat.server.common.enums.Role;
 import cc.xmist.mistchat.server.common.enums.UserStatus;
@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -83,7 +82,7 @@ public class User {
      * 在线状态
      */
     @TableField("active_status")
-    private ActiveType activeStatus;
+    private ActiveStatus activeStatus;
 
     /**
      * 最后上下线时间

@@ -4,7 +4,6 @@ import org.apache.http.auth.AUTH;
 
 public interface SEvent {
     String MESSAGE = "MESSAGE";
-    String ONLINE = "ONLINE";
-    String OFFLINE = "OFFLINE";
+    String ACTIVE = "ACTIVE";
     String AUTH = "AUTH";
 }

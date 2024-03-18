@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.user.dao;
 
-import cc.xmist.mistchat.server.common.enums.ActiveType;
+import cc.xmist.mistchat.server.common.enums.ActiveStatus;
 import cc.xmist.mistchat.server.common.enums.Role;
 import cc.xmist.mistchat.server.common.enums.UserStatus;
 import cc.xmist.mistchat.server.common.util.JsonUtil;
@@ -40,7 +40,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
         user.setPassword(password);
         user.setRole(Role.USER);
         user.setStatus(UserStatus.NORMAL);
-        user.setActiveStatus(ActiveType.OFF);
+        user.setActiveStatus(ActiveStatus.OFF);
         save(user);
         return user;
     }
@@ -80,7 +80,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
 
     public void online(Long uid) {
         lambdaUpdate()
-                .set(User::getActiveStatus, ActiveType.ON)
+                .set(User::getActiveStatus, ActiveStatus.ON)
                 .set(User::getLastOptTime, new Date())
                 .eq(User::getId, uid)
                 .update();
