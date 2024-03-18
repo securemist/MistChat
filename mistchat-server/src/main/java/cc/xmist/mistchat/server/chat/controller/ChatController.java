@@ -1,8 +1,8 @@
 package cc.xmist.mistchat.server.chat.controller;
 
 import cc.xmist.mistchat.server.chat.entity.Message;
+import cc.xmist.mistchat.server.chat.req.ChatMessageRequest;
 import cc.xmist.mistchat.server.chat.service.MessageService;
-import cc.xmist.mistchat.server.chat.model.req.ChatMessageReq;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.util.CursorResult;
@@ -29,20 +29,24 @@ public class ChatController {
 
     @PostMapping("/send")
     @Operation(summary = "发送消息")
-    public R sendMsg(@RequestBody ChatMessageReq req) {
+    public R sendMsg(@RequestParam ChatType chatType,
+                     @RequestParam Long chatId,
+                     @RequestBody ChatMessageRequest req) {
         Long uid = RequestContext.getUid();
-        messageService.send(uid, req);
+        messageService.send(uid, chatType, chatId, req);
         return R.ok();
     }
 
     @GetMapping("/list/page")
     @Operation(summary = "消息记录")
-    public R<CursorResult<Message>> list(@RequestParam("chatId") Long chatId,
+    public R<CursorResult<Message>> list(@RequestParam Long chatId,
                                          @RequestParam ChatType chatType,
                                          @RequestParam(required = false) String cursor,
                                          @RequestParam Integer pageSize) {
         CursorResult result = messageService.list(chatId, chatType, cursor, pageSize);
         return R.ok(result);
     }
+
+
 }
 

@@ -26,11 +26,4 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
                 .last("LIMIT " + pageSize)
                 .list();
     }
-
-    /**
-     * @deprecated  Mybatis实现
-     */
-    public List<Message> listCursorable2(Long chatId, ChatType chatType, String cursor, Integer pageSize) {
-        return baseMapper.selectByIdCursorable(chatId, chatType.getCode(), cursor, pageSize);
-    }
 }

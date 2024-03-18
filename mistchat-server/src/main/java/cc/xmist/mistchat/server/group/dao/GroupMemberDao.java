@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +96,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
     public void addMembers(Long groupId, List<Long> uidList) {
         List<GroupMember> groupMembers = uidList.stream()
                 .map(uid -> {
-                    return  GroupMember.builder()
+                    return GroupMember.builder()
                             .groupId(groupId)
                             .uid(uid)
                             .build();
@@ -152,5 +153,19 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
                 .list();
 
         return list.stream().map(GroupMember::getGroupId).collect(Collectors.toList());
+    }
+
+    /**
+     * 更新用户在群聊里的活跃状态
+     *
+     * @param uid
+     * @param chatId
+     */
+    public void updateActive(Long uid, Long groupId) {
+        lambdaUpdate()
+                .set(GroupMember::getActiveTime, LocalDateTime.now())
+                .eq(GroupMember::getGroupId, groupId)
+                .eq(GroupMember::getUid, uid)
+                .update();
     }
 }

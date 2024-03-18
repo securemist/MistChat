@@ -1,10 +1,10 @@
-package cc.xmist.mistchat.server.chat.model;
+package cc.xmist.mistchat.server.chat.req;
 
 import cc.xmist.mistchat.server.common.enums.MessageType;
 import lombok.Data;
 
 @Data
-public class ChatMessage {
+public class ChatMessageRequest {
     protected MessageType type;
     protected Object body;
 }

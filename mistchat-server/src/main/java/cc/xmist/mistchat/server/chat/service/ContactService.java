@@ -6,13 +6,12 @@ import cc.xmist.mistchat.server.chat.entity.FriendContact;
 import cc.xmist.mistchat.server.chat.entity.GroupContact;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.model.resp.ContactListResp;
+import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +19,6 @@ public class ContactService {
     private final FriendContactDao friendContactDao;
     private final GroupContactDao groupContactDao;
     private final GroupMemberDao groupMemberDao;
-
 
 
     /**
@@ -41,12 +39,29 @@ public class ContactService {
                 .build();
     }
 
-    public void updateFriendContact(Long uid, Long friendId, Message message) {
-
+    /**
+     * 更新会话
+     *
+     * @param uid
+     * @param chatType
+     * @param chatId
+     * @param msgId
+     */
+    public void updateContact(Long uid, ChatType chatType, Long chatId, Long msgId) {
+        switch (chatType) {
+            case FRIEND -> friendContactDao.updateActive(uid, chatId, msgId);
+            case GROUP -> {
+                groupMemberDao.updateActive(uid, chatId);
+                groupContactDao.updateActive(uid, chatId, msgId);
+            }
+        }
     }
 
-    public void updateGroupContact(Long uid,Long groupId, Message message){
-
+    // 用户读取消息
+    public void readMsg(Long uid, ChatType chatType, Long chatId, Long msgId) {
+        switch (chatType) {
+            case FRIEND -> friendContactDao.readMsg(uid,chatId,msgId);
+            case GROUP -> groupContactDao.readMsg(uid,chatId,msgId);
+        }
     }
-
 }

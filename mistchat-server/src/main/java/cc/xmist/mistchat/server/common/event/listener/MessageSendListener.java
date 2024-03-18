@@ -11,6 +11,7 @@ import cc.xmist.mistchat.server.socketio.EventEmitter;
 import cc.xmist.mistchat.server.socketio.event.MessageEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class MessageSendListener {
     }
 
     @EventListener(MessageSendEvent.class)
+    @Async
     public void updateContact(MessageSendEvent event) {
         Message message = event.getMessage();
         Long chatId = event.getChatId();
@@ -53,9 +55,6 @@ public class MessageSendListener {
 
         Long uid = message.getUid();
 
-        switch (chatType) {
-            case FRIEND: contactService.updateFriendContact(uid,chatId, message);
-            case GROUP: contactService.updateGroupContact(uid,chatId, message);
-        }
+        contactService.updateContact(uid, chatType, chatId, message.getId());
     }
 }

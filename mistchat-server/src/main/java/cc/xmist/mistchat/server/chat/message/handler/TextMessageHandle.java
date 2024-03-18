@@ -1,6 +1,7 @@
 package cc.xmist.mistchat.server.chat.message.handler;
 
 import cc.xmist.mistchat.server.chat.entity.Message;
+import cc.xmist.mistchat.server.chat.entity.MessageExtra;
 import cc.xmist.mistchat.server.chat.message.AbstractMsgHandler;
 import cc.xmist.mistchat.server.chat.message.req.TextMessageRequest;
 import cc.xmist.mistchat.server.common.enums.MessageType;
@@ -15,7 +16,10 @@ public class TextMessageHandle extends AbstractMsgHandler<TextMessageRequest> {
 
     @Override
     protected Message customSaveMsg(Message message, TextMessageRequest data) {
-        message.setExtra(data);
+        MessageExtra extra = MessageExtra.builder()
+                .content(data.getContent())
+                .build();
+        message.setExtra(extra);
         messageDao.save(message);
         return message;
     }

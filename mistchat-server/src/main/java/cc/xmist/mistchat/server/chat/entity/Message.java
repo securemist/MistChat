@@ -6,9 +6,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,10 +22,11 @@ import java.time.LocalDateTime;
  * @author securemist
  * @since 2024-01-26
  */
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@TableName("message")
+@TableName(value = "message",autoResultMap = true)
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,8 +70,8 @@ public class Message implements Serializable {
     @TableField("type")
     private MessageType type;
 
-    @TableField("extra")
-    private Object extra;
+    @TableField(value = "extra",typeHandler = JacksonTypeHandler.class)
+    private MessageExtra extra;
 
     /**
      * 创建时间
