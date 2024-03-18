@@ -25,7 +25,8 @@ public class FriendController {
 
     @PostMapping("/apply/add")
     @Operation(summary = "添加好友申请")
-    public R<Void> add(@RequestBody @Valid FriendApplyReq req, ) {
+    public R<Void> add(@RequestBody @Valid FriendApplyReq req ) {
+        Long uid = RequestContext.getUid();
         return R.ok(friendService.apply(uid, req));
     }
 
