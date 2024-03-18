@@ -1,7 +1,7 @@
 package cc.xmist.mistchat.server.common.event;
 
 import cc.xmist.mistchat.server.chat.entity.Message;
-import cc.xmist.mistchat.server.chat.service.ChatService;
+import cc.xmist.mistchat.server.chat.service.MessageService;
 import cc.xmist.mistchat.server.common.enums.ChatType;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
@@ -12,7 +12,7 @@ public class MessageSendEvent extends ApplicationEvent {
     private Long chatId; // 单聊为对方 uid，群聊为 groupId
     private ChatType chatType;
 
-    public MessageSendEvent(ChatService source, ChatType type, Long chatId,Message message) {
+    public MessageSendEvent(MessageService source, ChatType type, Long chatId, Message message) {
         super(source);
         this.message = message;
         this.chatId = chatId;

@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cc.xmist.mistchat.server.chat.model.mapper.MessageMapper">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.xmist.mistchat.server.chat.mapper.MessageMapper">
+
+    <resultMap id="BaseResultMap" type="cc.xmist.mistchat.server.chat.entity.Message">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="chat_id" column="chat_id" jdbcType="BIGINT"/>
+        <result property="chat_type" column="chat_type" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="BIGINT"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="reply_msg_id" column="reply_msg_id" jdbcType="BIGINT"/>
+        <result property="reply_gap" column="reply_gap" jdbcType="BIGINT"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="extra" column="extra" jdbcType="OTHER"/>
+        <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,chat_id,chat_type,
+        uid,content,reply_msg_id,
+        reply_gap,`type`,extra,
+        create_time,update_time
+    </sql>
+
+    <select id="selectByIdCursorable" resultType="cc.xmist.mistchat.server.chat.entity.Message">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM message
+        WHERE chat_id = #{chatId} AND chat_type = #{chatType}
+        <if test="cursor != null">
+            AND id &lt; #{cursor}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{pageSize};
+    </select>
 
 </mapper>

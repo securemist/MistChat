@@ -2,10 +2,13 @@ package cc.xmist.mistchat.server.chat.mapper;
 
 import cc.xmist.mistchat.server.chat.entity.Message;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author securemist
@@ -13,4 +16,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface MessageMapper extends BaseMapper<Message> {
 
+    List<Message> selectByIdCursorable(@Param("chatId") Long chatId,
+                                 @Param("chatType") Integer chatType,
+                                 @Param("cursor") Long cursor,
+                                 @Param("pageSize") Long pageSize);
 }

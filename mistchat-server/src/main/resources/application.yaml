@@ -4,7 +4,7 @@ server:
     context-path: /api/v1
 
 ws:
-  enabled: true
+  enabled: false
   port: 8201
   context: /
 
@@ -14,7 +14,7 @@ logging:
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
   configuration:
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
   type-aliases-package: cc.**.entity
 

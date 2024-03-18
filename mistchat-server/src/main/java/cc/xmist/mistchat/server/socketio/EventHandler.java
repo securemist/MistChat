@@ -5,10 +5,8 @@ import cc.xmist.mistchat.server.common.event.UserOnlineEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
 import cc.xmist.mistchat.server.socketio.enums.REvent;
 import cc.xmist.mistchat.server.socketio.enums.SEvent;
-import cc.xmist.mistchat.server.socketio.enums.SocketResponseType;
 import cc.xmist.mistchat.server.socketio.event.AuthEvent;
 import cc.xmist.mistchat.server.socketio.model.LoginRequest;
-import cc.xmist.mistchat.server.socketio.model.SocketResponse;
 import cc.xmist.mistchat.server.user.model.entity.User;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.UserService;
@@ -23,7 +21,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
-import java.util.Arrays;
 
 @Component
 @Slf4j
