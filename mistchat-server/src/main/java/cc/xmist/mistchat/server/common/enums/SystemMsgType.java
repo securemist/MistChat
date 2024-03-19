@@ -10,7 +10,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SystemMsgType implements BaseEnum {
 
-    BE_FRIEND(1, "你们已经成为好友了，开始聊天吧");
+    BE_FRIEND(1, "你们已经成为好友了，开始聊天吧"),
+    JOIN_GROUP(2,"您已加入群聊，打个招呼吧");
 
     @EnumValue
     @JsonValue

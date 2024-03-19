@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.friend.service;
 
 import cc.xmist.mistchat.server.chat.dao.ContactDao;
 import cc.xmist.mistchat.server.chat.dao.MessageDao;
+import cc.xmist.mistchat.server.chat.service.ContactService;
 import cc.xmist.mistchat.server.chat.service.MessageService;
 import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import cc.xmist.mistchat.server.common.enums.ApplyType;
@@ -29,7 +30,7 @@ public class FriendService {
     private final FriendApplyDao friendApplyDao;
     private final MessageDao messageDao;
     private final ApplicationEventPublisher eventPublisher;
-    private final ContactDao contactDao;
+    private final ContactService contactService;
 
 
     /**
@@ -65,14 +66,8 @@ public class FriendService {
 
         // 创建好友表记录
         Friend friend = friendDao.create(uid, targetUid);
-
-        // 创建两人的会话
-        Long[] contactIds = contactDao.initOnFriend(uid, targetUid);
-
-        // 发送两人成为好友的系统消息
-        Long[] msgIds = messageDao.initOnFriend(uid, contactIds[0], targetUid, contactIds[1]);
-        // 更新两人会话的 lasg_msg_id
-        contactDao.initLastMsgId(contactIds[0], msgIds[0], contactIds[1], msgIds[1]);
+        // 初始化会话信息
+        contactService.initFriend(uid, targetUid);
 
         eventPublisher.publishEvent(new FriendApplyEvent(this, apply)); // TODO
     }

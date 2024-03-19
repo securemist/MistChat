@@ -10,8 +10,10 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageDao extends ServiceImpl<MessageMapper, Message> {
@@ -25,25 +27,60 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
                 .list();
     }
 
-    public Long[] initOnFriend(Long uid, Long contactId1, Long targetUid, Long contactId2) {
+    public List<Long> initGroupMsg(List<Long> contactIds) {
+        MessageExtra extra = MessageExtra.builder()
+                .sysMsgExtra(new SystemMsgExtra(SystemMsgType.JOIN_GROUP))
+                .build();
+
+        ArrayList<Long> list = new ArrayList<>();
+        List<Message> messages = contactIds.stream().map(contactId -> {
+            return Message.builder()
+                    .type(MessageType.SYSTEM)
+                    .extra(extra)
+                    .contactId(contactId)
+                    .build();
+        }).collect(Collectors.toList());
+
+        saveBatch(messages);
+
+        return messages.stream()
+                .map(Message::getId)
+                .collect(Collectors.toList());
+    }
+
+    public List<Long> initSystemMsg(List<Long> contactIds, SystemMsgType msgType) {
+        MessageExtra extra = MessageExtra.builder()
+                .sysMsgExtra(new SystemMsgExtra(msgType))
+                .build();
+
+        List<Message> messages = contactIds.stream().map(contactId -> {
+            return Message.builder()
+                    .type(MessageType.SYSTEM)
+                    .extra(extra)
+                    .contactId(contactId)
+                    .build();
+        }).collect(Collectors.toList());
+        saveBatch(messages);
+        return messages.stream()
+                .map(Message::getId)
+                .collect(Collectors.toList());
+    }
+
+    public List<Long> initFriendMsg(List<Long> contactIds) {
         MessageExtra extra = MessageExtra.builder()
                 .sysMsgExtra(new SystemMsgExtra(SystemMsgType.BE_FRIEND))
                 .build();
 
-        Message m1 = Message.builder()
-                .type(MessageType.SYSTEM)
-                .extra(extra)
-                .contactId(contactId1)
-                .build();
-
-        Message m2 = Message.builder()
-                .type(MessageType.SYSTEM)
-                .extra(extra)
-                .contactId(contactId2)
-                .build();
-
-        saveBatch(Arrays.asList(m1, m2));
-
-        return new Long[]{m1.getId(),m2.getId()};
+        List<Message> messages = contactIds.stream().map(contactId -> {
+            return Message.builder()
+                    .type(MessageType.SYSTEM)
+                    .extra(extra)
+                    .contactId(contactId)
+                    .build();
+        }).collect(Collectors.toList());
+        saveBatch(messages);
+        return messages.stream()
+                .map(Message::getId)
+                .collect(Collectors.toList());
     }
 }

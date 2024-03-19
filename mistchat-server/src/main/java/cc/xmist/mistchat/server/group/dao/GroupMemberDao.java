@@ -159,7 +159,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * 更新用户在群聊里的活跃时间
      *
      * @param uid
-     * @param chatId
+     * @param groupId
      */
     public void updateActive(Long uid, Long groupId) {
         lambdaUpdate()
@@ -167,5 +167,23 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
                 .eq(GroupMember::getGroupId, groupId)
                 .eq(GroupMember::getUid, uid)
                 .update();
+    }
+
+    /**
+     * 用户加入群聊时初始化成员信息
+     *
+     * @param groupId
+     * @param uids
+     */
+    public void initMembers(Long groupId, List<Long> uids) {
+        List<GroupMember> members = uids.stream().map(uid -> {
+            return GroupMember.builder()
+                    .groupId(groupId)
+                    .uid(uid)
+                    .activeTime(LocalDateTime.now())
+                    .build();
+        }).collect(Collectors.toList());
+
+        saveBatch(members);
     }
 }

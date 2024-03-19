@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +44,20 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
         if (!ok) throw new IlleglaException();
     }
 
+
+    /**
+     * 列出用户所有的会话
+     *
+     * @param uid
+     * @return
+     */
+    public List<Contact> listByUid(Long uid) {
+        return lambdaQuery()
+                .eq(Contact::getUid, uid)
+                .list();
+    }
+
+
     /**
      * 两个用户成为好友，创建会话
      *
@@ -52,7 +65,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * @param uid2
      * @return uid <-> 两个人的会话 id
      */
-    public Long[] initOnFriend(Long uid1, Long uid2) {
+    public List<Long> initFriendContact(Long uid1, Long uid2) {
         Contact c1 = Contact.builder()
                 .uid(uid1)
                 .chatId(uid2)
@@ -67,16 +80,18 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
 
         saveBatch(Arrays.asList(c1, c2));
 
-        return new Long[]{c1.getId(), c2.getId()};
+        return Arrays.asList(c1.getId(),c2.getId());
     }
 
+
     /**
-     * 群聊首次创建时，初始化会话
+     * 创建群聊时，初始话所有成员的会话信息
      *
      * @param groupId
      * @param uids
+     * @return
      */
-    public void initOnGroup(Long groupId, List<Long> uids) {
+    public List<Long> initGroupContacts(Long groupId, List<Long> uids) {
         List<Contact> contacts = uids.stream().map(uid -> {
             return Contact.builder()
                     .uid(uid)
@@ -86,49 +101,25 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
         }).collect(Collectors.toList());
 
         saveBatch(contacts);
-    }
 
-
-    /**
-     * 列出用户所有的会话
-     *
-     * @param uid
-     * @return
-     */
-    public List<Contact> listByUid(Long uid) {
-        return lambdaQuery()
-                .eq(Contact::getUid, uid)
-                .list();
+        List<Long> list = contacts.stream()
+                .map(Contact::getId)
+                .collect(Collectors.toList());
+        return list;
     }
 
     /**
-     * {@link MessageDao#initOnFriend(Long, Long, Long, Long)}
+     * 添加好友或加入群聊，发完系统问候语后，将 msgId 设置为 last_msg_id
      *
-     * @param list
+     * @param contactIds
+     * @param msgIds
      */
-    public void initLastMsgId(Long contactId1, Long lastMsgId1, Long contactId2, Long lastMsgId2) {
-        lambdaUpdate()
-                .set(Contact::getLastMsgId, lastMsgId1)
-                .set(Contact::getReadMsgId,lastMsgId1)
-                .eq(Contact::getId, contactId1)
-                .update();
-
-        lambdaUpdate()
-                .set(Contact::getLastMsgId, lastMsgId2)
-                .set(Contact::getReadMsgId,lastMsgId2)
-                .eq(Contact::getId, contactId2)
-                .update();
-    }
-
-
-    public void initLastMsgId(List<Long[]> list) {
-        lambdaUpdate()
-                .set(Contact::getLastMsgId, list.get(0)[1])
-                .eq(Contact::getId, list.get(0)[0])
-                .update();
-        lambdaUpdate()
-                .set(Contact::getLastMsgId, list.get(1)[1])
-                .eq(Contact::getId, list.get(1)[0])
-                .update();
+    public void initLastMsgId(List<Long> contactIds, List<Long> msgIds) {
+        for (int i = 0; i < contactIds.size(); i++) {
+            lambdaUpdate()
+                    .set(Contact::getLastMsgId, msgIds.get(i))
+                    .eq(Contact::getId, contactIds.get(i))
+                    .update();
+        }
     }
 }
