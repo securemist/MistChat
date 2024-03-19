@@ -33,7 +33,7 @@ public class MessageService {
         Contact contact = contactDao.getById(contactId);
         Long uid = contact.getUid();
 
-        Message m = messageHandler.saveMsg(uid, contactId, msg.getType(), msg);
+        Message m = messageHandler.saveMsg(contactId, msg.getType(), msg);
         eventPublisher.publishEvent(new MessageSendEvent(this, uid, contact, m));
     }
 

@@ -1,6 +1,8 @@
 package cc.xmist.mistchat.server.friend.service;
 
 import cc.xmist.mistchat.server.chat.dao.ContactDao;
+import cc.xmist.mistchat.server.chat.dao.MessageDao;
+import cc.xmist.mistchat.server.chat.service.MessageService;
 import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import cc.xmist.mistchat.server.common.enums.ApplyType;
 import cc.xmist.mistchat.server.common.event.FriendApplyEvent;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +27,7 @@ public class FriendService {
     private final FriendDao friendDao;
     private final UserService userService;
     private final FriendApplyDao friendApplyDao;
-    //    private final FriendContactDao friendContactDao;
+    private final MessageDao messageDao;
     private final ApplicationEventPublisher eventPublisher;
     private final ContactDao contactDao;
 
@@ -59,8 +62,18 @@ public class FriendService {
     private void friendApplyPass(FriendApply apply) {
         Long uid = apply.getUid();
         Long targetUid = apply.getTargetUid();
+
+        // 创建好友表记录
         Friend friend = friendDao.create(uid, targetUid);
-        contactDao.initOnFriend(uid, targetUid);
+
+        // 创建两人的会话
+        Long[] contactIds = contactDao.initOnFriend(uid, targetUid);
+
+        // 发送两人成为好友的系统消息
+        Long[] msgIds = messageDao.initOnFriend(uid, contactIds[0], targetUid, contactIds[1]);
+        // 更新两人会话的 lasg_msg_id
+        contactDao.initLastMsgId(contactIds[0], msgIds[0], contactIds[1], msgIds[1]);
+
         eventPublisher.publishEvent(new FriendApplyEvent(this, apply)); // TODO
     }
 

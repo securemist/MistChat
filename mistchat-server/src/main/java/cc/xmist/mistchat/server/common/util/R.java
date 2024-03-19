@@ -1,12 +1,16 @@
 package cc.xmist.mistchat.server.common.util;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class R<T> {
     private static Integer SUCCESS_CODE = 0;
+    @Schema(maximum = "0")
     private Integer code;
+    @Schema(nullable = true)
     private String msg;
+    @Schema(nullable = true)
     private T data;
 
     private R(Integer code, String msg, T data) {

@@ -39,12 +39,6 @@ public class Message implements Serializable {
     private Long contactId;
 
     /**
-     * 发送者
-     */
-    @TableField("uid")
-    private Long uid;
-
-    /**
      * 消息内容
      */
     @TableField("content")

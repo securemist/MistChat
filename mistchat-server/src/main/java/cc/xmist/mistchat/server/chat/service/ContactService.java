@@ -30,7 +30,6 @@ public class ContactService {
             Integer unread = 0;
             if (!(c.getReadMsgId() == null || c.getLastMsgId() == null
                     || c.getLastMsgId().equals(c.getReadMsgId()))) {
-                messageService.getUnreadCount();
             }
             messageService.getUnreadCount();
             return ContactResponse.Contact.builder()
@@ -63,7 +62,6 @@ public class ContactService {
 
     // 用户读取消息
     public void readMsg(Long uid, Long contactId, Long msgId) {
-        contactDao.updateReading(uid, contactId,msgId);
+        contactDao.updateReading(uid, contactId, msgId);
     }
-
 }

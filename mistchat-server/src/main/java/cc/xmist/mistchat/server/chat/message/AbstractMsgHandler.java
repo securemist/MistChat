@@ -46,14 +46,14 @@ public abstract class AbstractMsgHandler<T> {
         return BeanUtil.toBean(body, bodyClass);
     }
 
-    public Message saveMsg(Long uid, Long contactId, MessageType type, ChatMessageRequest msg) {
+    public Message saveMsg( Long contactId, MessageType type, ChatMessageRequest msg) {
         T body = toBean(msg.getBody());
         Message m = Message.builder()
-                .uid(uid)
                 .contactId(contactId)
                 .type(msg.getType())
                 .build();
-        customSaveMsg(m, body);
+        Message message = customSaveMsg(m, body);
+        messageDao.save(message);
         return m;
     }
 }

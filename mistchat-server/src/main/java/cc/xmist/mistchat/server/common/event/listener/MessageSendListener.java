@@ -46,7 +46,7 @@ public class MessageSendListener {
     @Async
     public void updateContact(MessageSendEvent event) {
         Message message = event.getMessage();
-        Long uid = message.getUid();
+        Long uid = event.getUid();
         Contact contact = event.getContact();
 
         contactService.updateContact(uid, contact, message.getId());

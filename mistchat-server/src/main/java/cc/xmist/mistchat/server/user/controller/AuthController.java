@@ -32,7 +32,7 @@ public class AuthController {
 
     @PostMapping("/public/login")
     @Operation(summary = "登录")
-    public R login(@RequestBody LoginReq loginReq) {
+    public R<String> login(@RequestBody LoginReq loginReq) {
         User user = userService.login(loginReq.getUsername(), loginReq.getPassword());
         // 签发token
         String token = authService.login(user.getId());

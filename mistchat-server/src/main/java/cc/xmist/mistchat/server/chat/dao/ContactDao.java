@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,9 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * 用户读取消息的会话更新
      * 某一个用户在某一个会话读取某个消息，如果会话的实际 uid 与请求的 uid 不符，属于非法操作，操作别人的接口
      *
-     * @param uid 请求中的 uid
+     * @param uid       请求中的 uid
      * @param contactId 用户读消息时自己所处的 contactId，不是消息发送者 contactId
-     * @param msgId 消息 id
+     * @param msgId     消息 id
      */
     public void updateReading(Long uid, Long contactId, Long msgId) {
         boolean ok = lambdaUpdate()
@@ -49,8 +50,9 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      *
      * @param uid1
      * @param uid2
+     * @return uid <-> 两个人的会话 id
      */
-    public void initOnFriend(Long uid1, Long uid2) {
+    public Long[] initOnFriend(Long uid1, Long uid2) {
         Contact c1 = Contact.builder()
                 .uid(uid1)
                 .chatId(uid2)
@@ -64,6 +66,8 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
                 .build();
 
         saveBatch(Arrays.asList(c1, c2));
+
+        return new Long[]{c1.getId(), c2.getId()};
     }
 
     /**
@@ -97,4 +101,34 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
                 .list();
     }
 
+    /**
+     * {@link MessageDao#initOnFriend(Long, Long, Long, Long)}
+     *
+     * @param list
+     */
+    public void initLastMsgId(Long contactId1, Long lastMsgId1, Long contactId2, Long lastMsgId2) {
+        lambdaUpdate()
+                .set(Contact::getLastMsgId, lastMsgId1)
+                .set(Contact::getReadMsgId,lastMsgId1)
+                .eq(Contact::getId, contactId1)
+                .update();
+
+        lambdaUpdate()
+                .set(Contact::getLastMsgId, lastMsgId2)
+                .set(Contact::getReadMsgId,lastMsgId2)
+                .eq(Contact::getId, contactId2)
+                .update();
+    }
+
+
+    public void initLastMsgId(List<Long[]> list) {
+        lambdaUpdate()
+                .set(Contact::getLastMsgId, list.get(0)[1])
+                .eq(Contact::getId, list.get(0)[0])
+                .update();
+        lambdaUpdate()
+                .set(Contact::getLastMsgId, list.get(1)[1])
+                .eq(Contact::getId, list.get(1)[0])
+                .update();
+    }
 }
