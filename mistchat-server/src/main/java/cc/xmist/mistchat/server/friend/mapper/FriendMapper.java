@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Param;
  * @since 2024-01-27
  */
 public interface FriendMapper extends BaseMapper<Friend> {
-    boolean isFriend(@Param("uid1") Long uid1, @Param("uid2") Long uid2);
+
 }

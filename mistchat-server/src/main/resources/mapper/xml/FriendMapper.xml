@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.xmist.mistchat.server.friend.mapper.FriendMapper">
-    <select id="isFriend" resultType="boolean">
-        SELECT COUNT(`id`) != 0
-        FROM user_friend
-        WHERE uid = #{uid1}
-          AND target_uid = #{uid2}
-           OR uid = #{uid2}
-          AND target_uid = ${uid1}
-          AND delete_time IS NULL;
-    </select>
 </mapper>

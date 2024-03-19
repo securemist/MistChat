@@ -47,12 +47,21 @@ public class FriendDao extends ServiceImpl<FriendMapper, Friend> {
 
     public Friend get(Long uid, Long targetUid) {
         return lambdaQuery()
-                .eq(Friend::getUid1, Math.min(uid,targetUid))
-                .eq(Friend::getUid2,Math.max(uid,targetUid))
+                .eq(Friend::getUid1, Math.min(uid, targetUid))
+                .eq(Friend::getUid2, Math.max(uid, targetUid))
                 .one();
     }
 
     public boolean isFriend(Long uid, Long targetUid) {
-        return friendMapper.isFriend(uid,targetUid);
+        return lambdaQuery()
+                .select(Friend::getId)
+                .eq(Friend::getUid1, uid)
+                .eq(Friend::getUid2, targetUid)
+                .isNotNull(Friend::getDeleteTime)
+                .or(wrapper -> {
+                    wrapper.eq(Friend::getUid1, targetUid)
+                            .eq(Friend::getUid2, uid);
+                })
+                .count() != 0;
     }
 }
