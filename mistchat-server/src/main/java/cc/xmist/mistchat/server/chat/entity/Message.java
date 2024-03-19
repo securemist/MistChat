@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@TableName(value = "message",autoResultMap = true)
+@TableName(value = "message", autoResultMap = true)
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,14 +35,8 @@ public class Message implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 房间号
-     */
-    @TableField("chat_id")
-    private Long chatId;
-
-    @TableField("chat_type")
-    private ChatType chatType;
+    @TableField("contact_id")
+    private Long contactId;
 
     /**
      * 发送者
@@ -71,7 +65,7 @@ public class Message implements Serializable {
     @TableField("type")
     private MessageType type;
 
-    @TableField(value = "extra",typeHandler = JacksonTypeHandler.class)
+    @TableField(value = "extra", typeHandler = JacksonTypeHandler.class)
     private MessageExtra extra;
 
     /**

@@ -1,6 +1,8 @@
 package cc.xmist.mistchat.server.chat.service;
 
+import cc.xmist.mistchat.server.chat.dao.ContactDao;
 import cc.xmist.mistchat.server.chat.dao.MessageDao;
+import cc.xmist.mistchat.server.chat.entity.Contact;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.message.AbstractMsgHandler;
 import cc.xmist.mistchat.server.chat.message.MessageHandleFactory;
@@ -22,19 +24,22 @@ import java.util.List;
 public class MessageService {
     private final ApplicationEventPublisher eventPublisher;
     private final MessageDao messageDao;
+    private final ContactDao contactDao;
 
     // 发送消息
-    public void send(Long uid, ChatType chatType, Long chatId, ChatMessageRequest msg) {
+    public void send(Long contactId, ChatMessageRequest msg) {
         AbstractMsgHandler messageHandler = MessageHandleFactory.getHandle(msg.getType());
 
-        Message m = messageHandler.saveMsg(uid,chatType, msg.getType(), chatId, msg);
+        Contact contact = contactDao.getById(contactId);
+        Long uid = contact.getUid();
 
-        eventPublisher.publishEvent(new MessageSendEvent(this, chatType, chatId, m));
+        Message m = messageHandler.saveMsg(uid, contactId, msg.getType(), msg);
+        eventPublisher.publishEvent(new MessageSendEvent(this, uid, contact, m));
     }
 
     // 某个会话的消息列表
-    public CursorResult list(Long chatId, ChatType chatType, String cursor, Integer pageSize) {
-        List<Message> data = messageDao.listCursorable(chatId, chatType, cursor, pageSize);
+    public CursorResult list(Long contactId, String cursor, Integer pageSize) {
+        List<Message> data = messageDao.listCursorable(contactId, cursor, pageSize);
 
         Boolean isLast = false;
         String newCursor = null;

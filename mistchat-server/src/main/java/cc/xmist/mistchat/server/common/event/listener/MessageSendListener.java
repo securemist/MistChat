@@ -1,5 +1,7 @@
 package cc.xmist.mistchat.server.common.event.listener;
 
+import cc.xmist.mistchat.server.chat.dao.ContactDao;
+import cc.xmist.mistchat.server.chat.entity.Contact;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.service.ContactService;
 import cc.xmist.mistchat.server.common.enums.ChatType;
@@ -22,19 +24,17 @@ public class MessageSendListener {
     private final EventEmitter eventEmitter;
     private final ContactService contactService;
     private final GroupMemberDao groupMemberDao;
+    private final ContactDao contactDao;
 
     @EventListener(MessageSendEvent.class)
     public void send(MessageSendEvent event) {
         Message message = event.getMessage();
-        List<Long> uids = new ArrayList();
-        Long uid = message.getUid();
 
-        if (event.getChatType() == ChatType.FRIEND) {
-            uids = Arrays.asList(event.getChatId());
-        } else {
-            // 获取群所有成员
-            uids = groupMemberDao.getMembers(event.getChatId());
-        }
+        Contact contact = event.getContact();
+        List<Long> uids = switch (contact.getChatType()) {
+            case FRIEND -> Arrays.asList(contact.getChatId());
+            case GROUP -> groupMemberDao.getMembers(contact.getChatId());
+        };
 
         MessageEvent.Data data = new MessageEvent.Data();
         data.setMessage(message);
@@ -46,11 +46,9 @@ public class MessageSendListener {
     @Async
     public void updateContact(MessageSendEvent event) {
         Message message = event.getMessage();
-        Long chatId = event.getChatId();
-        ChatType chatType = event.getChatType();
-
         Long uid = message.getUid();
+        Contact contact = event.getContact();
 
-        contactService.updateContact(uid, chatType, chatId, message.getId());
+        contactService.updateContact(uid, contact, message.getId());
     }
 }

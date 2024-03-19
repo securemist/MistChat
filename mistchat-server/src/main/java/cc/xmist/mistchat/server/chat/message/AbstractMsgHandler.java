@@ -38,22 +38,22 @@ public abstract class AbstractMsgHandler<T> {
 
     public abstract void recall();
 
-    public Message saveMsg(Long uid, ChatType chatType, MessageType type, Long chatId, ChatMessageRequest message) {
-        T body = toBean(message.getBody());
-        Message m = Message.builder()
-                .uid(uid)
-                .chatType(chatType)
-                .type(message.getType())
-                .chatId(chatId)
-                .build();
-        customSaveMsg(m, body);
-        return m;
-    }
 
     private T toBean(Object body) {
         if (bodyClass.isAssignableFrom(body.getClass())) {
             return (T) body;
         }
         return BeanUtil.toBean(body, bodyClass);
+    }
+
+    public Message saveMsg(Long uid, Long contactId, MessageType type, ChatMessageRequest msg) {
+        T body = toBean(msg.getBody());
+        Message m = Message.builder()
+                .uid(uid)
+                .contactId(contactId)
+                .type(msg.getType())
+                .build();
+        customSaveMsg(m, body);
+        return m;
     }
 }

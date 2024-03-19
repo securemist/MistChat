@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class ExceptionHandle {
-    @ExceptionHandler(value = BusinessException.class)
+    @ExceptionHandler(value = {BusinessException.class})
     public R businessException(BusinessException e) {
         if (e instanceof BlackException) {
             return R.error(ErrorType.BLACK);
@@ -20,6 +20,11 @@ public class ExceptionHandle {
             return R.error(ErrorType.NOT_LOGIN);
         }
 
+        return R.commonError(e.getMessage());
+    }
+
+    @ExceptionHandler(value = {IlleglaException.class})
+    public R illgelaExceptionHandle(IlleglaException e) {
         return R.commonError(e.getMessage());
     }
 

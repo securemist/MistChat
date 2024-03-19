@@ -3,6 +3,7 @@ package cc.xmist.mistchat.server.chat.dao;
 import cc.xmist.mistchat.server.chat.entity.Contact;
 import cc.xmist.mistchat.server.chat.mapper.ContactMapper;
 import cc.xmist.mistchat.server.common.enums.ChatType;
+import cc.xmist.mistchat.server.common.exception.IlleglaException;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 
@@ -16,33 +17,31 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
     /**
      * 用户发送消息的会话更新
      *
-     * @param uid
-     * @param chatType
-     * @param chatId
+     * @param contactId
      * @param msgId
      */
-    public void updateSending(Long uid, ChatType chatType, Long chatId, Long msgId) {
+    public void updateSending(Long contactId, Long msgId) {
         lambdaUpdate()
                 .set(Contact::getLastMsgId, msgId)
-                .eq(Contact::getUid, uid)
-                .eq(Contact::getChatType, chatType)
-                .eq(Contact::getChatId, chatId);
+                .eq(Contact::getId, contactId);
     }
+
 
     /**
      * 用户读取消息的会话更新
+     * 某一个用户在某一个会话读取某个消息，如果会话的实际 uid 与请求的 uid 不符，属于非法操作，操作别人的接口
      *
-     * @param uid
-     * @param chatType
-     * @param chatId
-     * @param msgId
+     * @param uid 请求中的 uid
+     * @param contactId 用户读消息时自己所处的 contactId，不是消息发送者 contactId
+     * @param msgId 消息 id
      */
-    public void updateReading(Long uid, ChatType chatType, Long chatId, Long msgId) {
-        lambdaUpdate()
+    public void updateReading(Long uid, Long contactId, Long msgId) {
+        boolean ok = lambdaUpdate()
                 .set(Contact::getReadMsgId, msgId)
                 .eq(Contact::getUid, uid)
-                .eq(Contact::getChatType, chatType)
-                .eq(Contact::getChatId, chatId);
+                .eq(Contact::getId, contactId)
+                .update();
+        if (!ok) throw new IlleglaException();
     }
 
     /**
@@ -69,6 +68,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
 
     /**
      * 群聊首次创建时，初始化会话
+     *
      * @param groupId
      * @param uids
      */
@@ -83,4 +83,18 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
 
         saveBatch(contacts);
     }
+
+
+    /**
+     * 列出用户所有的会话
+     *
+     * @param uid
+     * @return
+     */
+    public List<Contact> listByUid(Long uid) {
+        return lambdaQuery()
+                .eq(Contact::getUid, uid)
+                .list();
+    }
+
 }

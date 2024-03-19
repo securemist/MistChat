@@ -24,17 +24,15 @@ public class ContactController {
     @Operation(summary = "会话列表")
     public R<ContactResponse> list() {
         Long uid = RequestContext.getUid();
-     ContactResponse res = contactService.getContactList(uid);
+        ContactResponse res = contactService.getContactList(uid);
         return R.ok(res);
     }
 
     @GetMapping("/read")
     @Operation(summary = "消息已读")
-    public R read(@RequestParam Long msgId,
-                  @RequestParam ChatType chatType,
-                  @RequestParam Long chatId) {
+    public R read(@RequestParam Long contactId, @RequestParam Long msgId) {
         Long uid = RequestContext.getUid();
-        contactService.readMsg(uid, chatType, chatId, msgId);
+        contactService.readMsg(uid, contactId, msgId);
         return R.ok();
     }
 }
