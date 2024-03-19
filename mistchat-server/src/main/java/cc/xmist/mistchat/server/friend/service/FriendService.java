@@ -1,5 +1,6 @@
 package cc.xmist.mistchat.server.friend.service;
 
+import cc.xmist.mistchat.server.chat.dao.ContactDao;
 import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
 import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import cc.xmist.mistchat.server.common.enums.ApplyType;
@@ -24,9 +25,9 @@ public class FriendService {
     private final FriendDao friendDao;
     private final UserService userService;
     private final FriendApplyDao friendApplyDao;
-    private final FriendContactDao friendContactDao;
+    //    private final FriendContactDao friendContactDao;
     private final ApplicationEventPublisher eventPublisher;
-
+    private final ContactDao contactDao;
 
 
     /**
@@ -48,7 +49,7 @@ public class FriendService {
         FriendApply apply = friendApplyDao.find(targetUid, ApplyType.FRIEND, uid);
         if (apply != null) {
             friendApplyDao.handle(apply.getId(), true, null);
-            friendApplyPass(uid, targetUid);
+            friendApplyPass(apply);
             return cc.xmist.mistchat.server.user.model.resp.FriendApplyResp.build(apply);
         }
 
@@ -56,23 +57,18 @@ public class FriendService {
         return cc.xmist.mistchat.server.user.model.resp.FriendApplyResp.build(apply);
     }
 
-    /**
-     * uid 同意了 targetUid 的申请
-     *
-     * @param uid
-     * @param targetUid
-     * @return
-     */
-    private Long friendApplyPass(Long uid, Long targetUid) {
+    private void friendApplyPass(FriendApply apply) {
+        Long uid = apply.getUid();
+        Long targetUid = apply.getTargetUid();
         Friend friend = friendDao.create(uid, targetUid);
-        friendContactDao.firstCreate( uid, targetUid);
-        eventPublisher.publishEvent(new FriendApplyEvent(uid, targetUid));
-        return friend.getId();
+        contactDao.initOnFriend(uid, targetUid);
+        eventPublisher.publishEvent(new FriendApplyEvent(this, apply)); // TODO
     }
 
 
     /**
      * 处理好友申请
+     *
      * @param uid
      * @param req
      */
@@ -84,7 +80,7 @@ public class FriendService {
 
         friendApplyDao.handle(apply.getId(), req.getPass(), req.getMsg());
         if (req.getPass()) {
-            friendApplyPass(uid, apply.getTargetUid());
+            friendApplyPass(apply);
         }
     }
 

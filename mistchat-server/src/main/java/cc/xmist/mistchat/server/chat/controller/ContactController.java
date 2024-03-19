@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.chat.controller;
 
-import cc.xmist.mistchat.server.chat.model.resp.ContactListResp;
+import cc.xmist.mistchat.server.chat.resp.ContactResponse;
 import cc.xmist.mistchat.server.chat.service.ContactService;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.enums.ChatType;
@@ -22,9 +22,9 @@ public class ContactController {
 
     @GetMapping("/list")
     @Operation(summary = "会话列表")
-    public R<ContactListResp> list() {
+    public R<ContactResponse> list() {
         Long uid = RequestContext.getUid();
-        ContactListResp res = contactService.getContactList(uid);
+     ContactResponse res = contactService.getContactList(uid);
         return R.ok(res);
     }
 
