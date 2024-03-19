@@ -1,7 +1,6 @@
 package cc.xmist.mistchat.server.friend.service;
 
 import cc.xmist.mistchat.server.chat.dao.ContactDao;
-import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
 import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import cc.xmist.mistchat.server.common.enums.ApplyType;
 import cc.xmist.mistchat.server.common.event.FriendApplyEvent;

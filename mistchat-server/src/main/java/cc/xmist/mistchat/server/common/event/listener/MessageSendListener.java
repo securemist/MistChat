@@ -1,7 +1,5 @@
 package cc.xmist.mistchat.server.common.event.listener;
 
-import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
-import cc.xmist.mistchat.server.chat.dao.GroupContactDao;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.service.ContactService;
 import cc.xmist.mistchat.server.common.enums.ChatType;
@@ -24,8 +22,6 @@ public class MessageSendListener {
     private final EventEmitter eventEmitter;
     private final ContactService contactService;
     private final GroupMemberDao groupMemberDao;
-    private final GroupContactDao groupContactDao;
-    private final FriendContactDao friendContactDao;
 
     @EventListener(MessageSendEvent.class)
     public void send(MessageSendEvent event) {

@@ -30,7 +30,7 @@ public class GroupController {
 
     @PostMapping("/create")
     @Operation(summary = "创建群聊")
-    public R create(@RequestBody GroupCreateReq req) {
+    public R<Long> create(@RequestBody GroupCreateReq req) {
         Long uid = RequestContext.getUid();
         Long groupId = groupService.create(uid, req.getName(), req.getUidList());
         return R.ok(groupId);

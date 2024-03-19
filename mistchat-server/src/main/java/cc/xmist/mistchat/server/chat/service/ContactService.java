@@ -1,24 +1,21 @@
 package cc.xmist.mistchat.server.chat.service;
 
-import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
-import cc.xmist.mistchat.server.chat.dao.GroupContactDao;
-import cc.xmist.mistchat.server.chat.entity.FriendContact;
-import cc.xmist.mistchat.server.chat.entity.GroupContact;
-import cc.xmist.mistchat.server.chat.model.resp.ContactListResp;
+import cc.xmist.mistchat.server.chat.dao.ContactDao;
+import cc.xmist.mistchat.server.chat.resp.ContactResponse;
 import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ContactService {
-    private final FriendContactDao friendContactDao;
-    private final GroupContactDao groupContactDao;
     private final GroupMemberDao groupMemberDao;
-
+    private final ContactDao contactDao;
+    private final MessageService messageService;
 
     /**
      * 获取用户所有的会话列表
@@ -26,15 +23,9 @@ public class ContactService {
      * @param uid
      * @return
      */
-    public ContactListResp getContactList(Long uid) {
-        List<FriendContact> friendContacts = friendContactDao.getByUid(uid);
+    public ContactResponse getContactList(Long uid) {
 
-        List<Long> groupsId = groupMemberDao.getBelongingGroupsId(uid);
-        List<GroupContact> groupContacts = groupContactDao.listByIds(groupsId);
-
-        return ContactListResp.builder()
-                .friendContacts(friendContacts)
-                .groupContacts(groupContacts)
+        return ContactResponse.builder()
                 .build();
     }
 
@@ -47,20 +38,18 @@ public class ContactService {
      * @param msgId
      */
     public void updateContact(Long uid, ChatType chatType, Long chatId, Long msgId) {
-        switch (chatType) {
-            case FRIEND -> friendContactDao.updateActive(uid, chatId, msgId);
-            case GROUP -> {
-                groupMemberDao.updateActive(uid, chatId);
-                groupContactDao.updateActive(uid, chatId, msgId);
-            }
+        contactDao.updateSending(uid, chatType, chatId, msgId);
+        if (chatType.equals(ChatType.GROUP)) {
+            groupMemberDao.updateActive(uid, chatId);
         }
     }
 
     // 用户读取消息
     public void readMsg(Long uid, ChatType chatType, Long chatId, Long msgId) {
-        switch (chatType) {
-            case FRIEND -> friendContactDao.readMsg(uid,chatId,msgId);
-            case GROUP -> groupContactDao.readMsg(uid,chatId,msgId);
-        }
+        contactDao.updateReading(uid,chatType,chatId,msgId);
+//        switch (chatType) {
+//            case FRIEND -> friendContactDao.readMsg(uid, chatId, msgId);
+//            case GROUP -> groupContactDao.readMsg(uid, chatId, msgId);
+//        }
     }
 }

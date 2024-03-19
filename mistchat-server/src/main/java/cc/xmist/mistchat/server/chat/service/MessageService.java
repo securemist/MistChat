@@ -1,7 +1,5 @@
 package cc.xmist.mistchat.server.chat.service;
 
-import cc.xmist.mistchat.server.chat.dao.FriendContactDao;
-import cc.xmist.mistchat.server.chat.dao.GroupContactDao;
 import cc.xmist.mistchat.server.chat.dao.MessageDao;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.message.AbstractMsgHandler;
@@ -23,8 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageService {
     private final ApplicationEventPublisher eventPublisher;
-    private final GroupContactDao groupContactDao;
-    private final FriendContactDao friendContactDao;
     private final MessageDao messageDao;
 
     // 发送消息
@@ -54,4 +50,7 @@ public class MessageService {
     }
 
 
+    public void getUnreadCount() {
+
+    }
 }

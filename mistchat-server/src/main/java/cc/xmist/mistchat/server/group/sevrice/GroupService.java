@@ -1,6 +1,6 @@
 package cc.xmist.mistchat.server.group.sevrice;
 
-import cc.xmist.mistchat.server.chat.dao.GroupContactDao;
+import cc.xmist.mistchat.server.chat.dao.ContactDao;
 import cc.xmist.mistchat.server.common.event.GroupAddEvent;
 import cc.xmist.mistchat.server.common.util.CursorResult;
 import cc.xmist.mistchat.server.group.dao.GroupApplyDao;
@@ -23,7 +23,7 @@ public class GroupService {
     private final GroupMemberDao groupMemberDao;
     private final GroupDao groupDao;
     private final GroupApplyDao groupApplyDao;
-    private final GroupContactDao groupContactDao;
+    private final ContactDao contactDao;
     private final ApplicationEventPublisher eventPublisher;
 
     /**
@@ -63,8 +63,11 @@ public class GroupService {
     @Transactional(rollbackFor = Exception.class)
     public Long create(Long createrId, String name, List<Long> uidList) {
         Group group = groupDao.create(createrId, name);
+        // 群成员算上群主
+        uidList.add(createrId);
         groupMemberDao.addMembers(group.getId(), uidList);
-        groupContactDao.createBatch(group.getId(), uidList);
+        contactDao.initOnGroup(group.getId(), uidList);
+//        groupContactDao.createBatch(group.getId(), uidList);
         eventPublisher.publishEvent(new GroupAddEvent(this, group, uidList));
         return group.getId();
     }

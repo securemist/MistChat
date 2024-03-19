@@ -156,7 +156,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
     }
 
     /**
-     * 更新用户在群聊里的活跃状态
+     * 更新用户在群聊里的活跃时间
      *
      * @param uid
      * @param chatId

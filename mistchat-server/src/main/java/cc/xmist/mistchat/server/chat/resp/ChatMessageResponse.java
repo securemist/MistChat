@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.chat.model.resp;
+package cc.xmist.mistchat.server.chat.resp;
 
 import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.enums.MessageType;
