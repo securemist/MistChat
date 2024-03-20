@@ -4,6 +4,7 @@ import cc.xmist.mistchat.server.chat.dao.ContactDao;
 import cc.xmist.mistchat.server.chat.service.ContactService;
 import cc.xmist.mistchat.server.common.event.GroupAddEvent;
 import cc.xmist.mistchat.server.common.util.CursorResult;
+import cc.xmist.mistchat.server.common.util.IdUtil;
 import cc.xmist.mistchat.server.group.dao.GroupApplyDao;
 import cc.xmist.mistchat.server.group.dao.GroupDao;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
@@ -64,7 +65,7 @@ public class GroupService {
      */
     @Transactional(rollbackFor = Exception.class)
     public Long create(Long createrId, String name, List<Long> uids) {
-        Group group = groupDao.create(createrId, name);
+        Group group = groupDao.create(createrId, name, IdUtil.genGroupId());
         Long groupId = group.getId();
 
         // 群成员算上群主

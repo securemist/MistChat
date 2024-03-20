@@ -29,7 +29,7 @@ public class Group implements Serializable {
     /**
      * 房间号
      */
-      @TableId(value = "id", type = IdType.AUTO)
+      @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
     /**

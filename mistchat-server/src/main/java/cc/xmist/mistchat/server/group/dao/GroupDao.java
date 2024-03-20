@@ -17,11 +17,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class GroupDao extends ServiceImpl<GroupMapper, Group> {
 
-    public Group create(Long createrId, String name) {
+    /**
+     * 创建群聊
+     * @param createrId 创建者 iud
+     * @param name 群名称
+     * @param groupId 群聊 id
+     * @return
+     */
+    public Group create(Long createrUid, String name, Long groupId) {
         Group group = Group.builder()
                 .name(name)
-                .createrUid(createrId)
-                .ownerUid(createrId)
+                .id(groupId)
+                .createrUid(createrUid)
+                .ownerUid(createrUid)
                 .status(GroupStatus.OK)
                 .build();
         save(group);

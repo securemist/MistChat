@@ -63,17 +63,4 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
                 .count();
     }
 
-    public Long initMsg(String roomId, SystemMsgType type) {
-        MessageExtra extra = MessageExtra.builder()
-                .sysMsgExtra(new SystemMsgExtra(SystemMsgType.BE_FRIEND))
-                .build();
-
-        Message m = Message.builder()
-                .type(MessageType.SYSTEM)
-                .extra(extra)
-                .roomId(roomId)
-                .build();
-        save(m);
-        return m.getId();
-    }
 }

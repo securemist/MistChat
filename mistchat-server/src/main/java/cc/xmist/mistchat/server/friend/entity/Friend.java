@@ -72,12 +72,14 @@ public class Friend implements Serializable {
         this.uid2 = max;
     }
 
-    public String getRoomId() {
-        return String.valueOf(uid1) + "-" + String.valueOf(uid2);
+    public Long getRoomId() {
+        return Long.valueOf(String.valueOf(uid1) + String.valueOf(uid2));
     }
 
-    public static List<Long> parseRoomId(String roomId) {
-        String[] split = roomId.split(String.valueOf('-'));
-        return Arrays.asList(Long.valueOf(split[0]), Long.valueOf(split[1]));
+    public static List<Long> parseRoomId(Long roomId) {
+        return Arrays.asList(
+                Long.valueOf(String.valueOf(roomId).substring(0, 5)),
+                Long.valueOf(String.valueOf(roomId).substring(6, 10))
+        );
     }
 }

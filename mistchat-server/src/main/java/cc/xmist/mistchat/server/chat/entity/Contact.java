@@ -40,7 +40,7 @@ public class Contact implements Serializable {
     private Long uid;
 
     @TableField(value = "room_id")
-    private String roomId;
+    private Long roomId;
 
     /**
      * 已经读到的消息 id

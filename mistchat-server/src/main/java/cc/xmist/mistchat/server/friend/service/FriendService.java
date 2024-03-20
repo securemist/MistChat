@@ -63,7 +63,7 @@ public class FriendService {
         return cc.xmist.mistchat.server.user.model.resp.FriendApplyResp.build(apply);
     }
 
-    private void friendApplyPass(FriendApply apply) {
+    public void friendApplyPass(FriendApply apply) {
         Long uid = apply.getUid();
         Long targetUid = apply.getTargetUid();
 

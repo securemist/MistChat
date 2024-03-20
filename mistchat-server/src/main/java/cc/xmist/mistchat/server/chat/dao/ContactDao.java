@@ -59,11 +59,12 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
                 .list();
     }
 
-
+    /**
+     * 初始化好友会话
+     * @param friend
+     */
     public void initFriend(Friend friend) {
-        List<Long> uids = Friend.parseRoomId(friend.getRoomId());
-
-        List<Contact> contacts = uids.stream().map(uid -> {
+        List<Contact> contacts = Arrays.asList(friend.getUid1(), friend.getUid2()).stream().map(uid -> {
             return Contact.builder()
                     .uid(uid)
                     .roomId(friend.getRoomId())
@@ -72,12 +73,16 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
         saveBatch(contacts);
     }
 
-
+    /**
+     * 初始化群成员会话
+     * @param groupId
+     * @param uids
+     */
     public void initGroup(Long groupId, List<Long> uids) {
         List<Contact> contacts = uids.stream().map(uid -> {
             return Contact.builder()
                     .uid(uid)
-                    .roomId(groupId.toString())
+                    .roomId(groupId)
                     .build();
         }).collect(Collectors.toList());
 
