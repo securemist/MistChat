@@ -7,7 +7,6 @@ import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.message.AbstractMsgHandler;
 import cc.xmist.mistchat.server.chat.message.MessageHandleFactory;
 import cc.xmist.mistchat.server.chat.req.ChatMessageRequest;
-import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.event.MessageSendEvent;
 import cc.xmist.mistchat.server.common.util.CursorResult;
 import cn.hutool.core.collection.CollectionUtil;
@@ -55,7 +54,15 @@ public class MessageService {
     }
 
 
-    public void getUnreadCount() {
-
+    /**
+     * 用户在会话内的未读消息数
+     *
+     * @param id
+     * @param readMsgId
+     * @param lastMsgId
+     * @return
+     */
+    public Long getUnreadCount(Long contactId, Long readMsgId, Long lastMsgId) {
+        return messageDao.getUnreacCount(contactId,readMsgId,lastMsgId);
     }
 }

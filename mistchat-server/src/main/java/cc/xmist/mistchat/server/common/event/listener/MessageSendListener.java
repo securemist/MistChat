@@ -31,15 +31,15 @@ public class MessageSendListener {
         Message message = event.getMessage();
 
         Contact contact = event.getContact();
-        List<Long> uids = switch (contact.getChatType()) {
-            case FRIEND -> Arrays.asList(contact.getChatId());
-            case GROUP -> groupMemberDao.getMembers(contact.getChatId());
-        };
+//        List<Long> uids = switch (contact.getChatType()) {
+//            case FRIEND -> Arrays.asList(contact.getChatId());
+//            case GROUP -> groupMemberDao.getMembers(contact.getChatId());
+//        };
 
         MessageEvent.Data data = new MessageEvent.Data();
         data.setMessage(message);
 
-        eventEmitter.emits(uids, new MessageEvent(data));
+//        eventEmitter.emits(uids, new MessageEvent(data));
     }
 
     @EventListener(MessageSendEvent.class)

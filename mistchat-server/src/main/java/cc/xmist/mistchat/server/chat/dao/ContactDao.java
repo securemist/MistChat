@@ -4,6 +4,7 @@ import cc.xmist.mistchat.server.chat.entity.Contact;
 import cc.xmist.mistchat.server.chat.mapper.ContactMapper;
 import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.exception.IlleglaException;
+import cc.xmist.mistchat.server.friend.entity.Friend;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,8 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
     public void updateSending(Long contactId, Long msgId) {
         lambdaUpdate()
                 .set(Contact::getLastMsgId, msgId)
-                .eq(Contact::getId, contactId);
+                .eq(Contact::getId, contactId)
+                .update();
     }
 
 
@@ -58,68 +60,27 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
     }
 
 
-    /**
-     * 两个用户成为好友，创建会话
-     *
-     * @param uid1
-     * @param uid2
-     * @return uid <-> 两个人的会话 id
-     */
-    public List<Long> initFriendContact(Long uid1, Long uid2) {
-        Contact c1 = Contact.builder()
-                .uid(uid1)
-                .chatId(uid2)
-                .chatType(ChatType.FRIEND)
-                .build();
+    public void initFriend(Friend friend) {
+        List<Long> uids = Friend.parseRoomId(friend.getRoomId());
 
-        Contact c2 = Contact.builder()
-                .uid(uid2)
-                .chatId(uid1)
-                .chatType(ChatType.FRIEND)
-                .build();
-
-        saveBatch(Arrays.asList(c1, c2));
-
-        return Arrays.asList(c1.getId(),c2.getId());
-    }
-
-
-    /**
-     * 创建群聊时，初始话所有成员的会话信息
-     *
-     * @param groupId
-     * @param uids
-     * @return
-     */
-    public List<Long> initGroupContacts(Long groupId, List<Long> uids) {
         List<Contact> contacts = uids.stream().map(uid -> {
             return Contact.builder()
                     .uid(uid)
-                    .chatId(groupId)
-                    .chatType(ChatType.GROUP)
+                    .roomId(friend.getRoomId())
+                    .build();
+        }).collect(Collectors.toList());
+        saveBatch(contacts);
+    }
+
+
+    public void initGroup(Long groupId, List<Long> uids) {
+        List<Contact> contacts = uids.stream().map(uid -> {
+            return Contact.builder()
+                    .uid(uid)
+                    .roomId(groupId.toString())
                     .build();
         }).collect(Collectors.toList());
 
         saveBatch(contacts);
-
-        List<Long> list = contacts.stream()
-                .map(Contact::getId)
-                .collect(Collectors.toList());
-        return list;
-    }
-
-    /**
-     * 添加好友或加入群聊，发完系统问候语后，将 msgId 设置为 last_msg_id
-     *
-     * @param contactIds
-     * @param msgIds
-     */
-    public void initLastMsgId(List<Long> contactIds, List<Long> msgIds) {
-        for (int i = 0; i < contactIds.size(); i++) {
-            lambdaUpdate()
-                    .set(Contact::getLastMsgId, msgIds.get(i))
-                    .eq(Contact::getId, contactIds.get(i))
-                    .update();
-        }
     }
 }

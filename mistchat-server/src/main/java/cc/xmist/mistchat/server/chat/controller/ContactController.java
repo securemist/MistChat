@@ -32,7 +32,7 @@ public class ContactController {
     @Operation(summary = "消息已读")
     public R read(@RequestParam Long contactId, @RequestParam Long msgId) {
         Long uid = RequestContext.getUid();
-        contactService.readMsg(uid, contactId, msgId);
+//        contactService.readMsg(uid, contactId, msgId);
         return R.ok();
     }
 }

@@ -23,10 +23,7 @@ public class FriendDao extends ServiceImpl<FriendMapper, Friend> {
     private FriendMapper friendMapper;
 
     public Friend create(Long uid1, Long uid2) {
-        Friend friend = Friend.builder()
-                .uid1(Math.min(uid1, uid2))
-                .uid2(Math.max(uid1, uid2))
-                .build();
+        Friend friend = new Friend(uid1, uid2);
         save(friend);
         return friend;
     }

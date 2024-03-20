@@ -49,7 +49,7 @@ public abstract class AbstractMsgHandler<T> {
     public Message saveMsg( Long contactId, MessageType type, ChatMessageRequest msg) {
         T body = toBean(msg.getBody());
         Message m = Message.builder()
-                .contactId(contactId)
+//                .contactId(contactId)
                 .type(msg.getType())
                 .build();
         Message message = customSaveMsg(m, body);

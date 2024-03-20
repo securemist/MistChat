@@ -35,8 +35,11 @@ public class Message implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField("contact_id")
-    private Long contactId;
+    @TableField("uid")
+    private Long uid;
+
+    @TableField("room_id")
+    private String  roomId;
 
     /**
      * 消息内容

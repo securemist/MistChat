@@ -17,6 +17,7 @@ import cc.xmist.mistchat.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ public class FriendService {
     private final UserService userService;
     private final FriendApplyDao friendApplyDao;
     private final MessageDao messageDao;
+    private final ContactDao contactDao;
     private final ApplicationEventPublisher eventPublisher;
     private final ContactService contactService;
 
@@ -43,6 +45,7 @@ public class FriendService {
         return friendDao.getFriendIdList(uid);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public cc.xmist.mistchat.server.user.model.resp.FriendApplyResp apply(Long uid, cc.xmist.mistchat.server.user.model.req.FriendApplyReq req) {
         Long targetUid = req.getTargetUid();
         if (uid == targetUid) throw new ParamException();
@@ -67,7 +70,7 @@ public class FriendService {
         // 创建好友表记录
         Friend friend = friendDao.create(uid, targetUid);
         // 初始化会话信息
-        contactService.initFriend(uid, targetUid);
+        contactDao.initFriend(friend);
 
         eventPublisher.publishEvent(new FriendApplyEvent(this, apply)); // TODO
     }

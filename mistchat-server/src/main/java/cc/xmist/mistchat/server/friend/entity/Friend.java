@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -18,10 +20,11 @@ import java.time.LocalDateTime;
  * @author securemist
  * @since 2024-01-27
  */
-@Getter
-@Builder
 @TableName("friend")
+@NoArgsConstructor
+@Data
 public class Friend implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
 
@@ -61,4 +64,20 @@ public class Friend implements Serializable {
      */
     @TableField("update_time")
     private LocalDateTime updateTime;
+
+    public Friend(Long uid1, Long uid2) {
+        long min = Math.min(uid1, uid2);
+        long max = Math.max(uid1, uid2);
+        this.uid1 = min;
+        this.uid2 = max;
+    }
+
+    public String getRoomId() {
+        return String.valueOf(uid1) + "-" + String.valueOf(uid2);
+    }
+
+    public static List<Long> parseRoomId(String roomId) {
+        String[] split = roomId.split(String.valueOf('-'));
+        return Arrays.asList(Long.valueOf(split[0]), Long.valueOf(split[1]));
+    }
 }

@@ -39,17 +39,8 @@ public class Contact implements Serializable {
     @TableField(value = "uid")
     private Long uid;
 
-    /**
-     *
-     */
-    @TableField(value = "chat_type")
-    private ChatType chatType;
-
-    /**
-     *
-     */
-    @TableField(value = "chat_id")
-    private Long chatId;
+    @TableField(value = "room_id")
+    private String roomId;
 
     /**
      * 已经读到的消息 id

@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +20,7 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
     public List<Message> listCursorable(Long contactId, String cursor, Integer pageSize) {
         return lambdaQuery()
                 .lt(StrUtil.isBlank(cursor), Message::getId, cursor)
-                .eq(Message::getContactId, contactId)
+//                .eq(Message::getContactId, contactId)
                 .orderByDesc(Message::getId)
                 .last("LIMIT " + pageSize)
                 .list();
@@ -37,7 +36,7 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
             return Message.builder()
                     .type(MessageType.SYSTEM)
                     .extra(extra)
-                    .contactId(contactId)
+//                    .contactId(contactId)
                     .build();
         }).collect(Collectors.toList());
 
@@ -48,39 +47,33 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
                 .collect(Collectors.toList());
     }
 
-    public List<Long> initSystemMsg(List<Long> contactIds, SystemMsgType msgType) {
-        MessageExtra extra = MessageExtra.builder()
-                .sysMsgExtra(new SystemMsgExtra(msgType))
-                .build();
 
-        List<Message> messages = contactIds.stream().map(contactId -> {
-            return Message.builder()
-                    .type(MessageType.SYSTEM)
-                    .extra(extra)
-                    .contactId(contactId)
-                    .build();
-        }).collect(Collectors.toList());
-        saveBatch(messages);
-        return messages.stream()
-                .map(Message::getId)
-                .collect(Collectors.toList());
+    /**
+     * 用户在会话内的未读消息数
+     *
+     * @param id
+     * @param readMsgId
+     * @param lastMsgId
+     * @return
+     */
+    public Long getUnreacCount(Long contactId, Long readMsgId, Long lastMsgId) {
+        return lambdaQuery()
+//                .eq(Message::getContactId, contactId)
+                .between(Message::getId, readMsgId, lastMsgId)
+                .count();
     }
 
-    public List<Long> initFriendMsg(List<Long> contactIds) {
+    public Long initMsg(String roomId, SystemMsgType type) {
         MessageExtra extra = MessageExtra.builder()
                 .sysMsgExtra(new SystemMsgExtra(SystemMsgType.BE_FRIEND))
                 .build();
 
-        List<Message> messages = contactIds.stream().map(contactId -> {
-            return Message.builder()
-                    .type(MessageType.SYSTEM)
-                    .extra(extra)
-                    .contactId(contactId)
-                    .build();
-        }).collect(Collectors.toList());
-        saveBatch(messages);
-        return messages.stream()
-                .map(Message::getId)
-                .collect(Collectors.toList());
+        Message m = Message.builder()
+                .type(MessageType.SYSTEM)
+                .extra(extra)
+                .roomId(roomId)
+                .build();
+        save(m);
+        return m.getId();
     }
 }

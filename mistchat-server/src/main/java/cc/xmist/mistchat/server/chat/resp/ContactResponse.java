@@ -21,6 +21,6 @@ public class ContactResponse {
         private Long chatId;
         private Long readMsgId;
         private Long lastMsgId;
-        private Integer unReadCount;
+        private Long unReadCount;
     }
 }

@@ -25,7 +25,7 @@ public class GroupService {
     private final GroupMemberDao groupMemberDao;
     private final GroupDao groupDao;
     private final GroupApplyDao groupApplyDao;
-    private final ContactService contactService;
+    private final ContactDao contactDao;
     private final ApplicationEventPublisher eventPublisher;
 
     /**
@@ -68,11 +68,11 @@ public class GroupService {
         Long groupId = group.getId();
 
         // 群成员算上群主
-        if(uids.indexOf(createrId) == -1) uids.add(createrId);
-        groupMemberDao.initMembers(groupId,uids);
+        if (uids.indexOf(createrId) == -1) uids.add(createrId);
+        groupMemberDao.initMembers(groupId, uids);
 
         // 初始化群成员会话信息
-        contactService.initGroup(groupId,uids);
+        contactDao.initGroup(groupId, uids);
 
         eventPublisher.publishEvent(new GroupAddEvent(this, group, uids));
         return groupId;
