@@ -3,7 +3,6 @@ package cc.xmist.mistchat.server.chat.message;
 import cc.xmist.mistchat.server.chat.dao.MessageDao;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.req.ChatMessageRequest;
-import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.enums.MessageType;
 import cn.hutool.core.bean.BeanUtil;
 import jakarta.annotation.PostConstruct;
@@ -46,11 +45,12 @@ public abstract class AbstractMsgHandler<T> {
         return BeanUtil.toBean(body, bodyClass);
     }
 
-    public Message saveMsg( Long contactId, MessageType type, ChatMessageRequest msg) {
-        T body = toBean(msg.getBody());
+    public Message saveMsg(Long uid, Long roomId, ChatMessageRequest req) {
+        T body = toBean(req.getBody());
         Message m = Message.builder()
-//                .contactId(contactId)
-                .type(msg.getType())
+                .uid(uid)
+                .roomId(roomId)
+                .type(req.getType())
                 .build();
         Message message = customSaveMsg(m, body);
         messageDao.save(message);

@@ -4,7 +4,6 @@ import cc.xmist.mistchat.server.chat.dao.ContactDao;
 import cc.xmist.mistchat.server.chat.entity.Contact;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.service.ContactService;
-import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.event.MessageSendEvent;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
 import cc.xmist.mistchat.server.socketio.EventEmitter;
@@ -13,10 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -43,7 +38,6 @@ public class MessageSendListener {
     }
 
     @EventListener(MessageSendEvent.class)
-    @Async
     public void updateContact(MessageSendEvent event) {
         Message message = event.getMessage();
         Long uid = event.getUid();

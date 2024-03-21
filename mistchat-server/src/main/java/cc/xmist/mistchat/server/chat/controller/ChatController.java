@@ -4,7 +4,6 @@ import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.req.ChatMessageRequest;
 import cc.xmist.mistchat.server.chat.service.MessageService;
 import cc.xmist.mistchat.server.common.context.RequestContext;
-import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.util.CursorResult;
 import cc.xmist.mistchat.server.common.util.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,19 +28,19 @@ public class ChatController {
 
     @PostMapping("/send")
     @Operation(summary = "发送消息")
-    public R sendMsg(@RequestParam Long contactId,
+    public R<Long> sendMsg(@RequestParam Long roomId,
                      @RequestBody ChatMessageRequest req) {
         Long uid = RequestContext.getUid();
-        messageService.send( contactId, req);
-        return R.ok();
+        Long msgId = messageService.send(uid, roomId, req);
+        return R.ok(msgId);
     }
 
     @GetMapping("/list/page")
     @Operation(summary = "消息记录")
-    public R<CursorResult<Message>> list(@RequestParam Long contactId,
+    public R<CursorResult<Message>> list(@RequestParam Long roomId,
                                          @RequestParam(required = false) String cursor,
                                          @RequestParam Integer pageSize) {
-        CursorResult result = messageService.list(contactId,cursor, pageSize);
+        CursorResult result = messageService.lilistMessage(roomId,cursor, pageSize);
         return R.ok(result);
     }
 

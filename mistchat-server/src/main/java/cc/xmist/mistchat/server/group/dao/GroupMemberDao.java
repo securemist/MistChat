@@ -180,7 +180,6 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
             return GroupMember.builder()
                     .groupId(groupId)
                     .uid(uid)
-                    .activeTime(LocalDateTime.now())
                     .build();
         }).collect(Collectors.toList());
 

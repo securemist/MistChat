@@ -8,11 +8,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ChatType implements BaseEnum {
+public enum RoomType implements BaseEnum {
     FRIEND(1),
     GROUP(2);
 
     @EnumValue
     @JsonValue
     private Integer code;
+
 }

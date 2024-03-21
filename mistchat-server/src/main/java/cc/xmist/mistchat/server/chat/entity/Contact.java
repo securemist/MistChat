@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.chat.entity;
 
-import cc.xmist.mistchat.server.common.enums.ChatType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -8,12 +7,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.IdGenerator;
 
 /**
  * @TableName contact
@@ -51,8 +50,8 @@ public class Contact implements Serializable {
     /**
      * 会话中的最新消息 id
      */
-    @TableField(value = "last_msg_id")
-    private Long lastMsgId;
+    @TableField(value = "active_msg_id")
+    private Long activeMsgId;
 
     /**
      *

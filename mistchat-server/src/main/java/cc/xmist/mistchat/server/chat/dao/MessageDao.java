@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 @Service
 public class MessageDao extends ServiceImpl<MessageMapper, Message> {
 
-    public List<Message> listCursorable(Long contactId, String cursor, Integer pageSize) {
+    public List<Message> listCursorable(Long roomId, String cursor, Integer pageSize) {
         return lambdaQuery()
                 .lt(StrUtil.isBlank(cursor), Message::getId, cursor)
-//                .eq(Message::getContactId, contactId)
+                .eq(Message::getRoomId,roomId)
                 .orderByDesc(Message::getId)
                 .last("LIMIT " + pageSize)
                 .list();
@@ -47,20 +47,18 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
                 .collect(Collectors.toList());
     }
 
-
     /**
-     * 用户在会话内的未读消息数
+     * 计算聊天室内消息的未读数
      *
-     * @param id
-     * @param readMsgId
-     * @param lastMsgId
-     * @return
+     * @param roomId    聊天室 id
+     * @param readMsgId 已读消息
+     * @param lastMsgId 最新消息
      */
-    public Long getUnreacCount(Long contactId, Long readMsgId, Long lastMsgId) {
+    public Long calUnread(Long roomId, Long readMsgId, Long lastMsgId) {
         return lambdaQuery()
-//                .eq(Message::getContactId, contactId)
-                .between(Message::getId, readMsgId, lastMsgId)
+                .eq(Message::getRoomId, roomId)
+                .gt(Message::getId,readMsgId)
+                .le(Message::getId,lastMsgId)
                 .count();
     }
-
 }

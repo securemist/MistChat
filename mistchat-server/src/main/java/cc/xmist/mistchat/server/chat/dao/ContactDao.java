@@ -1,10 +1,11 @@
 package cc.xmist.mistchat.server.chat.dao;
 
 import cc.xmist.mistchat.server.chat.entity.Contact;
+import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.mapper.ContactMapper;
-import cc.xmist.mistchat.server.common.enums.ChatType;
 import cc.xmist.mistchat.server.common.exception.IlleglaException;
 import cc.xmist.mistchat.server.friend.entity.Friend;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      */
     public void updateSending(Long contactId, Long msgId) {
         lambdaUpdate()
-                .set(Contact::getLastMsgId, msgId)
+                .set(Contact::getActiveMsgId, msgId)
                 .eq(Contact::getId, contactId)
                 .update();
     }
@@ -34,14 +35,14 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * 某一个用户在某一个会话读取某个消息，如果会话的实际 uid 与请求的 uid 不符，属于非法操作，操作别人的接口
      *
      * @param uid       请求中的 uid
-     * @param contactId 用户读消息时自己所处的 contactId，不是消息发送者 contactId
+     * @param roomId
      * @param msgId     消息 id
      */
-    public void updateReading(Long uid, Long contactId, Long msgId) {
+    public void updateReading(Long uid, Long roomId, Long msgId) {
         boolean ok = lambdaUpdate()
                 .set(Contact::getReadMsgId, msgId)
                 .eq(Contact::getUid, uid)
-                .eq(Contact::getId, contactId)
+                .eq(Contact::getRoomId, roomId)
                 .update();
         if (!ok) throw new IlleglaException();
     }
@@ -87,5 +88,37 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
         }).collect(Collectors.toList());
 
         saveBatch(contacts);
+    }
+
+    /**
+     * 一个聊天室内最新的消息 id
+     *
+     * @param roomId
+     * @return
+     */
+    public Long getLastMsgId(Long roomId) {
+        return lambdaQuery()
+                .select(Contact::getActiveMsgId)
+                .eq(Contact::getRoomId,roomId)
+                .orderByDesc(Contact::getActiveMsgId)
+                .last("LIMIT 1")
+                .one()
+                .getActiveMsgId();
+    }
+
+    public List<Contact> listCursorable(Long uid, String cursor, Integer pageSize) {
+        return lambdaQuery()
+                .lt(StrUtil.isNotBlank(cursor),Contact::getId,cursor)
+                .eq(Contact::getUid,uid)
+                .orderByDesc(Contact::getId)
+                .last("LIMIT " + pageSize)
+                .list();
+    }
+
+    public Contact getByRoomId(Long uid,Long roomId) {
+        return lambdaQuery()
+                .eq(Contact::getRoomId,roomId)
+                .eq(Contact::getUid,uid)
+                .one();
     }
 }

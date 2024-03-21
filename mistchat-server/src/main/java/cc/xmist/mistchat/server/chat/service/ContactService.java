@@ -3,16 +3,15 @@ package cc.xmist.mistchat.server.chat.service;
 import cc.xmist.mistchat.server.chat.dao.ContactDao;
 import cc.xmist.mistchat.server.chat.dao.MessageDao;
 import cc.xmist.mistchat.server.chat.entity.Contact;
-import cc.xmist.mistchat.server.chat.resp.ContactResponse;
-import cc.xmist.mistchat.server.common.enums.ChatType;
-import cc.xmist.mistchat.server.common.enums.SystemMsgType;
-import cc.xmist.mistchat.server.friend.entity.Friend;
+import cc.xmist.mistchat.server.common.enums.RoomType;
+import cc.xmist.mistchat.server.common.util.CursorResult;
+import cc.xmist.mistchat.server.common.util.IdUtil;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
+import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,25 +28,40 @@ public class ContactService {
      * @param uid
      * @return
      */
-    public ContactResponse getContactList(Long uid) {
-        List<Contact> contacts = contactDao.listByUid(uid);
-        List<ContactResponse.Contact> list = contacts.stream().map(c -> {
-            Long unread = 0L;
-            if (!c.getLastMsgId().equals(c.getReadMsgId())) {
-                unread = messageService.getUnreadCount(c.getId(),c.getReadMsgId(),c.getLastMsgId());
-            }
-            return ContactResponse.Contact.builder()
-                    .uid(c.getUid())
-                    .id(c.getId())
-                    .lastMsgId(c.getLastMsgId())
-                    .readMsgId(c.getReadMsgId())
-                    .unReadCount(unread)
-                    .build();
-        }).collect(Collectors.toList());
-        return ContactResponse.builder()
-                .list(list)
-                .build();
+    public CursorResult<Contact> getContactList(Long uid, String cursor, Integer pageSize) {
+        List<Contact> contacts = contactDao.listCursorable(uid, cursor, pageSize);
+        Boolean isLast = false;
+        String newCursor = null;
+        if (contacts.size() != pageSize || CollectionUtil.isEmpty(contacts)) {
+            isLast = true;
+            cursor = null;
+        } else {
+            Contact last = CollectionUtil.getLast(contacts);
+            newCursor = last.getId().toString();
+        }
+
+        contacts.forEach(c -> c.setUnreadCount(getUnreadCount(c)));
+
+        return new CursorResult<Contact>(newCursor, isLast, contacts);
     }
+
+    /**
+     * 获取会话内未读消息数
+     * @param contact
+     * @return
+     */
+    private Long getUnreadCount(Contact contact) {
+        Long unread = 0L;
+        Long activeMsgId = contact.getActiveMsgId();
+        Long readMsgId = contact.getReadMsgId();
+        // readMsgId 为 null 说明加入群聊之后还从未读过消息，算作已读数为 0
+        if (!(activeMsgId == null || readMsgId == null || activeMsgId.equals(readMsgId))) {
+            Long lastMsgId = contactDao.getLastMsgId(contact.getRoomId());
+            unread=  messageDao.calUnread(contact.getRoomId(), readMsgId, lastMsgId);
+        }
+        return unread;
+    }
+
 
     /**
      * 更新会话
@@ -58,15 +72,14 @@ public class ContactService {
      */
     public void updateContact(Long uid, Contact contact, Long msgId) {
         contactDao.updateSending(contact.getId(), msgId);
-//        if (contact.getChatType().equals(ChatType.GROUP)) {
-//            groupMemberDao.updateActive(uid, contact.getChatId());
-//        }
+        if(IdUtil.getRoomType(contact.getRoomId()) == RoomType.GROUP) {
+            groupMemberDao.updateActive(uid, contact.getRoomId());
+        }
     }
 
     // 用户读取消息
-//    public void readMsg(Long uid, Long contactId, Long msgId) {
-//        contactDao.updateReading(uid, contactId, msgId);
-//    }
-
+    public void readMsg(Long uid, Long roomId, Long msgId) {
+        contactDao.updateReading(uid, roomId, msgId);
+    }
 
 }

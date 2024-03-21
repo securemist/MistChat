@@ -26,20 +26,19 @@ public class MessageService {
     private final ContactDao contactDao;
 
     // 发送消息
-    public void send(Long contactId, ChatMessageRequest msg) {
-        AbstractMsgHandler messageHandler = MessageHandleFactory.getHandle(msg.getType());
+    public Long send(Long uid, Long roomId, ChatMessageRequest req) {
+        AbstractMsgHandler messageHandler = MessageHandleFactory.getHandle(req.getType());
 
-        Contact contact = contactDao.getById(contactId);
-        Long uid = contact.getUid();
+        Contact contact = contactDao.getByRoomId(uid, roomId);
 
-        Message m = messageHandler.saveMsg(contactId, msg.getType(), msg);
+        Message m = messageHandler.saveMsg(uid, contact.getRoomId(), req);
         eventPublisher.publishEvent(new MessageSendEvent(this, uid, contact, m));
+        return m.getId();
     }
 
     // 某个会话的消息列表
-    public CursorResult list(Long contactId, String cursor, Integer pageSize) {
-        List<Message> data = messageDao.listCursorable(contactId, cursor, pageSize);
-
+    public CursorResult lilistMessage(Long roomId, String cursor, Integer pageSize) {
+        List<Message> data = messageDao.listCursorable(roomId, cursor, pageSize);
         Boolean isLast = false;
         String newCursor = null;
         if (data.size() != pageSize || CollectionUtil.isEmpty(data)) {
@@ -54,15 +53,4 @@ public class MessageService {
     }
 
 
-    /**
-     * 用户在会话内的未读消息数
-     *
-     * @param id
-     * @param readMsgId
-     * @param lastMsgId
-     * @return
-     */
-    public Long getUnreadCount(Long contactId, Long readMsgId, Long lastMsgId) {
-        return messageDao.getUnreacCount(contactId,readMsgId,lastMsgId);
-    }
 }
