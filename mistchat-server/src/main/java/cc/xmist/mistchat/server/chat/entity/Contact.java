@@ -59,12 +59,6 @@ public class Contact implements Serializable {
     @TableField(value = "create_time")
     private LocalDateTime createTime;
 
-    /**
-     *
-     */
-    @TableField(value = "update_time")
-    private LocalDateTime updateTime;
-
     @TableField(exist = false)
     private Long unreadCount;
 }

@@ -59,11 +59,6 @@ public class Friend implements Serializable {
     @TableField("create_time")
     private LocalDateTime createTime;
 
-    /**
-     * 修改时间
-     */
-    @TableField("update_time")
-    private LocalDateTime updateTime;
 
     public Friend(Long uid1, Long uid2) {
         long min = Math.min(uid1, uid2);

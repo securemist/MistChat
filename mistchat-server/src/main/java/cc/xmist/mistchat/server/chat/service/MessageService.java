@@ -6,7 +6,7 @@ import cc.xmist.mistchat.server.chat.entity.Contact;
 import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.message.AbstractMsgHandler;
 import cc.xmist.mistchat.server.chat.message.MessageHandleFactory;
-import cc.xmist.mistchat.server.chat.req.ChatMessageRequest;
+import cc.xmist.mistchat.server.chat.req.MessageRequest;
 import cc.xmist.mistchat.server.common.event.MessageSendEvent;
 import cc.xmist.mistchat.server.common.util.CursorResult;
 import cn.hutool.core.collection.CollectionUtil;
@@ -26,18 +26,18 @@ public class MessageService {
     private final ContactDao contactDao;
 
     // 发送消息
-    public Long send(Long uid, Long roomId, ChatMessageRequest req) {
+    public Message send(Long uid, Long roomId, MessageRequest req) {
         AbstractMsgHandler messageHandler = MessageHandleFactory.getHandle(req.getType());
 
         Contact contact = contactDao.getByRoomId(uid, roomId);
 
         Message m = messageHandler.saveMsg(uid, contact.getRoomId(), req);
         eventPublisher.publishEvent(new MessageSendEvent(this, uid, contact, m));
-        return m.getId();
+        return m;
     }
 
     // 某个会话的消息列表
-    public CursorResult lilistMessage(Long roomId, String cursor, Integer pageSize) {
+    public CursorResult listMessage(Long roomId, String cursor, Integer pageSize) {
         List<Message> data = messageDao.listCursorable(roomId, cursor, pageSize);
         Boolean isLast = false;
         String newCursor = null;

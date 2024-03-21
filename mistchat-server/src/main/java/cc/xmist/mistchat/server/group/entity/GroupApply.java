@@ -73,9 +73,4 @@ public class GroupApply implements Serializable {
     @TableField("create_time")
     private LocalDateTime createTime;
 
-    /**
-     * 修改时间
-     */
-    @TableField("update_time")
-    private LocalDateTime updateTime;
 }

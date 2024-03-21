@@ -1,7 +1,8 @@
 package cc.xmist.mistchat.server.chat.controller;
 
 import cc.xmist.mistchat.server.chat.entity.Message;
-import cc.xmist.mistchat.server.chat.req.ChatMessageRequest;
+import cc.xmist.mistchat.server.chat.req.MessageRequest;
+import cc.xmist.mistchat.server.chat.resp.MsgSendResponse;
 import cc.xmist.mistchat.server.chat.service.MessageService;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.CursorResult;
@@ -28,11 +29,11 @@ public class ChatController {
 
     @PostMapping("/send")
     @Operation(summary = "发送消息")
-    public R<Long> sendMsg(@RequestParam Long roomId,
-                     @RequestBody ChatMessageRequest req) {
+    public R<MsgSendResponse> sendMsg(@RequestParam Long roomId,
+                                      @RequestBody MessageRequest req) {
         Long uid = RequestContext.getUid();
-        Long msgId = messageService.send(uid, roomId, req);
-        return R.ok(msgId);
+        Message message = messageService.send(uid, roomId, req);
+        return R.ok(message);
     }
 
     @GetMapping("/list/page")
@@ -40,7 +41,7 @@ public class ChatController {
     public R<CursorResult<Message>> list(@RequestParam Long roomId,
                                          @RequestParam(required = false) String cursor,
                                          @RequestParam Integer pageSize) {
-        CursorResult result = messageService.lilistMessage(roomId,cursor, pageSize);
+        CursorResult result = messageService.listMessage(roomId,cursor, pageSize);
         return R.ok(result);
     }
 

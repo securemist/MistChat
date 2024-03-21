@@ -2,7 +2,7 @@ package cc.xmist.mistchat.server.chat.message;
 
 import cc.xmist.mistchat.server.chat.dao.MessageDao;
 import cc.xmist.mistchat.server.chat.entity.Message;
-import cc.xmist.mistchat.server.chat.req.ChatMessageRequest;
+import cc.xmist.mistchat.server.chat.req.MessageRequest;
 import cc.xmist.mistchat.server.common.enums.MessageType;
 import cn.hutool.core.bean.BeanUtil;
 import jakarta.annotation.PostConstruct;
@@ -45,7 +45,7 @@ public abstract class AbstractMsgHandler<T> {
         return BeanUtil.toBean(body, bodyClass);
     }
 
-    public Message saveMsg(Long uid, Long roomId, ChatMessageRequest req) {
+    public Message saveMsg(Long uid, Long roomId, MessageRequest req) {
         T body = toBean(req.getBody());
         Message m = Message.builder()
                 .uid(uid)

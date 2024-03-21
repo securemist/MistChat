@@ -4,7 +4,7 @@ import cc.xmist.mistchat.server.common.enums.MessageType;
 import lombok.Data;
 
 @Data
-public class ChatMessageRequest {
+public class MessageRequest {
     protected MessageType type;
     protected Object body;
 }

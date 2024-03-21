@@ -38,6 +38,7 @@ public class MessageSendListener {
     }
 
     @EventListener(MessageSendEvent.class)
+    @Async
     public void updateContact(MessageSendEvent event) {
         Message message = event.getMessage();
         Long uid = event.getUid();
