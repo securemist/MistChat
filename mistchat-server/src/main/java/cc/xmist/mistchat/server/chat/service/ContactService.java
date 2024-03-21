@@ -3,9 +3,9 @@ package cc.xmist.mistchat.server.chat.service;
 import cc.xmist.mistchat.server.chat.dao.ContactDao;
 import cc.xmist.mistchat.server.chat.dao.MessageDao;
 import cc.xmist.mistchat.server.chat.entity.Contact;
+import cc.xmist.mistchat.server.common.config.GroupConfig;
 import cc.xmist.mistchat.server.common.enums.RoomType;
 import cc.xmist.mistchat.server.common.util.CursorResult;
-import cc.xmist.mistchat.server.common.util.IdUtil;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,7 @@ import java.util.List;
 public class ContactService {
     private final GroupMemberDao groupMemberDao;
     private final ContactDao contactDao;
+    private final GroupConfig groupConfig;
     private final MessageDao messageDao;
     private final MessageService messageService;
 
@@ -72,7 +73,7 @@ public class ContactService {
      */
     public void updateContact(Long uid, Contact contact, Long msgId) {
         contactDao.updateSending(contact.getId(), msgId);
-        if(IdUtil.getRoomType(contact.getRoomId()) == RoomType.GROUP) {
+        if(groupConfig.getRoomType(contact.getRoomId()) == RoomType.GROUP) {
             groupMemberDao.updateActive(uid, contact.getRoomId());
         }
     }

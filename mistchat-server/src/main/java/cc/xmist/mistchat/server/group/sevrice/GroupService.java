@@ -1,10 +1,9 @@
 package cc.xmist.mistchat.server.group.sevrice;
 
 import cc.xmist.mistchat.server.chat.dao.ContactDao;
-import cc.xmist.mistchat.server.chat.service.ContactService;
+import cc.xmist.mistchat.server.common.config.GroupConfig;
 import cc.xmist.mistchat.server.common.event.GroupAddEvent;
 import cc.xmist.mistchat.server.common.util.CursorResult;
-import cc.xmist.mistchat.server.common.util.IdUtil;
 import cc.xmist.mistchat.server.group.dao.GroupApplyDao;
 import cc.xmist.mistchat.server.group.dao.GroupDao;
 import cc.xmist.mistchat.server.group.dao.GroupMemberDao;
@@ -16,7 +15,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +25,7 @@ public class GroupService {
     private final GroupDao groupDao;
     private final GroupApplyDao groupApplyDao;
     private final ContactDao contactDao;
+    private final GroupConfig groupConfig;
     private final ApplicationEventPublisher eventPublisher;
 
     /**
@@ -65,8 +64,12 @@ public class GroupService {
      */
     @Transactional(rollbackFor = Exception.class)
     public Long create(Long createrId, String name, List<Long> uids) {
-        Group group = groupDao.create(createrId, name, IdUtil.genGroupId());
-        Long groupId = group.getId();
+        Long groupId = groupConfig.genGroupId();
+        while (groupDao.existsId(groupId)) {
+            groupId = groupConfig.genGroupId();
+        }
+
+        Group group = groupDao.create(createrId, name, groupId);
 
         // 群成员算上群主
         if (uids.indexOf(createrId) == -1) uids.add(createrId);
