@@ -1,7 +1,8 @@
 package cc.xmist.mistchat.server.chat.controller;
 
-import cc.xmist.mistchat.server.chat.entity.Contact;
+import cc.xmist.mistchat.server.chat.resp.ContactResponse;
 import cc.xmist.mistchat.server.chat.service.ContactService;
+import cc.xmist.mistchat.server.common.constant.Constants;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.CursorResult;
 import cc.xmist.mistchat.server.common.util.R;
@@ -22,9 +23,10 @@ public class ContactController {
 
     @GetMapping("/list")
     @Operation(summary = "会话列表")
-    public R<CursorResult<Contact> > list(String cursor, Integer pageSize) {
+    public R<CursorResult<ContactResponse.Contact>> list(@RequestParam String cursor,
+                                                        @RequestParam(required = false,defaultValue = Constants.CUSROR_PAGESIZE)Integer pageSize) {
         Long uid = RequestContext.getUid();
-        CursorResult<Contact> res = contactService.getContactList(uid,cursor,pageSize);
+        CursorResult<ContactResponse.Contact> res = contactService.getContactList(uid, cursor, pageSize);
         return R.ok(res);
     }
 

@@ -1,9 +1,11 @@
 package cc.xmist.mistchat.server.group.controller;
 
+import cc.xmist.mistchat.server.common.constant.Constants;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.CursorResult;
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.group.req.GroupCreateReq;
+import cc.xmist.mistchat.server.group.entity.Group;
+import cc.xmist.mistchat.server.group.req.GroupCreateRequest;
 import cc.xmist.mistchat.server.group.sevrice.GroupMemberService;
 import cc.xmist.mistchat.server.group.sevrice.GroupService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,17 +25,17 @@ public class GroupController {
     @Operation(summary = "获取群聊的成员")
     public R<CursorResult<Long>> members(@RequestParam Long groupId,
                                          @RequestParam(required = false) String cursor,
-                                         @RequestParam Integer pageSize) {
+                                         @RequestParam(required = false,defaultValue = Constants.CUSROR_PAGESIZE) Integer pageSize) {
         CursorResult<Long> result = groupService.getMembersCursorabler(groupId, cursor, pageSize);
         return R.ok(result);
     }
 
     @PostMapping("/create")
     @Operation(summary = "创建群聊")
-    public R<Long> create(@RequestBody GroupCreateReq req) {
+    public R<Group> create(@RequestBody GroupCreateRequest req) {
         Long uid = RequestContext.getUid();
-        Long groupId = groupService.create(uid, req.getName(), req.getUidList());
-        return R.ok(groupId);
+        Group group = groupService.create(uid, req.getName(), req.getUidList());
+        return R.ok(group);
     }
 
     @GetMapping("/exit")

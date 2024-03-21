@@ -29,7 +29,7 @@ public class BlackService {
         if (blackType.equals(BlackType.UID)) {
             target = uid.toString();
         } else {
-            IpInfo ipInfo = userDao.getUser(uid).getIpInfo();
+            IpInfo ipInfo = userDao.getByUid(uid).getIpInfo();
             if (ipInfo == null) return; // 没有ip记录
             target = ipInfo.getLastIp();
         }

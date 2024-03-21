@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.user.model.entity;
 
-import cc.xmist.mistchat.server.common.enums.ActiveStatus;
 import cc.xmist.mistchat.server.common.enums.Gender;
 import cc.xmist.mistchat.server.common.enums.Role;
 import cc.xmist.mistchat.server.common.enums.UserStatus;
@@ -10,6 +9,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +27,8 @@ import java.util.Date;
  */
 @Data
 @TableName(value = "user")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class User {
 
@@ -78,11 +81,6 @@ public class User {
      */
     @TableField("role")
     private Role role;
-    /**
-     * 在线状态
-     */
-    @TableField("active_status")
-    private ActiveStatus activeStatus;
 
     /**
      * 最后上下线时间
@@ -105,12 +103,6 @@ public class User {
     }
 
     /**
-     * 佩戴的徽章id
-     */
-    @TableField("item_id")
-    private Long itemId;
-
-    /**
      * 使用状态 0.正常 1拉黑
      */
     @TableField("status")
@@ -122,11 +114,6 @@ public class User {
     @TableField("create_time")
     private LocalDateTime createTime;
 
-    /**
-     * 修改时间
-     */
-    @TableField("update_time")
-    private LocalDateTime updateTime;
 
     @TableField(exist = false)
     private String token;

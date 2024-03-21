@@ -28,17 +28,6 @@ public class FriendApplyDao extends ServiceImpl<FriendApplyMapper, FriendApply> 
         this.friendApplyMapper = friendApplyMapper;
     }
 
-    public List<FriendApply> getReceivedApplyList(Long uid) {
-        return lambdaQuery()
-                .eq(FriendApply::getTargetUid, uid)
-                .list();
-    }
-
-    public List<FriendApply> getForwardApplyList(Long uid) {
-        return lambdaQuery()
-                .eq(FriendApply::getUid, uid)
-                .list();
-    }
 
     public FriendApply addFriendApply(Long uid, Long targetUid, String msg) {
         FriendApply apply = FriendApply.builder()
@@ -58,29 +47,36 @@ public class FriendApplyDao extends ServiceImpl<FriendApplyMapper, FriendApply> 
      * @param apply
      * @param pass  是否通过
      * @param msg
+     * @return
      */
-    public void handle(Long applyId, Boolean pass, String msg) {
+    public FriendApply handle(FriendApply apply, Boolean pass, String msg) {
         ApplyStatus status = ApplyStatus.READ;
 
-        if (pass) {
-            status = ApplyStatus.PASS;
-        }
+        if (pass) status = ApplyStatus.PASS;
 
-        lambdaUpdate().eq(FriendApply::getId, applyId)
-                .set(FriendApply::getStatus, status)
-                .set(FriendApply::getReadTime, LocalDateTime.now())
-                .set(FriendApply::getReplyMsg, msg)
-                .update();
+        apply.setStatus(status);
+        apply.setApplyMsg(msg);
+        apply.setReadTime(LocalDateTime.now());
+        updateById(apply);
+        return apply;
     }
 
     public boolean exist(Long uid, ApplyType type, Long targetId) {
-        return find(uid, type, targetId) != null;
+        return get(uid, type, targetId) != null;
     }
 
-    public FriendApply find(Long uid, ApplyType type, Long targetUId) {
+    public FriendApply get(Long uid, ApplyType type, Long targetUId) {
         return lambdaQuery()
                 .eq(FriendApply::getUid, uid)
                 .eq(FriendApply::getTargetUid, targetUId)
                 .one();
+    }
+
+
+    public List<FriendApply> list(Long uid) {
+        return lambdaQuery()
+                .eq(FriendApply::getUid, uid)
+                .or(wrapper -> wrapper.eq(FriendApply::getTargetUid, uid))
+                .list();
     }
 }

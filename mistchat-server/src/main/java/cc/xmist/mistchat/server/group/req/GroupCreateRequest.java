@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
-public class GroupCreateReq {
+public class GroupCreateRequest {
     @NotBlank
     @Schema(description = "用户名")
     private String name;

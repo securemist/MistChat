@@ -1,13 +1,10 @@
 package cc.xmist.mistchatserver;
 
 import cc.xmist.mistchat.server.common.enums.Item;
-import cc.xmist.mistchat.server.user.model.req.LoginReq;
 import com.google.gson.Gson;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -15,7 +12,7 @@ import java.util.stream.Collectors;
 public class UtilTest {
     @Test
     public void testJson() {
-        LoginReq loginReq = new LoginReq("18115168320", "123456");
+        cc.xmist.mistchat.server.user.model.req.LoginRequest loginReq = new cc.xmist.mistchat.server.user.model.req.LoginRequest("18115168320", "123456");
         String json = new Gson().toJson(loginReq);
         System.out.println(json);
 

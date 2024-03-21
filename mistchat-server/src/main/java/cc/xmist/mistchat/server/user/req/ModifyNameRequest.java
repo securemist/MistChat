@@ -6,9 +6,9 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Data
-public class ModifyNameReq {
+public class ModifyNameRequest {
     @NotBlank(message = "名称不能为空")
-    @Length(max = 6,min = 1,message = "名称长度应当在1到6位之间")
+    @Length(max = 8,min = 1,message = "名称长度应当在1到8位之间")
     @Schema(description = "新的名称")
     private String name;
 }

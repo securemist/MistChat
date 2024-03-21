@@ -1,9 +1,9 @@
 package cc.xmist.mistchat.server.chat.controller;
 
-import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.req.MessageRequest;
-import cc.xmist.mistchat.server.chat.resp.MsgSendResponse;
+import cc.xmist.mistchat.server.chat.resp.MessageResponse;
 import cc.xmist.mistchat.server.chat.service.MessageService;
+import cc.xmist.mistchat.server.common.constant.Constants;
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.CursorResult;
 import cc.xmist.mistchat.server.common.util.R;
@@ -29,20 +29,20 @@ public class ChatController {
 
     @PostMapping("/send")
     @Operation(summary = "发送消息")
-    public R<MsgSendResponse> sendMsg(@RequestParam Long roomId,
-                                      @RequestBody MessageRequest req) {
+    public R<MessageResponse.Message> sendMsg(@RequestParam Long roomId,
+                                              @RequestBody MessageRequest req) {
         Long uid = RequestContext.getUid();
-        Message message = messageService.send(uid, roomId, req);
-        return R.ok(message);
+        MessageResponse.Message m = messageService.send(uid, roomId, req);
+        return R.ok(m);
     }
 
     @GetMapping("/list/page")
     @Operation(summary = "消息记录")
-    public R<CursorResult<Message>> list(@RequestParam Long roomId,
-                                         @RequestParam(required = false) String cursor,
-                                         @RequestParam Integer pageSize) {
-        CursorResult result = messageService.listMessage(roomId,cursor, pageSize);
-        return R.ok(result);
+    public R<CursorResult<MessageResponse.Message>> list(@RequestParam Long roomId,
+                                                         @RequestParam(required = false) String cursor,
+                                                         @RequestParam(required = false, defaultValue = Constants.CUSROR_PAGESIZE) Integer pageSize) {
+        CursorResult<MessageResponse.Message> response = messageService.listMessage(roomId, cursor, pageSize);
+        return R.ok(response);
     }
 
 

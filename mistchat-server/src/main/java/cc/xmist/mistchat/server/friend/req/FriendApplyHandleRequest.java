@@ -1,11 +1,11 @@
-package cc.xmist.mistchat.server.user.model.req;
+package cc.xmist.mistchat.server.friend.req;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class FriendApplyHandleReq {
+public class FriendApplyHandleRequest {
     private Long applyId;
     @NotNull
     private Boolean pass;

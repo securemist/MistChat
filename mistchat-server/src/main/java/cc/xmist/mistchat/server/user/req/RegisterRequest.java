@@ -1,13 +1,12 @@
 package cc.xmist.mistchat.server.user.model.req;
 
-import lombok.AllArgsConstructor;
+import cc.xmist.mistchat.server.common.enums.Gender;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class LoginReq {
+public class RegisterRequest {
     private String username;
     private String password;
+    private String name;
+    private Gender gender;
 }

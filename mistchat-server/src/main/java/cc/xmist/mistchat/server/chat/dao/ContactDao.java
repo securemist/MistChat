@@ -1,7 +1,6 @@
 package cc.xmist.mistchat.server.chat.dao;
 
 import cc.xmist.mistchat.server.chat.entity.Contact;
-import cc.xmist.mistchat.server.chat.entity.Message;
 import cc.xmist.mistchat.server.chat.mapper.ContactMapper;
 import cc.xmist.mistchat.server.common.exception.IlleglaException;
 import cc.xmist.mistchat.server.friend.entity.Friend;
@@ -25,6 +24,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
     public void updateSending(Long contactId, Long msgId) {
         lambdaUpdate()
                 .set(Contact::getActiveMsgId, msgId)
+                .set(Contact::getReadMsgId,msgId)
                 .eq(Contact::getId, contactId)
                 .update();
     }
@@ -34,9 +34,9 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * 用户读取消息的会话更新
      * 某一个用户在某一个会话读取某个消息，如果会话的实际 uid 与请求的 uid 不符，属于非法操作，操作别人的接口
      *
-     * @param uid       请求中的 uid
+     * @param uid    请求中的 uid
      * @param roomId
-     * @param msgId     消息 id
+     * @param msgId  消息 id
      */
     public void updateReading(Long uid, Long roomId, Long msgId) {
         boolean ok = lambdaUpdate()
@@ -62,20 +62,24 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
 
     /**
      * 初始化好友会话
+     *
      * @param friend
      */
     public void initFriend(Friend friend) {
-        List<Contact> contacts = Arrays.asList(friend.getUid1(), friend.getUid2()).stream().map(uid -> {
-            return Contact.builder()
-                    .uid(uid)
-                    .roomId(friend.getRoomId())
-                    .build();
-        }).collect(Collectors.toList());
+        List<Contact> contacts = Arrays.asList(friend.getUid1(), friend.getUid2())
+                .stream()
+                .map(uid -> {
+                    return Contact.builder()
+                            .uid(uid)
+                            .roomId(friend.getRoomId())
+                            .build();
+                }).collect(Collectors.toList());
         saveBatch(contacts);
     }
 
     /**
      * 初始化群成员会话
+     *
      * @param groupId
      * @param uids
      */
@@ -99,7 +103,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
     public Long getLastMsgId(Long roomId) {
         return lambdaQuery()
                 .select(Contact::getActiveMsgId)
-                .eq(Contact::getRoomId,roomId)
+                .eq(Contact::getRoomId, roomId)
                 .orderByDesc(Contact::getActiveMsgId)
                 .last("LIMIT 1")
                 .one()
@@ -108,17 +112,17 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
 
     public List<Contact> listCursorable(Long uid, String cursor, Integer pageSize) {
         return lambdaQuery()
-                .lt(StrUtil.isNotBlank(cursor),Contact::getId,cursor)
-                .eq(Contact::getUid,uid)
+                .lt(StrUtil.isNotBlank(cursor), Contact::getId, cursor)
+                .eq(Contact::getUid, uid)
                 .orderByDesc(Contact::getId)
                 .last("LIMIT " + pageSize)
                 .list();
     }
 
-    public Contact getByRoomId(Long uid,Long roomId) {
+    public Contact getByRoomId(Long uid, Long roomId) {
         return lambdaQuery()
-                .eq(Contact::getRoomId,roomId)
-                .eq(Contact::getUid,uid)
+                .eq(Contact::getRoomId, roomId)
+                .eq(Contact::getUid, uid)
                 .one();
     }
 }

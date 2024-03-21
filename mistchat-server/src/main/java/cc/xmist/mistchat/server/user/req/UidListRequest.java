@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UidListReq {
+public class UidListRequest {
     @Schema(name = "用户 id 列表")
     private List<Long> uidList;
 }

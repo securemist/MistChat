@@ -1,4 +1,4 @@
-package cc.xmist.mistchat.server.user.model.req;
+package cc.xmist.mistchat.server.friend.req;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
-public class FriendApplyReq {
+public class FriendApplyRequest {
     @NotNull
     private Long targetUid;
     private String msg;

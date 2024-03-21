@@ -63,7 +63,7 @@ public class GroupService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public Long create(Long createrId, String name, List<Long> uids) {
+    public Group create(Long createrId, String name, List<Long> uids) {
         Long groupId = groupConfig.genGroupId();
         while (groupDao.existsId(groupId)) {
             groupId = groupConfig.genGroupId();
@@ -79,7 +79,7 @@ public class GroupService {
         contactDao.initGroup(groupId, uids);
 
         eventPublisher.publishEvent(new GroupAddEvent(this, group, uids));
-        return groupId;
+        return group;
     }
 }
 

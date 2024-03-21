@@ -34,11 +34,11 @@ public class GroupMemberService {
      * @param uid
      * @param groupId
      */
-    public void exit(Long uid, Long groupId) {
+    public void exit(Long uid, Long groupId) { // TODO
         Group group = groupDao.getById(groupId);
         if(group.getOwnerUid().equals(uid)) throw new BusinessException("群主不能退出群聊");
 
-        groupMemberDao.removeUser(uid, groupId);
+//        groupMemberDao.removeUser(uid, groupId);
 //        groupContactDao.remove(uid,groupId); TODO
         eventPublisher.publishEvent(new MemberChangeEvent(this, uid, groupId, true));
     }

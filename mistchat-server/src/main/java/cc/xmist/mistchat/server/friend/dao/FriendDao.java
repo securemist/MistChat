@@ -29,7 +29,7 @@ public class FriendDao extends ServiceImpl<FriendMapper, Friend> {
     }
 
 
-    public List<Long> getFriendIdList(Long uid) {
+    public List<Long> listFriendsId(Long uid) {
         List<Friend> list = lambdaQuery()
                 .eq(Friend::getUid1, uid)
                 .or()
@@ -37,9 +37,9 @@ public class FriendDao extends ServiceImpl<FriendMapper, Friend> {
                 .isNull(Friend::getDeleteTime)
                 .list();
 
-        return list.stream().map(u -> {
-            return u.getUid1() == uid ? u.getUid2() : u.getUid1();
-        }).collect(Collectors.toList());
+        return list.stream()
+                .map(u -> u.getUid1() == uid ? u.getUid2() : u.getUid1())
+                .collect(Collectors.toList());
     }
 
     public Friend get(Long uid, Long targetUid) {

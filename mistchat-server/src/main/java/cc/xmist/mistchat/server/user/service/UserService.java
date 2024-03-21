@@ -1,26 +1,18 @@
 package cc.xmist.mistchat.server.user.service;
 
-import cc.xmist.mistchat.server.common.cache.ItemCache;
-import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.common.event.UserRegisterEvent;
 import cc.xmist.mistchat.server.common.exception.BusinessException;
-import cc.xmist.mistchat.server.common.exception.ParamException;
 import cc.xmist.mistchat.server.friend.dao.FriendDao;
-import cc.xmist.mistchat.server.user.dao.UserBackpackDao;
 import cc.xmist.mistchat.server.user.dao.UserDao;
-import cc.xmist.mistchat.server.user.entity.IpInfo;
-import cc.xmist.mistchat.server.user.model.entity.ItemConfig;
 import cc.xmist.mistchat.server.user.model.entity.User;
-import cc.xmist.mistchat.server.user.model.entity.UserBackpack;
-import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
-import cn.hutool.core.util.StrUtil;
+import cc.xmist.mistchat.server.user.model.req.RegisterRequest;
+import cc.xmist.mistchat.server.user.resp.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,24 +25,16 @@ public class UserService {
     private final FriendDao userFriendDao;
     private final AuthService authService;
     private final UserDao userDao;
-    private final ItemCache itemCache;
-    private final UserBackpackDao userBackpackDao;
-
 
     @Transactional(rollbackFor = Exception.class)
-    public void register(String username, String password, String name) {
-        if (userDao.getByUsername(username) != null) {
-            throw new BusinessException("该用户已注册");
-        }
-
-        if (userDao.getByName(name) != null) {
-            throw new BusinessException("该用户名已存在");
-        }
-
-        User user = userDao.addUser(username, password, name);
+    public void register(RegisterRequest req) {
+        if (userDao.existUsername(req.getUsername())) throw new BusinessException("该用户已注册");
+        if (userDao.existName(req.getName())) throw new BusinessException("该用户名已存在");
+        User user = userDao.createUser(req);
         eventPublisher.publishEvent(new UserRegisterEvent(this, user));
-        log.info("{}用户完成注册，username：{}", name, username);
+        log.info("{}用户完成注册，username：{}", req.getName(), req.getUsername());
     }
+
 
     public User login(String username, String password) {
         User user = userDao.getByUsername(username);
@@ -62,17 +46,9 @@ public class UserService {
         return user;
     }
 
-    public UserInfoVo getUserInfo(Long uid) {
-        User user = userDao.getUser(uid);
-        Long modifyNameCount = userBackpackDao.getItemCount(uid, Item.MODIFY_NAME_CARD);
-
-        return UserInfoVo.builder()
-                .id(user.getId())
-                .gender(user.getGender())
-                .avatar(user.getAvatar())
-                .name(user.getName())
-                .role(user.getRole())
-                .modifyNameChance(modifyNameCount).build();
+    public UserResponse getUserInfo(Long uid) {
+        User u = userDao.getByUid(uid);
+        return UserResponse.build(u);
     }
 
 
@@ -84,44 +60,9 @@ public class UserService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void modifyName(Long uid, String name) {
-        // uid不存在
-        if (userDao.getUser(uid) == null) {
-            throw new ParamException();
-        }
-
-        // 校验用户名
-        User user = userDao.getByName(name);
-        if (user != null) {
-            throw new BusinessException("该用户名已存在");
-        }
-
-        // 获取用户最新的一张改名卡
-        UserBackpack renameItem = userBackpackDao.getLastItem(uid, Item.MODIFY_NAME_CARD);
-        if (renameItem == null) {
-            throw new BusinessException("改名卡数量不足");
-        }
-
-        // 消耗改名卡改名
-        userBackpackDao.useItem(renameItem.getId());
+        User user = userDao.getByUid(uid);
+        if (userDao.existName(name)) throw new BusinessException("该用户名已存在");
         userDao.modifyName(uid, name);
-    }
-
-
-    /**
-     * 更新ip信息
-     *
-     * @param uid
-     * @param ip
-     */
-    public void updateIpInfo(Long uid, String ip) {
-        User user = userDao.getUser(uid);
-        IpInfo ipInfo = user.getIpInfo();
-        if (StrUtil.isBlank(ipInfo.getInitialIp())) {
-            ipInfo.setInitialIp(ip);
-            ipInfo.setLastIp(ip);
-        } else {
-            ipInfo.setLastIp(ip);
-        }
     }
 
 
@@ -132,23 +73,13 @@ public class UserService {
      * @param uidList
      * @return
      */
-    public List<UserInfoVo> getBatchedUserInfo(Long uid, List<Long> uidList) {
-        if (uidList.size() == 0) return Collections.emptyList();
-
-        List<User> users = userDao.getUserBatch(uidList);
-        List<ItemConfig> allBadges = itemCache.getAllBadges();
+    public List<UserResponse> getBatchedUserInfo(Long uid, List<Long> uidList) {
+        List<User> users = userDao.listByUid(uidList);
 
         return users.stream()
                 .filter(u -> u.getId() != uid)
-                .map(u -> {
-                    return UserInfoVo.builder()
-                            .id(u.getId())
-                            .gender(u.getGender())
-                            .avatar(u.getAvatar())
-                            .name(u.getName())
-                            .role(u.getRole())
-                            .build();
-                }).collect(Collectors.toList());
+                .map(u -> UserResponse.build(u))
+                .collect(Collectors.toList());
     }
 
 

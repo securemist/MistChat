@@ -3,10 +3,7 @@ package cc.xmist.mistchat.server.user.controller;
 
 import cc.xmist.mistchat.server.common.context.RequestContext;
 import cc.xmist.mistchat.server.common.util.R;
-import cc.xmist.mistchat.server.user.model.req.ModifyNameReq;
-import cc.xmist.mistchat.server.user.model.req.UidListReq;
-import cc.xmist.mistchat.server.user.model.resp.SummaryUser;
-import cc.xmist.mistchat.server.user.model.resp.UserInfoVo;
+import cc.xmist.mistchat.server.user.resp.UserResponse;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,22 +26,22 @@ public class UserController {
 
     @Operation(summary = "获取当前用户信息")
     @GetMapping("/info")
-    public R<UserInfoVo> getUserInfo() {
+    public R<UserResponse> getUserInfo() {
         Long uid = RequestContext.getUid();
-        UserInfoVo userInfo = userService.getUserInfo(uid);
-        return R.ok(userInfo);
+        UserResponse user = userService.getUserInfo(uid);
+        return R.ok(user);
     }
 
     @Operation(summary = "其他用户信息")
     @PostMapping("/another/info/list")
-    public R<List<SummaryUser>> getUserInfoBatched(@RequestBody UidListReq req) {
+    public R<List<UserResponse>> getUserInfoBatched(@RequestBody cc.xmist.mistchat.server.user.model.req.UidListRequest req) {
         Long uid = RequestContext.getUid();
         return R.ok(userService.getBatchedUserInfo(uid, req.getUidList()));
     }
 
     @Operation(summary = "修改用户名称")
     @PostMapping("/name/modify")
-    public R<Void> modifyName(@RequestBody @Valid ModifyNameReq modifyNameReq) {
+    public R<Void> modifyName(@RequestBody @Valid cc.xmist.mistchat.server.user.model.req.ModifyNameRequest modifyNameReq) {
         Long uid = RequestContext.getUid();
         userService.modifyName(uid, modifyNameReq.getName());
         return R.ok();

@@ -27,7 +27,7 @@ public class RequestContext {
     }
 
     public static User getUser() {
-        return userDao.getUser(uidLocal.get());
+        return userDao.getByUid(uidLocal.get());
     }
 
     public static void remove() {

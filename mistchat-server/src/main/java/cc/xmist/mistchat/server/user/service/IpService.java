@@ -30,7 +30,7 @@ public class IpService {
     @SneakyThrows
     public void updateIpInfo(Long uid, String clientIp) {
         executor.execute(() -> {
-            IpInfo old = userDao.getUser(uid).getIpInfo();
+            IpInfo old = userDao.getByUid(uid).getIpInfo();
             String ip = clientIp;
             if (ip.equals("localhost")) ip = "127.0.0.1";
 

@@ -2,8 +2,7 @@ package cc.xmist.mistchat.server.user.controller;
 
 import cc.xmist.mistchat.server.common.util.R;
 import cc.xmist.mistchat.server.user.model.entity.User;
-import cc.xmist.mistchat.server.user.model.req.LoginReq;
-import cc.xmist.mistchat.server.user.model.req.RegisterReq;
+import cc.xmist.mistchat.server.user.model.req.RegisterRequest;
 import cc.xmist.mistchat.server.user.service.AuthService;
 import cc.xmist.mistchat.server.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,14 +24,14 @@ public class AuthController {
 
     @PostMapping("/public/register")
     @Operation(summary = "注册")
-    public R register(@RequestBody RegisterReq registerReq) {
-        userService.register(registerReq.getUsername(), registerReq.getPassword(), registerReq.getName());
+    public R register(@RequestBody RegisterRequest req) {
+        userService.register(req);
         return R.ok(null);
     }
 
     @PostMapping("/public/login")
     @Operation(summary = "登录")
-    public R<String> login(@RequestBody LoginReq loginReq) {
+    public R<String> login(@RequestBody cc.xmist.mistchat.server.user.model.req.LoginRequest loginReq) {
         User user = userService.login(loginReq.getUsername(), loginReq.getPassword());
         // 签发token
         String token = authService.login(user.getId());

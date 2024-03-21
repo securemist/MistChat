@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * <p>
@@ -46,6 +44,8 @@ public class Friend implements Serializable {
     @TableField("uid2")
     private Long uid2;
 
+    @TableField("room_id")
+    private Long roomId;
 
     /**
      * 逻辑删除时间
@@ -65,16 +65,7 @@ public class Friend implements Serializable {
         long max = Math.max(uid1, uid2);
         this.uid1 = min;
         this.uid2 = max;
+        this.roomId = Long.valueOf(String.valueOf(uid1) + String.valueOf(uid2));
     }
 
-    public Long getRoomId() {
-        return Long.valueOf(String.valueOf(uid1) + String.valueOf(uid2));
-    }
-
-    public static List<Long> parseRoomId(Long roomId) {
-        return Arrays.asList(
-                Long.valueOf(String.valueOf(roomId).substring(0, 5)),
-                Long.valueOf(String.valueOf(roomId).substring(6, 10))
-        );
-    }
 }
