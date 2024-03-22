@@ -45,7 +45,7 @@ public class Friend implements Serializable {
     private Integer uid2;
 
     @TableField("room_id")
-    private String  roomId;
+    private String roomId;
 
     /**
      * 逻辑删除时间
@@ -68,4 +68,9 @@ public class Friend implements Serializable {
         this.roomId = String.valueOf(uid1) + String.valueOf(uid2);
     }
 
+    public static String getRoomId(Integer uid1, Integer uid2) {
+        int min = Math.min(uid1, uid2);
+        int max = Math.max(uid1, uid2);
+        return String.valueOf(min) + String.valueOf(max);
+    }
 }

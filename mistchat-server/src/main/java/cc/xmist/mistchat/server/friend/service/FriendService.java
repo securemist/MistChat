@@ -110,4 +110,16 @@ public class FriendService {
     public void readApply(Integer uid, Integer applyId) {
         friendApplyDao.read(uid, applyId);
     }
+
+    /**
+     * 删除好友，并删除会话
+     * @param uid
+     * @param friendUid
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Integer uid, Integer friendUid) {
+        friendDao.delete(uid,friendUid);
+        contactDao.deleteFriend(uid,friendUid);
+        friendApplyDao.delete(uid,friendUid);
+    }
 }

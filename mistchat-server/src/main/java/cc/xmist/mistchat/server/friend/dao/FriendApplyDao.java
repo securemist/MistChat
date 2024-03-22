@@ -2,9 +2,11 @@ package cc.xmist.mistchat.server.friend.dao;
 
 import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import cc.xmist.mistchat.server.common.enums.ApplyType;
+import cc.xmist.mistchat.server.common.exception.DeleteFailedException;
 import cc.xmist.mistchat.server.common.exception.IllegalParamException;
 import cc.xmist.mistchat.server.friend.entity.FriendApply;
 import cc.xmist.mistchat.server.friend.mapper.FriendApplyMapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,5 +90,17 @@ public class FriendApplyDao extends ServiceImpl<FriendApplyMapper, FriendApply> 
                 .eq(FriendApply::getId, applyId)
                 .update();
         if (!ok) throw new IllegalParamException();
+    }
+
+    public void delete(Integer uid, Integer friendUid) {
+        LambdaQueryWrapper<FriendApply> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(FriendApply::getUid, uid);
+        wrapper.eq(FriendApply::getTargetUid, friendUid);
+        wrapper.or(w -> w
+                .eq(FriendApply::getUid, friendUid)
+                .eq(FriendApply::getTargetUid, uid));
+
+        boolean ok = baseMapper.delete(wrapper) == 1;
+        if(!ok) throw new DeleteFailedException();
     }
 }

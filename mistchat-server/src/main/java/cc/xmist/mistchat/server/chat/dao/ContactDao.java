@@ -2,9 +2,11 @@ package cc.xmist.mistchat.server.chat.dao;
 
 import cc.xmist.mistchat.server.chat.entity.Contact;
 import cc.xmist.mistchat.server.chat.mapper.ContactMapper;
+import cc.xmist.mistchat.server.common.exception.DeleteFailedException;
 import cc.xmist.mistchat.server.common.exception.IllegalParamException;
 import cc.xmist.mistchat.server.friend.entity.Friend;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
     public void updateSending(Integer contactId, Integer msgId) {
         lambdaUpdate()
                 .set(Contact::getActiveMsgId, msgId)
-                .set(Contact::getReadMsgId,msgId)
+                .set(Contact::getReadMsgId, msgId)
                 .eq(Contact::getId, contactId)
                 .update();
     }
@@ -83,7 +85,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * @param groupId
      * @param uids
      */
-    public void initGroup(String  groupId, List<Integer> uids) {
+    public void initGroup(String groupId, List<Integer> uids) {
         List<Contact> contacts = uids.stream().map(uid -> {
             return Contact.builder()
                     .uid(uid)
@@ -100,7 +102,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * @param roomId
      * @return
      */
-    public Integer getLastMsgId(String  roomId) {
+    public Integer getLastMsgId(String roomId) {
         return lambdaQuery()
                 .select(Contact::getActiveMsgId)
                 .eq(Contact::getRoomId, roomId)
@@ -124,5 +126,22 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
                 .eq(Contact::getRoomId, roomId)
                 .eq(Contact::getUid, uid)
                 .one();
+    }
+
+    /**
+     * 解除好友关系
+     *
+     * @param uid
+     * @param friendUid
+     * @return
+     */
+    public void deleteFriend(Integer uid, Integer friendUid) {
+        LambdaQueryWrapper<Contact> wrapper = new LambdaQueryWrapper<>();
+
+        String roomId = Friend.getRoomId(uid, friendUid);
+        wrapper.eq(Contact::getRoomId, roomId);
+
+        boolean ok = baseMapper.delete(wrapper) == 2L;
+        if (!ok) throw new DeleteFailedException();
     }
 }

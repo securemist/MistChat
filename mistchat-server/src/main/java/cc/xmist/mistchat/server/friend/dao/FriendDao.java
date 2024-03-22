@@ -1,7 +1,9 @@
 package cc.xmist.mistchat.server.friend.dao;
 
+import cc.xmist.mistchat.server.common.exception.DeleteFailedException;
 import cc.xmist.mistchat.server.friend.entity.Friend;
 import cc.xmist.mistchat.server.friend.mapper.FriendMapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,7 @@ public class FriendDao extends ServiceImpl<FriendMapper, Friend> {
         return lambdaQuery()
                 .eq(Friend::getUid1, Math.min(uid, targetUid))
                 .eq(Friend::getUid2, Math.max(uid, targetUid))
+                .isNotNull(Friend::getDeleteTime)
                 .one();
     }
 
@@ -60,5 +63,15 @@ public class FriendDao extends ServiceImpl<FriendMapper, Friend> {
                             .eq(Friend::getUid2, uid);
                 })
                 .count() != 0;
+    }
+
+    public void delete(Integer uid, Integer friendUid) {
+        LambdaQueryWrapper<Friend> wrapper = new LambdaQueryWrapper<>();
+        String roomId = Friend.getRoomId(uid, friendUid);
+
+        wrapper.eq(Friend::getRoomId,roomId);
+
+        boolean ok = baseMapper.delete(wrapper) == 1;
+        if (!ok) throw new DeleteFailedException();
     }
 }

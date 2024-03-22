@@ -29,6 +29,14 @@ public class FriendController {
         return R.ok(friendService.apply(uid, req));
     }
 
+    @PostMapping("/delete/{friendUid}")
+    @Operation(summary = "删除好友")
+    public R add( @PathVariable Integer friendUid) {
+        Integer uid = RequestContext.getUid();
+        friendService.delete(uid, friendUid);
+        return R.ok();
+    }
+
     @GetMapping("/apply/list")
     @Operation(summary = "获取收到的好友申请")
     public R<FriendApplyResponse> listApply() {
@@ -36,7 +44,6 @@ public class FriendController {
         FriendApplyResponse response = friendService.getApplyList(uid);
         return R.ok(response);
     }
-
 
     @PostMapping("/apply/handle")
     @Operation(summary = "处理申请")
