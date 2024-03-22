@@ -41,13 +41,13 @@ public class FriendService {
      * @param uid
      * @return
      */
-    public List<Long> getFriendIdList(Long uid) {
+    public List<Integer> getFriendIdList(Integer uid) {
         return friendDao.listFriendsId(uid);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public FriendApplyHandleResponse apply(Long uid, FriendApplyRequest req) {
-        Long targetUid = req.getTargetUid();
+    public FriendApplyHandleResponse apply(Integer uid, FriendApplyRequest req) {
+        Integer targetUid = req.getTargetUid();
         if (uid == targetUid) throw new ParamException();
         if (friendDao.isFriend(uid, targetUid)) throw new BusinessException("你们已经是好友了，请勿重复添加");
         if (friendApplyDao.get(uid, ApplyType.FRIEND, targetUid) != null) throw new BusinessException("请勿重复申请");
@@ -65,8 +65,8 @@ public class FriendService {
     }
 
     public Contact friendApplyPass(FriendApply apply) {
-        Long uid = apply.getUid();
-        Long targetUid = apply.getTargetUid();
+        Integer uid = apply.getUid();
+        Integer targetUid = apply.getTargetUid();
 
         // 创建好友表记录
         Friend friend = friendDao.create(uid, targetUid);
@@ -86,7 +86,7 @@ public class FriendService {
      * @param req
      * @return
      */
-    public FriendApplyHandleResponse handleApply(Long uid, FriendApplyHandleRequest req) {
+    public FriendApplyHandleResponse handleApply(Integer uid, FriendApplyHandleRequest req) {
         FriendApply apply = friendApplyDao.getById(req.getApplyId());
 
         if (apply == null || !apply.getTargetUid().equals(uid)) throw new ParamException();
@@ -102,7 +102,7 @@ public class FriendService {
     }
 
 
-    public FriendApplyResponse getApplyList(Long uid) {
+    public FriendApplyResponse getApplyList(Integer uid) {
         List<FriendApply> applyList = friendApplyDao.list(uid);
         return FriendApplyResponse.build(uid, applyList);
     }

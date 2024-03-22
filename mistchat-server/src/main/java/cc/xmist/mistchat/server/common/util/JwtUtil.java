@@ -19,7 +19,7 @@ public class JwtUtil {
     public static final String UID = "uid";
     public static final String CREATE_TIME = "createTime";
 
-    public String createToken(Long uid) {
+    public String createToken(Integer uid) {
         String token = JWT.create()
                 .withClaim(UID, uid)
 //                .withClaim("createTime", new Date()) TODO 暂时是无期限
@@ -33,8 +33,8 @@ public class JwtUtil {
         return jwt.getClaims();
     }
 
-    public Long getUid(String token) {
+    public Integer getUid(String token) {
         Map<String, Claim> map = verifyToken(token);
-        return map.get("uid").asLong();
+        return map.get("uid").asInt();
     }
 }

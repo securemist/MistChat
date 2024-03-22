@@ -9,10 +9,10 @@ import org.springframework.context.ApplicationEvent;
 @Getter
 public class MessageSendEvent extends ApplicationEvent {
     private Message message;
-    private Long uid;
+    private Integer uid;
     private Contact contact;
 
-    public MessageSendEvent(MessageService source, Long uid, Contact contact, Message message) {
+    public MessageSendEvent(MessageService source, Integer uid, Contact contact, Message message) {
         super(source);
         this.message = message;
         this.uid = uid;

@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 public class GroupAddEvent extends ApplicationEvent {
     private Group group;
-    private List<Long> members;
+    private List<Integer> members;
 
-    public GroupAddEvent(Object source, Group group, List<Long> members) {
+    public GroupAddEvent(Object source, Group group, List<Integer> members) {
         super(source);
         this.group = group;
         this.members = members;

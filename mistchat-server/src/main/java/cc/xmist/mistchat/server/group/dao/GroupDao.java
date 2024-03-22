@@ -6,6 +6,8 @@ import cc.xmist.mistchat.server.group.mapper.GroupMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 服务实现类
@@ -25,21 +27,25 @@ public class GroupDao extends ServiceImpl<GroupMapper, Group> {
      * @param groupId   群聊 id
      * @return
      */
-    public Group create(Long createrUid, String name, Long groupId) {
+    public Group create(Integer creatorUid, String name, String groupId) {
         Group group = Group.builder()
                 .name(name)
                 .id(groupId)
-                .createrUid(createrUid)
-                .ownerUid(createrUid)
+                .creatorUid(creatorUid)
+                .ownerUid(creatorUid)
                 .status(GroupStatus.OK)
                 .build();
         save(group);
         return group;
     }
 
-    public boolean existsId(Long groupId) {
+    public boolean existsId(String groupId) {
         return lambdaQuery()
                 .eq(Group::getId, groupId)
                 .count() != 0;
+    }
+
+    public Group getById(Integer id) {
+        return super.getById(id);
     }
 }

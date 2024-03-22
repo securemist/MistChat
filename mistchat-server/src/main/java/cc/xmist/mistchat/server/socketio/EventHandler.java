@@ -38,7 +38,7 @@ public class EventHandler {
     @OnConnect
     public void onConnect(SocketIOClient client) {
         String token = client.getHandshakeData().getSingleUrlParam("token");
-        Long uid = authService.verify(token);
+        Integer uid = authService.verify(token);
 
         AuthEvent.Data data = new AuthEvent.Data();
         if (uid == null) {
@@ -54,7 +54,7 @@ public class EventHandler {
 
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
-        Long uid = clientPool.offline(client);
+        Integer uid = clientPool.offline(client);
         log.info("{} 下线", uid);
         eventPublisher.publishEvent(new UserOfflineEvent(this, uid));
     }
@@ -74,7 +74,7 @@ public class EventHandler {
     }
 
 
-    private void online(SocketIOClient client, Long uid) {
+    private void online(SocketIOClient client, Integer uid) {
         clientPool.online(uid, client);
         String ip = ((InetSocketAddress) client.getRemoteAddress()).getHostString();
         eventPublisher.publishEvent(new UserOnlineEvent(this, uid, ip));

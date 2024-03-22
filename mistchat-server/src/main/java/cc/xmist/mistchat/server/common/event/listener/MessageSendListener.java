@@ -26,7 +26,7 @@ public class MessageSendListener {
         Message message = event.getMessage();
 
         Contact contact = event.getContact();
-//        List<Long> uids = switch (contact.getChatType()) {
+//        List<Integer> uids = switch (contact.getChatType()) {
 //            case FRIEND -> Arrays.asList(contact.getChatId());
 //            case GROUP -> groupMemberDao.getMembers(contact.getChatId());
 //        };
@@ -41,7 +41,7 @@ public class MessageSendListener {
     @Async
     public void updateContact(MessageSendEvent event) {
         Message message = event.getMessage();
-        Long uid = event.getUid();
+        Integer uid = event.getUid();
         Contact contact = event.getContact();
 
         contactService.updateContact(uid, contact, message.getId());

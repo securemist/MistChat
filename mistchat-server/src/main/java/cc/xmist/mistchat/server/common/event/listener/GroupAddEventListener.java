@@ -15,7 +15,7 @@ public class GroupAddEventListener {
     @EventListener(GroupAddEvent.class)
     public void pushMsg(GroupAddEvent event) {
         Group group = event.getGroup();
-        List<Long> list = event.getMembers();
+        List<Integer> list = event.getMembers();
 
         // TODO
     }

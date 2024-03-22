@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class ClientPool {
-    private Map<Long, SocketIOClient> clientMap = new ConcurrentHashMap<>();
+    private Map<Integer, SocketIOClient> clientMap = new ConcurrentHashMap<>();
 
-    public void online(Long uid, SocketIOClient client) {
+    public void online(Integer uid, SocketIOClient client) {
         clientMap.put(uid, client);
     }
 
-    public Long offline(SocketIOClient client) {
-        for (Map.Entry<Long, SocketIOClient> entry : clientMap.entrySet()) {
+    public Integer offline(SocketIOClient client) {
+        for (Map.Entry<Integer, SocketIOClient> entry : clientMap.entrySet()) {
             if (entry.getValue().equals(client)) {
                 clientMap.remove(entry.getKey());
                 return entry.getKey();
@@ -30,15 +30,15 @@ public class ClientPool {
         return null;
     }
 
-    public boolean isOnline(Long uid) {
+    public boolean isOnline(Integer uid) {
         return clientMap.containsKey(uid);
     }
 
-    public SocketIOClient get(Long uid) {
+    public SocketIOClient get(Integer uid) {
         return clientMap.get(uid);
     }
 
-    public Set<Long> getAllOnlineUsers() {
+    public Set<Integer> getAllOnlineUsers() {
         return clientMap.keySet();
     }
 
@@ -48,8 +48,8 @@ public class ClientPool {
      * @param targetUsers
      * @return
      */
-    public List<Long> filterOffline(List<Long> targetUsers) {
-        List<Long> onlineUsers = filterOnline(targetUsers);
+    public List<Integer> filterOffline(List<Integer> targetUsers) {
+        List<Integer> onlineUsers = filterOnline(targetUsers);
         return targetUsers.stream()
                 .filter(i -> !onlineUsers.contains(i))
                 .collect(Collectors.toList());
@@ -61,7 +61,7 @@ public class ClientPool {
      * @param targetUsers
      * @return
      */
-    public List<Long> filterOnline(List<Long> targetUsers) {
+    public List<Integer> filterOnline(List<Integer> targetUsers) {
         return targetUsers.stream()
                 .filter(i -> clientMap.keySet().contains(i))
                 .collect(Collectors.toList());

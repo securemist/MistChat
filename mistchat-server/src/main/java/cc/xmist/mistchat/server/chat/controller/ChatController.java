@@ -29,16 +29,16 @@ public class ChatController {
 
     @PostMapping("/send")
     @Operation(summary = "发送消息")
-    public R<MessageResponse.Message> sendMsg(@RequestParam Long roomId,
+    public R<MessageResponse.Message> sendMsg(@RequestParam String  roomId,
                                               @RequestBody MessageRequest req) {
-        Long uid = RequestContext.getUid();
+        Integer uid = RequestContext.getUid();
         MessageResponse.Message m = messageService.send(uid, roomId, req);
         return R.ok(m);
     }
 
     @GetMapping("/list/page")
     @Operation(summary = "消息记录")
-    public R<CursorResult<MessageResponse.Message>> list(@RequestParam Long roomId,
+    public R<CursorResult<MessageResponse.Message>> list(@RequestParam Integer roomId,
                                                          @RequestParam(required = false) String cursor,
                                                          @RequestParam(required = false, defaultValue = Constants.CUSROR_PAGESIZE) Integer pageSize) {
         CursorResult<MessageResponse.Message> response = messageService.listMessage(roomId, cursor, pageSize);

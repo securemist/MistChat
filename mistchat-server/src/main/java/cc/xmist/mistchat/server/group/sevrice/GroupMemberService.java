@@ -22,7 +22,7 @@ public class GroupMemberService {
      * @param uid
      * @param groupId
      */
-    public void join(Long uid, Long groupId) {
+    public void join(Integer uid, String  groupId) {
         if (groupMemberDao.belong(uid, groupId)) throw new BusinessException("请勿重复加入群组");
         groupMemberDao.join(uid, groupId);
         eventPublisher.publishEvent(new MemberChangeEvent(this, uid, groupId, false));
@@ -34,12 +34,12 @@ public class GroupMemberService {
      * @param uid
      * @param groupId
      */
-    public void exit(Long uid, Long groupId) { // TODO
+    public void exit(Integer uid, String  groupId) { // TODO
         Group group = groupDao.getById(groupId);
         if(group.getOwnerUid().equals(uid)) throw new BusinessException("群主不能退出群聊");
 
 //        groupMemberDao.removeUser(uid, groupId);
 //        groupContactDao.remove(uid,groupId); TODO
-        eventPublisher.publishEvent(new MemberChangeEvent(this, uid, groupId, true));
+        eventPublisher.publishEvent(new MemberChangeEvent(this, uid,groupId , true));
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class BlackDao extends ServiceImpl<BlackMapper, Black> {
 
-    public Black get(Long uid, BlackType blackType, String target) {
+    public Black get(Integer uid, BlackType blackType, String target) {
         return lambdaQuery()
                 .eq(Black::getUid, uid)
                 .eq(Black::getType, blackType)
@@ -28,11 +28,11 @@ public class BlackDao extends ServiceImpl<BlackMapper, Black> {
                 .one();
     }
 
-    private boolean exist(Long uid, BlackType blackType, String target) {
+    private boolean exist(Integer uid, BlackType blackType, String target) {
         return get(uid, blackType, target) != null;
     }
 
-    public void addBlack(Long uid, BlackType blackType, String target) {
+    public void addBlack(Integer uid, BlackType blackType, String target) {
         // 已经存在就不添加
         if (exist(uid, blackType, target)) return;
 

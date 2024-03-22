@@ -9,6 +9,6 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class GroupApplyRequest {
     @NotNull
-    private Long groupId;
+    private String roomId;
     private String msg;
 }

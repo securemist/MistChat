@@ -21,7 +21,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * @param contactId
      * @param msgId
      */
-    public void updateSending(Long contactId, Long msgId) {
+    public void updateSending(Integer contactId, Integer msgId) {
         lambdaUpdate()
                 .set(Contact::getActiveMsgId, msgId)
                 .set(Contact::getReadMsgId,msgId)
@@ -38,7 +38,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * @param roomId
      * @param msgId  消息 id
      */
-    public void updateReading(Long uid, Long roomId, Long msgId) {
+    public void updateReading(Integer uid, Integer roomId, Integer msgId) {
         boolean ok = lambdaUpdate()
                 .set(Contact::getReadMsgId, msgId)
                 .eq(Contact::getUid, uid)
@@ -54,7 +54,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * @param uid
      * @return
      */
-    public List<Contact> listByUid(Long uid) {
+    public List<Contact> listByUid(Integer uid) {
         return lambdaQuery()
                 .eq(Contact::getUid, uid)
                 .list();
@@ -83,7 +83,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * @param groupId
      * @param uids
      */
-    public void initGroup(Long groupId, List<Long> uids) {
+    public void initGroup(String  groupId, List<Integer> uids) {
         List<Contact> contacts = uids.stream().map(uid -> {
             return Contact.builder()
                     .uid(uid)
@@ -100,7 +100,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
      * @param roomId
      * @return
      */
-    public Long getLastMsgId(Long roomId) {
+    public Integer getLastMsgId(String  roomId) {
         return lambdaQuery()
                 .select(Contact::getActiveMsgId)
                 .eq(Contact::getRoomId, roomId)
@@ -110,7 +110,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
                 .getActiveMsgId();
     }
 
-    public List<Contact> listCursorable(Long uid, String cursor, Integer pageSize) {
+    public List<Contact> listCursorable(Integer uid, String cursor, Integer pageSize) {
         return lambdaQuery()
                 .lt(StrUtil.isNotBlank(cursor), Contact::getId, cursor)
                 .eq(Contact::getUid, uid)
@@ -119,7 +119,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
                 .list();
     }
 
-    public Contact getByRoomId(Long uid, Long roomId) {
+    public Contact getByRoomId(Integer uid, String roomId) {
         return lambdaQuery()
                 .eq(Contact::getRoomId, roomId)
                 .eq(Contact::getUid, uid)

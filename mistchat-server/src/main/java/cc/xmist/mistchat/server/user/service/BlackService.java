@@ -24,7 +24,7 @@ public class BlackService {
      * @param uid  用户id
      * @param type 类型
      */
-    public void block(Long uid, BlackType blackType) {
+    public void block(Integer uid, BlackType blackType) {
         String target;
         if (blackType.equals(BlackType.UID)) {
             target = uid.toString();
@@ -41,11 +41,11 @@ public class BlackService {
      *
      * @return
      */
-    public List<Long> getBlockedUid() {
+    public List<Integer> getBlockedUid() {
         List<Black> blacks = blackDao.getBlacks(BlackType.UID);
         return blacks.stream()
                 .map(Black::getTarget)
-                .map(ip -> Long.valueOf(ip))
+                .map(ip -> Integer.valueOf(ip))
                 .collect(Collectors.toList());
     }
 

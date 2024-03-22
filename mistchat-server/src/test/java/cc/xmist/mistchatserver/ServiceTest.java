@@ -1,7 +1,5 @@
 package cc.xmist.mistchatserver;
 
-import cc.xmist.mistchat.server.common.enums.IdempotentType;
-import cc.xmist.mistchat.server.common.enums.Item;
 import cc.xmist.mistchat.server.common.util.JwtUtil;
 import cc.xmist.mistchat.server.user.entity.IpDetail;
 import cc.xmist.mistchat.server.user.service.AuthService;
@@ -20,8 +18,6 @@ public class ServiceTest {
 
     @Resource
     AuthService authService;
-    @Resource
-    ItemService itemService;
     @Resource
     IpService ipService;
 
@@ -60,11 +56,6 @@ public class ServiceTest {
         System.out.println(uid1);
     }
 
-    @Test
-    public void testAcquireItem() {
-        Long uid = 20001L;
-        itemService.acquireItem(uid, Item.MODIFY_NAME_CARD, IdempotentType.UID, "123");
-    }
 
     @Test
     public void testGetIpInfo() {

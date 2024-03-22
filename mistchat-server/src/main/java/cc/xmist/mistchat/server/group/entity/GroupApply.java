@@ -29,19 +29,19 @@ public class GroupApply implements Serializable {
      * id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 申请人uid
      */
     @TableField("uid")
-    private Long uid;
+    private Integer uid;
 
     /**
      * 接收人uid
      */
     @TableField("group_id")
-    private Long groupId;
+    private String roomId;
 
     /**
      * 申请信息

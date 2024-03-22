@@ -8,6 +8,6 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class BlockRequest {
     @NotBlank
-    private Long uid;
+    private Integer uid;
     private BlackType type;
 }

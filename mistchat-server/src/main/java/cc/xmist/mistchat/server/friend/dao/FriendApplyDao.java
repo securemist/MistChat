@@ -29,7 +29,7 @@ public class FriendApplyDao extends ServiceImpl<FriendApplyMapper, FriendApply> 
     }
 
 
-    public FriendApply addFriendApply(Long uid, Long targetUid, String msg) {
+    public FriendApply addFriendApply(Integer uid, Integer targetUid, String msg) {
         FriendApply apply = FriendApply.builder()
                 .applyMsg(msg)
                 .uid(uid)
@@ -61,11 +61,11 @@ public class FriendApplyDao extends ServiceImpl<FriendApplyMapper, FriendApply> 
         return apply;
     }
 
-    public boolean exist(Long uid, ApplyType type, Long targetId) {
+    public boolean exist(Integer uid, ApplyType type, Integer targetId) {
         return get(uid, type, targetId) != null;
     }
 
-    public FriendApply get(Long uid, ApplyType type, Long targetUId) {
+    public FriendApply get(Integer uid, ApplyType type, Integer targetUId) {
         return lambdaQuery()
                 .eq(FriendApply::getUid, uid)
                 .eq(FriendApply::getTargetUid, targetUId)
@@ -73,7 +73,7 @@ public class FriendApplyDao extends ServiceImpl<FriendApplyMapper, FriendApply> 
     }
 
 
-    public List<FriendApply> list(Long uid) {
+    public List<FriendApply> list(Integer uid) {
         return lambdaQuery()
                 .eq(FriendApply::getUid, uid)
                 .or(wrapper -> wrapper.eq(FriendApply::getTargetUid, uid))

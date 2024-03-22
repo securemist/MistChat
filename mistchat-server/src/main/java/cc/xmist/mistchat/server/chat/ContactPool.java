@@ -11,28 +11,28 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class ContactPool {
-    private Map<Long, Long> friendConcat = new ConcurrentHashMap<>();
-    private Map<Long, Long> groupConcat = new ConcurrentHashMap<>();
+    private Map<Integer, Integer> friendConcat = new ConcurrentHashMap<>();
+    private Map<Integer, String> groupConcat = new ConcurrentHashMap<>();
 
-    public void openFriend(Long uid, Long friendId) {
+    public void openFriend(Integer uid, Integer friendId) {
         closeGroup(uid);
         friendConcat.put(uid, friendId);
     }
 
-    public void closeFriend(Long uid) {
+    public void closeFriend(Integer uid) {
         friendConcat.remove(uid);
     }
 
-    public void openGroup(Long uid, Long groupId) {
+    public void openGroup(Integer uid, String groupId) {
         closeFriend(uid);
         groupConcat.put(uid,groupId);
     }
 
-    public void closeGroup(Long uid) {
+    public void closeGroup(Integer uid) {
         groupConcat.remove(uid);
     }
 
-    public void remove(Long uid) {
+    public void remove(Integer uid) {
         closeFriend(uid);
         closeGroup(uid);
     }

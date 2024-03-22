@@ -39,7 +39,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         if (!isPublicURI(request)) {
             String token = request.getHeader("token");
-            Long uid = authService.verify(token);
+            Integer uid = authService.verify(token);
             RequestContext.setUid(uid);
         }
 

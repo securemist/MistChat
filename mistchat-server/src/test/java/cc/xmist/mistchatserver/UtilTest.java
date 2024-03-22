@@ -1,6 +1,5 @@
 package cc.xmist.mistchatserver;
 
-import cc.xmist.mistchat.server.common.enums.Item;
 import com.google.gson.Gson;
 import org.junit.Test;
 

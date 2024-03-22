@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 public class FriendApplyHandleResponse {
-    private Long applyId;
+    private Integer applyId;
     private ApplyStatus status;
     private Contact contact;
 

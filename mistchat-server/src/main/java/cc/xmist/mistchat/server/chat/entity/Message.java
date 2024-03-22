@@ -32,13 +32,13 @@ public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     @TableField("uid")
-    private Long uid;
+    private Integer uid;
 
     @TableField("room_id")
-    private Long roomId;
+    private String  roomId;
 
     /**
      * 消息内容
@@ -50,13 +50,13 @@ public class Message implements Serializable {
      * 回复的消息id
      */
     @TableField("reply_msg_id")
-    private Long replyMsgId;
+    private Integer replyMsgId;
 
     /**
      * 与回复的消息的间隔数
      */
     @TableField("reply_gap")
-    private Long replyGap;
+    private Integer replyGap;
 
     @TableField("type")
     private MessageType type;

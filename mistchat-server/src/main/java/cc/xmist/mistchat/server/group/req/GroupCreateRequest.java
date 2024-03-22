@@ -15,5 +15,5 @@ public class GroupCreateRequest {
 
     @Length(min = 0)
     @Schema(description = "用户列表")
-    private List<Long> uidList;
+    private List<Integer> uidList;
 }

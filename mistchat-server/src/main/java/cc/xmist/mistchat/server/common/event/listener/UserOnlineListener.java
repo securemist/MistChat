@@ -34,13 +34,13 @@ public class UserOnlineListener {
     @EventListener(classes = UserOnlineEvent.class)
     @Async
     public void push(UserOnlineEvent event) {
-        Long uid = event.getUid();
-        List<Long> groupsId = groupMemberDao.getBelongingGroupsId(uid);
+        Integer uid = event.getUid();
+        List<String > groupsId = groupMemberDao.getBelongingGroupsId(uid);
         if (CollectionUtil.isEmpty(groupsId)) return;
 
         // 用户加入的群聊的所有用户
-        ArrayList<Long> users = new ArrayList<>();
-        Map<Long, List<Long>> membersMap = groupMemberDao.getMembersBatch(groupsId);
+        ArrayList<Integer> users = new ArrayList<>();
+        Map<String , List<Integer>> membersMap = groupMemberDao.getMembersBatch(groupsId);
         membersMap.forEach((k, v) -> {
             v.forEach(i -> users.add(i));
         });
@@ -52,7 +52,7 @@ public class UserOnlineListener {
 
     @EventListener(classes = UserOnlineEvent.class)
     public void parseIpInfo(UserOnlineEvent event) {
-        Long uid = event.getUid();
+        Integer uid = event.getUid();
         if (parseWhenLogin) ipService.updateIpInfo(uid, event.getIp());
     }
 }

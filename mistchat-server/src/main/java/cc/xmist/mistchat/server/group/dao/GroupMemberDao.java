@@ -23,7 +23,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param pageSize
      * @return
      */
-    public List<GroupMember> getMembersCursorable(Long groupId, String cursor, Integer pageSize) {
+    public List<GroupMember> getMembersCursorable(String roomId, String cursor, Integer pageSize) {
         return lambdaQuery()
                 .select(GroupMember::getId, GroupMember::getUid)
                 .lt(cursor != null, GroupMember::getId, cursor)
@@ -38,9 +38,9 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param groupId
      * @return
      */
-    public List<Long> getMembers(Long groupId) {
+    public List<Integer> getMembers(String roomId) {
         List<GroupMember> list = lambdaQuery()
-                .eq(GroupMember::getGroupId, groupId)
+                .eq(GroupMember::getGroupId, roomId)
                 .list();
         return list.stream().map(GroupMember::getUid).collect(Collectors.toList());
     }
@@ -51,7 +51,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param uid
      * @return
      */
-    public List<Long> getBelongingGroupsId(Long uid) {
+    public List<String > getBelongingGroupsId(Integer uid) {
         List<GroupMember> list = lambdaQuery()
                 .eq(GroupMember::getUid, uid)
                 .list();
@@ -65,7 +65,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param uid
      * @param groupId
      */
-    public void join(Long uid, Long groupId) {
+    public void join(Integer uid, String  groupId) {
         GroupMember member = GroupMember.builder()
                 .groupId(groupId)
                 .uid(uid)
@@ -80,7 +80,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param groupId
      * @return
      */
-    public boolean belong(Long uid, Long groupId) {
+    public boolean belong(Integer uid, String  groupId) {
         return lambdaQuery()
                 .eq(GroupMember::getUid, uid)
                 .eq(GroupMember::getGroupId, groupId)
@@ -93,7 +93,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param groupId
      * @param uidList
      */
-    public void addMembers(Long groupId, List<Long> uidList) {
+    public void addMembers(String  groupId, List<Integer> uidList) {
         List<GroupMember> groupMembers = uidList.stream()
                 .map(uid -> {
                     return GroupMember.builder()
@@ -110,7 +110,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param uid
      * @param groupId
      */
-    public void removeUser(Long uid, Long groupId) {
+    public void removeUser(Integer uid, String groupId) {
         LambdaQueryWrapper<GroupMember> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(GroupMember::getGroupId, groupId);
         wrapper.eq(GroupMember::getUid, uid);
@@ -123,18 +123,18 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param groupsId
      * @return
      */
-    public Map<Long, List<Long>> getMembersBatch(List<Long> groupsId) {
+    public Map<String, List<Integer>> getMembersBatch(List<String > groupsId) {
         List<GroupMember> list = lambdaQuery()
                 .in(GroupMember::getGroupId, groupsId)
                 .list();
 
 
-        Map<Long, List<GroupMember>> memberMap = list.stream()
+        Map<String , List<GroupMember>> memberMap = list.stream()
                 .collect(Collectors.groupingBy(GroupMember::getGroupId));
 
-        Map<Long, List<Long>> res = new HashMap<>();
+        Map<String, List<Integer>> res = new HashMap<>();
         memberMap.forEach((groupId, members) -> {
-            List<Long> uids = members.stream().map(GroupMember::getUid).collect(Collectors.toList());
+            List<Integer> uids = members.stream().map(GroupMember::getUid).collect(Collectors.toList());
             res.put(groupId, uids);
         });
         return res;
@@ -146,7 +146,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param uid
      * @return
      */
-    public List<Long> getGroupsId(Long uid) {
+    public List<String > getGroupsId(Integer uid) {
         List<GroupMember> list = lambdaQuery()
                 .eq(GroupMember::getId, uid)
                 .select(GroupMember::getGroupId)
@@ -161,7 +161,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param uid
      * @param groupId
      */
-    public void updateActive(Long uid, Long groupId) {
+    public void updateActive(Integer uid, String  groupId) {
         lambdaUpdate()
                 .set(GroupMember::getActiveTime, LocalDateTime.now())
                 .eq(GroupMember::getGroupId, groupId)
@@ -175,7 +175,7 @@ public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> 
      * @param groupId
      * @param uids
      */
-    public void initMembers(Long groupId, List<Long> uids) {
+    public void initMembers(String  groupId, List<Integer> uids) {
         List<GroupMember> members = uids.stream().map(uid -> {
             return GroupMember.builder()
                     .groupId(groupId)

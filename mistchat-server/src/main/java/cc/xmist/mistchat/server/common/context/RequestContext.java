@@ -10,7 +10,7 @@ import cn.hutool.extra.spring.SpringUtil;
  * 建议只在controller中使用
  */
 public class RequestContext {
-    private static ThreadLocal<Long> uidLocal = new ThreadLocal<>();
+    private static ThreadLocal<Integer> uidLocal = new ThreadLocal<>();
 
     private static UserDao userDao;
 
@@ -18,11 +18,11 @@ public class RequestContext {
         userDao = SpringUtil.getBean(UserDao.class);
     }
 
-    public static Long getUid() {
+    public static Integer getUid() {
         return uidLocal.get();
     }
 
-    public static void setUid(Long uid) {
+    public static void setUid(Integer uid) {
         uidLocal.set(uid);
     }
 

@@ -5,14 +5,14 @@ import lombok.Data;
 
 @Data
 public class Cursor<T> {
-    private Long pageSize;
+    private Integer pageSize;
     private T value;
     private Class<T> type;
 
-    public static Cursor<Long> buildLong(String value, Integer pageSize) {
-        Cursor<Long> c = new Cursor<>();
-        c.type = Long.class;
-        c.value = StrUtil.isNotBlank(value) ? Long.valueOf(value) : null;
+    public static Cursor<Integer> buildInteger(String value, Integer pageSize) {
+        Cursor<Integer> c = new Cursor<>();
+        c.type = Integer.class;
+        c.value = StrUtil.isNotBlank(value) ? Integer.valueOf(value) : null;
         return c;
     }
 }

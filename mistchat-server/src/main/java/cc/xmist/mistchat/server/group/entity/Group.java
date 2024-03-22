@@ -30,7 +30,7 @@ public class Group implements Serializable {
      * 房间号
      */
       @TableId(value = "id", type = IdType.INPUT)
-    private Long id;
+    private String id;
 
     /**
      * 群聊名
@@ -38,11 +38,11 @@ public class Group implements Serializable {
     @TableField("name")
     private String name;
 
-    @TableField("creater_uid")
-    private Long createrUid;
+    @TableField("creator_uid")
+    private Integer creatorUid;
 
     @TableField("owner_uid")
-    private Long ownerUid;
+    private Integer ownerUid;
 
     @TableField("avatar")
     private String avatar;

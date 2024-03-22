@@ -23,25 +23,25 @@ public class GroupController {
 
     @GetMapping("/members")
     @Operation(summary = "获取群聊的成员")
-    public R<CursorResult<Long>> members(@RequestParam Long groupId,
+    public R<CursorResult<Integer>> members(@RequestParam String groupId,
                                          @RequestParam(required = false) String cursor,
                                          @RequestParam(required = false,defaultValue = Constants.CUSROR_PAGESIZE) Integer pageSize) {
-        CursorResult<Long> result = groupService.getMembersCursorabler(groupId, cursor, pageSize);
+        CursorResult<Integer> result = groupService.getMembersCursorabler(groupId, cursor, pageSize);
         return R.ok(result);
     }
 
     @PostMapping("/create")
     @Operation(summary = "创建群聊")
     public R<Group> create(@RequestBody GroupCreateRequest req) {
-        Long uid = RequestContext.getUid();
+        Integer uid = RequestContext.getUid();
         Group group = groupService.create(uid, req.getName(), req.getUidList());
         return R.ok(group);
     }
 
     @GetMapping("/exit")
     @Operation(summary = "退出群聊")
-    public R exit(Long groupId) {
-        Long uid = RequestContext.getUid();
+    public R exit(String groupId) {
+        Integer uid = RequestContext.getUid();
         groupMemberService.exit(uid, groupId);
         return R.ok();
     }

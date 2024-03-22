@@ -46,7 +46,7 @@ public class UserService {
         return user;
     }
 
-    public UserResponse getUserInfo(Long uid) {
+    public UserResponse getUserInfo(Integer uid) {
         User u = userDao.getByUid(uid);
         return UserResponse.build(u);
     }
@@ -59,7 +59,7 @@ public class UserService {
      * @param name 新用户名
      */
     @Transactional(rollbackFor = Exception.class)
-    public void modifyName(Long uid, String name) {
+    public void modifyName(Integer uid, String name) {
         User user = userDao.getByUid(uid);
         if (userDao.existName(name)) throw new BusinessException("该用户名已存在");
         userDao.modifyName(uid, name);
@@ -73,7 +73,7 @@ public class UserService {
      * @param uidList
      * @return
      */
-    public List<UserResponse> getBatchedUserInfo(Long uid, List<Long> uidList) {
+    public List<UserResponse> getBatchedUserInfo(Integer uid, List<Integer> uidList) {
         List<User> users = userDao.listByUid(uidList);
 
         return users.stream()

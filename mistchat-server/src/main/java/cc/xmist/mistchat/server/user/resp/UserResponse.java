@@ -12,7 +12,7 @@ import lombok.Data;
 @Schema(description = "用户信息")
 public class UserResponse {
     @Schema(description = "用户id")
-    private Long id;
+    private Integer id;
     @Schema(description = "用户名称")
     private String name;
     @Schema(description = "头像")

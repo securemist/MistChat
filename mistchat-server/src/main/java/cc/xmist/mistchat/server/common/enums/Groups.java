@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Groups {
-    ALL_USERS_GROUP(1L);
-    private Long id;
+    ALL_USERS_GROUP("1000000");
+    private String  id;
 }

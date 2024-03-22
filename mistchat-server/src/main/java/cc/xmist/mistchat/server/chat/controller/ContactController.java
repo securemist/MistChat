@@ -25,15 +25,15 @@ public class ContactController {
     @Operation(summary = "会话列表")
     public R<CursorResult<ContactResponse.Contact>> list(@RequestParam String cursor,
                                                         @RequestParam(required = false,defaultValue = Constants.CUSROR_PAGESIZE)Integer pageSize) {
-        Long uid = RequestContext.getUid();
+        Integer uid = RequestContext.getUid();
         CursorResult<ContactResponse.Contact> res = contactService.getContactList(uid, cursor, pageSize);
         return R.ok(res);
     }
 
     @GetMapping("/read")
     @Operation(summary = "消息已读")
-    public R read(@RequestParam Long roomId, @RequestParam Long msgId) {
-        Long uid = RequestContext.getUid();
+    public R read(@RequestParam Integer roomId, @RequestParam Integer msgId) {
+        Integer uid = RequestContext.getUid();
         contactService.readMsg(uid, roomId, msgId);
         return R.ok();
     }

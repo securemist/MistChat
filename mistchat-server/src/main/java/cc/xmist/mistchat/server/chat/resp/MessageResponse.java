@@ -13,12 +13,12 @@ public class MessageResponse {
     @Data
     @Builder
     public static class Message {
-        private Long id;
-        private Long uid;
-        private Long roomId;
+        private Integer id;
+        private Integer uid;
+        private String  roomId;
         private String content;
-        private Long replyMsgId;
-        private Long replyGap;
+        private Integer replyMsgId;
+        private Integer replyGap;
         private MessageType type;
         private MessageExtra extra;
         private LocalDateTime createTime;

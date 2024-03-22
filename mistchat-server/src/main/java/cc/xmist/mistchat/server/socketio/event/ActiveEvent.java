@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 public class ActiveEvent extends BaseEvent {
     private Data data;
 
-    public ActiveEvent(Long uid, ActiveStatus status) {
+    public ActiveEvent(Integer uid, ActiveStatus status) {
         super(SEvent.ACTIVE);
         this.data = new Data(uid, status);
     }
@@ -20,7 +20,7 @@ public class ActiveEvent extends BaseEvent {
     @lombok.Data
     @AllArgsConstructor
     public static class Data {
-        private Long uid;
+        private Integer uid;
         private ActiveStatus status;
     }
 }

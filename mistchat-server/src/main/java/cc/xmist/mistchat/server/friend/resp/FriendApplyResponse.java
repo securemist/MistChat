@@ -32,15 +32,15 @@ public class FriendApplyResponse {
     @Data
     @Builder
     public static class Apply {
-        private Long applyId;
-        private Long applyUserId;
+        private Integer applyId;
+        private Integer applyUserId;
         private ApplyStatus status;
         private String applyMsg;
         private String replyMsg;
         private LocalDateTime createdTime;
     }
 
-    public static FriendApplyResponse build(Long uid, List<FriendApply> applyList) {
+    public static FriendApplyResponse build(Integer uid, List<FriendApply> applyList) {
         List<FriendApplyResponse.Apply> list = applyList.stream().map(a -> {
             FriendApplyResponse.Type type = uid == a.getUid()
                     ? FriendApplyResponse.Type.FORWARD

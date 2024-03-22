@@ -9,6 +9,6 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class FriendApplyRequest {
     @NotNull
-    private Long targetUid;
+    private Integer targetUid;
     private String msg;
 }

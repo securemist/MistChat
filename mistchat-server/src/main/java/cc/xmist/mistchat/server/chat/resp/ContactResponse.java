@@ -13,12 +13,12 @@ public class ContactResponse {
     @Data
     @Builder
     public static class Contact {
-        private Long id;
-        private Long uid;
-        private Long roomId;
-        private Long readMsgId;
-        private Long activeMsgId;
-        private Long unReadCount;
+        private Integer id;
+        private Integer uid;
+        private String  roomId;
+        private Integer readMsgId;
+        private Integer activeMsgId;
+        private Integer unReadCount;
         private LocalDateTime createTime;
     }
 

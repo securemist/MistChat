@@ -20,7 +20,7 @@ public class UserRegisterListener {
     public void joinGroup(UserRegisterEvent event) {
         // 注册成功加入所有群聊
         cc.xmist.mistchat.server.user.model.entity.User user = event.getUser();
-        Long uid = user.getId();
+        Integer uid = user.getId();
         groupMemberService.join(uid, Groups.ALL_USERS_GROUP.getId());
     }
 }

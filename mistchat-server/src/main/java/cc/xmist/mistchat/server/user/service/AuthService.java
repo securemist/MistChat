@@ -38,7 +38,7 @@ public class AuthService {
      */
     @Async
     public void renewalToken(String token) {
-        Long uid = verify(token);
+        Integer uid = verify(token);
         if (uid == null) {
             return;
         }
@@ -62,7 +62,7 @@ public class AuthService {
      * @param uid
      * @return
      */
-    public String login(Long uid) {
+    public String login(Integer uid) {
         String token = jwtUtil.createToken(uid);
         RedisUtil.set(formatTokenKey(uid), token, TOKEN_EXPIRE_DAYS, TimeUnit.DAYS);
         return token;
@@ -74,9 +74,9 @@ public class AuthService {
      * @param token
      * @return
      */
-    public Long verify(String token) {
+    public Integer verify(String token) {
         try {
-            Long uid = jwtUtil.getUid(token);
+            Integer uid = jwtUtil.getUid(token);
             if (uid == null) {
                 return null;
             }
@@ -91,7 +91,7 @@ public class AuthService {
         }
     }
 
-    private static String formatTokenKey(Long uid) {
+    private static String formatTokenKey(Integer uid) {
         return RedisKey.getKey(RedisKey.USER_TOKEN_STRING, uid);
     }
 

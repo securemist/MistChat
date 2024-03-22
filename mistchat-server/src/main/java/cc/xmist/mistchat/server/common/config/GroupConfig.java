@@ -16,7 +16,7 @@ public class GroupConfig {
      *
      * @return
      */
-    public static Long genGroupId() {
+    public static String  genGroupId() {
         LocalDateTime now = LocalDateTime.now();
         int dayOfYear = now.getDayOfYear();
 
@@ -26,7 +26,7 @@ public class GroupConfig {
         String time = String.valueOf(System.currentTimeMillis()); // 3位 时间戳 ms
         String s3 = time.substring(time.length() - 3); //
 
-        return Long.valueOf(new StrBuilder().append(s1).append(s2).append(s3).toString());
+        return new StrBuilder().append(s1).append(s2).append(s3).toString();
     }
 
     /**
@@ -34,8 +34,8 @@ public class GroupConfig {
      * @param roomId
      * @return
      */
-    public static RoomType getRoomType(Long roomId) {
-        return String.valueOf(roomId).length() == GROUPID_LEN
+    public static RoomType getRoomType(String  roomId) {
+        return roomId.length() == GROUPID_LEN
                 ? RoomType.GROUP
                 : RoomType.FRIEND;
     }

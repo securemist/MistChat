@@ -22,14 +22,14 @@ public class FriendDao extends ServiceImpl<FriendMapper, Friend> {
     @Resource
     private FriendMapper friendMapper;
 
-    public Friend create(Long uid1, Long uid2) {
+    public Friend create(Integer uid1, Integer uid2) {
         Friend friend = new Friend(uid1, uid2);
         save(friend);
         return friend;
     }
 
 
-    public List<Long> listFriendsId(Long uid) {
+    public List<Integer> listFriendsId(Integer uid) {
         List<Friend> list = lambdaQuery()
                 .eq(Friend::getUid1, uid)
                 .or()
@@ -42,14 +42,14 @@ public class FriendDao extends ServiceImpl<FriendMapper, Friend> {
                 .collect(Collectors.toList());
     }
 
-    public Friend get(Long uid, Long targetUid) {
+    public Friend get(Integer uid, Integer targetUid) {
         return lambdaQuery()
                 .eq(Friend::getUid1, Math.min(uid, targetUid))
                 .eq(Friend::getUid2, Math.max(uid, targetUid))
                 .one();
     }
 
-    public boolean isFriend(Long uid, Long targetUid) {
+    public boolean isFriend(Integer uid, Integer targetUid) {
         return lambdaQuery()
                 .select(Friend::getId)
                 .eq(Friend::getUid1, uid)

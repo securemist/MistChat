@@ -29,13 +29,13 @@ public class Black implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
     @TableField("uid")
-    private Long uid;
+    private Integer uid;
 
     @TableField("type")
     private BlackType type;

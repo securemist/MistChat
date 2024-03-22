@@ -30,19 +30,19 @@ public class GroupMember implements Serializable {
     private static final long serialVersionUID = 1L;
 
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 房间号
      */
     @TableField("group_id")
-    private Long groupId;
+    private String  groupId;
 
     /**
      * 用户
      */
     @TableField("uid")
-    private Long uid;
+    private Integer uid;
 
     /**
      * 在群聊中的最后一次活跃时间

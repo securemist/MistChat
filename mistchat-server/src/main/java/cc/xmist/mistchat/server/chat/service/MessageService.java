@@ -28,7 +28,7 @@ public class MessageService {
     private final ContactDao contactDao;
 
     // 发送消息
-    public MessageResponse.Message send(Long uid, Long roomId, MessageRequest req) {
+    public MessageResponse.Message send(Integer uid, String  roomId, MessageRequest req) {
         AbstractMsgHandler messageHandler = MessageHandleFactory.getHandle(req.getType());
 
         Contact contact = contactDao.getByRoomId(uid, roomId);
@@ -41,7 +41,7 @@ public class MessageService {
     }
 
     // 某个会话的消息列表
-    public CursorResult<MessageResponse.Message> listMessage(Long roomId, String cursor, Integer pageSize) {
+    public CursorResult<MessageResponse.Message> listMessage(Integer roomId, String cursor, Integer pageSize) {
         List<Message> data = messageDao.listCursorable(roomId, cursor, pageSize);
         Boolean isLast = false;
         String newCursor = null;

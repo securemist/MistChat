@@ -36,10 +36,10 @@ public class GroupService {
      * @param pageSize
      * @return
      */
-    public CursorResult<Long> getMembersCursorabler(Long groupId, String cursor, Integer pageSize) {
+    public CursorResult<Integer> getMembersCursorabler(String groupId, String cursor, Integer pageSize) {
         List<GroupMember> data = groupMemberDao.getMembersCursorable(groupId, cursor, pageSize);
 
-        List<Long> uids = data.stream().map(GroupMember::getUid).collect(Collectors.toList());
+        List<Integer> uids = data.stream().map(GroupMember::getUid).collect(Collectors.toList());
 
         Boolean isLast = false;
         String newCursor = null;
@@ -47,10 +47,10 @@ public class GroupService {
             isLast = true;
             newCursor = null;
         } else {
-            Long last = CollectionUtil.getLast(data).getId();
+            Integer last = CollectionUtil.getLast(data).getId();
             newCursor = last == null ? null : last.toString();
         }
-        return new CursorResult<Long>(newCursor, isLast, uids);
+        return new CursorResult<Integer>(newCursor, isLast, uids);
     }
 
 
@@ -63,8 +63,8 @@ public class GroupService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public Group create(Long createrId, String name, List<Long> uids) {
-        Long groupId = groupConfig.genGroupId();
+    public Group create(Integer createrId, String name, List<Integer> uids) {
+        String  groupId = groupConfig.genGroupId();
         while (groupDao.existsId(groupId)) {
             groupId = groupConfig.genGroupId();
         }

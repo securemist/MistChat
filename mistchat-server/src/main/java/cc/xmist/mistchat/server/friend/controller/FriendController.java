@@ -24,31 +24,32 @@ public class FriendController {
 
     @PostMapping("/apply/add")
     @Operation(summary = "添加好友申请")
-    public R<Void> add(@RequestBody @Valid FriendApplyRequest req ) {
-        Long uid = RequestContext.getUid();
+    public R<Void> add(@RequestBody @Valid FriendApplyRequest req) {
+        Integer uid = RequestContext.getUid();
         return R.ok(friendService.apply(uid, req));
     }
 
     @GetMapping("/apply/list")
     @Operation(summary = "获取收到的好友申请")
     public R<FriendApplyResponse> listApply() {
-        Long uid = RequestContext.getUid();
+        Integer uid = RequestContext.getUid();
         FriendApplyResponse response = friendService.getApplyList(uid);
         return R.ok(response);
     }
 
+
     @PostMapping("/apply/handle")
     @Operation(summary = "处理申请")
     public R<FriendApplyHandleResponse> handle(@RequestBody @Valid FriendApplyHandleRequest req) {
-        Long uid = RequestContext.getUid();
+        Integer uid = RequestContext.getUid();
         FriendApplyHandleResponse response = friendService.handleApply(uid, req);
         return R.ok(response);
     }
 
     @GetMapping("/list")
     @Operation(summary = "获取好友列表")
-    public R<List<Long>> getFriendList() {
-        Long uid = RequestContext.getUid();
+    public R<List<Integer>> getFriendList() {
+        Integer uid = RequestContext.getUid();
         return R.ok(friendService.getFriendIdList(uid));
     }
 }

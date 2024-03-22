@@ -28,7 +28,7 @@ public class IpService {
     private ExecutorService executor = Executors.newSingleThreadExecutor(new NamedThreadFactory("ip-update", false));
 
     @SneakyThrows
-    public void updateIpInfo(Long uid, String clientIp) {
+    public void updateIpInfo(Integer uid, String clientIp) {
         executor.execute(() -> {
             IpInfo old = userDao.getByUid(uid).getIpInfo();
             String ip = clientIp;

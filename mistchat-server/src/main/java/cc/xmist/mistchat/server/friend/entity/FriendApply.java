@@ -34,19 +34,19 @@ public class FriendApply implements Serializable {
      * id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 申请人uid
      */
     @TableField("uid")
-    private Long uid;
+    private Integer uid;
 
     /**
      * 接收人uid
      */
     @TableField("target_uid")
-    private Long targetUid;
+    private Integer targetUid;
 
     /**
      * 申请信息

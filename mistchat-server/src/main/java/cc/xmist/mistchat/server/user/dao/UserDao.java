@@ -44,13 +44,13 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .one();
     }
 
-    public User getByUid(Long uid) {
+    public User getByUid(Integer uid) {
         return lambdaQuery()
                 .eq(User::getId, uid)
                 .one();
     }
 
-    public boolean modifyName(Long uid, String name) {
+    public boolean modifyName(Integer uid, String name) {
         return lambdaUpdate()
                 .eq(User::getId, uid)
                 .set(User::getName, name)
@@ -58,7 +58,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
     }
 
 
-    public void updateIpInfo(Long uid, IpInfo ipInfo) {
+    public void updateIpInfo(Integer uid, IpInfo ipInfo) {
         lambdaUpdate()
                 .set(User::getIpInfo, JsonUtil.toJson(ipInfo))
                 .eq(User::getId, uid)
@@ -78,7 +78,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
     }
 
 
-    public List<User> listByUid(List<Long> uidList) {
+    public List<User> listByUid(List<Integer> uidList) {
         return lambdaQuery()
                 .getBaseMapper()
                 .selectBatchIds(uidList);

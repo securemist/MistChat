@@ -5,10 +5,10 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 public class UserOnlineEvent extends ApplicationEvent {
-    private Long uid;
+    private Integer uid;
     private String ip;
 
-    public UserOnlineEvent(Object source, Long uid, String ip) {
+    public UserOnlineEvent(Object source, Integer uid, String ip) {
         super(source);
         this.uid = uid;
         this.ip = ip;

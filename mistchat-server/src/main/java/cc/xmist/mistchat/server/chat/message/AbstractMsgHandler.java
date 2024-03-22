@@ -45,7 +45,7 @@ public abstract class AbstractMsgHandler<T> {
         return BeanUtil.toBean(body, bodyClass);
     }
 
-    public Message saveMsg(Long uid, Long roomId, MessageRequest req) {
+    public Message saveMsg(Integer uid, String  roomId, MessageRequest req) {
         T body = toBean(req.getBody());
         Message m = Message.builder()
                 .uid(uid)

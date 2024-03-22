@@ -5,8 +5,8 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 public class UserOfflineEvent extends ApplicationEvent {
-    private Long uid;
-    public UserOfflineEvent(Object source,Long uid) {
+    private Integer uid;
+    public UserOfflineEvent(Object source,Integer uid) {
         super(source);
         this.uid = uid;
     }

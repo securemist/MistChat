@@ -21,7 +21,7 @@ import java.util.List;
 public class MessageExtra implements Serializable {
     private static final long serialVersionUID = 1L;
     // @的 uid
-    private List<Long> atUidList;
+    private List<Integer> atUidList;
 
     private TextMsgExtra textMsgExtra;
 

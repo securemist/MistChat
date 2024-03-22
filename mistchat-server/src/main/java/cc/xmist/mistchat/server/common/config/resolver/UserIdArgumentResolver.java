@@ -19,7 +19,7 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterName().equals("uid") && parameter.getParameterType().equals(Long.class);
+        return parameter.getParameterName().equals("uid") && parameter.getParameterType().equals(Integer.class);
     }
 
     @Override

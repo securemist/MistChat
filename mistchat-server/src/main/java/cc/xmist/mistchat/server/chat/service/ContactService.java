@@ -31,7 +31,7 @@ public class ContactService {
      * @param uid
      * @return
      */
-    public CursorResult<ContactResponse.Contact> getContactList(Long uid, String cursor, Integer pageSize) {
+    public CursorResult<ContactResponse.Contact> getContactList(Integer uid, String cursor, Integer pageSize) {
         List<Contact> contacts = contactDao.listCursorable(uid, cursor, pageSize);
         Boolean isLast = false;
         String newCursor = null;
@@ -59,9 +59,9 @@ public class ContactService {
      * @param roomId
      * @return
      */
-    public Contact getContact(Long uid, Long roomId) {
+    public Contact getContact(Integer uid, String  roomId) {
         Contact contact = contactDao.getByRoomId(uid, roomId);
-        Long unread = getUnreadCount(contact);
+        Integer unread = getUnreadCount(contact);
         contact.setUnreadCount(unread);
         return contact;
     }
@@ -72,13 +72,13 @@ public class ContactService {
      * @param contact
      * @return
      */
-    private Long getUnreadCount(Contact contact) {
-        Long unread = 0L;
-        Long activeMsgId = contact.getActiveMsgId();
-        Long readMsgId = contact.getReadMsgId();
+    private Integer getUnreadCount(Contact contact) {
+        Integer unread = 0;
+        Integer activeMsgId = contact.getActiveMsgId();
+        Integer readMsgId = contact.getReadMsgId();
         // readMsgId 为 null 说明加入群聊之后还从未读过消息，算作已读数为 0
         if (!(activeMsgId == null || readMsgId == null || activeMsgId.equals(readMsgId))) {
-            Long lastMsgId = contactDao.getLastMsgId(contact.getRoomId());
+            Integer lastMsgId = contactDao.getLastMsgId(contact.getRoomId());
             unread = messageDao.calUnread(contact.getRoomId(), readMsgId, lastMsgId);
         }
         return unread;
@@ -92,7 +92,7 @@ public class ContactService {
      * @param chatId
      * @param msgId
      */
-    public void updateContact(Long uid, Contact contact, Long msgId) {
+    public void updateContact(Integer uid, Contact contact, Integer msgId) {
         contactDao.updateSending(contact.getId(), msgId);
         if (groupConfig.getRoomType(contact.getRoomId()) == RoomType.GROUP) {
             groupMemberDao.updateActive(uid, contact.getRoomId());
@@ -100,7 +100,7 @@ public class ContactService {
     }
 
     // 用户读取消息
-    public void readMsg(Long uid, Long roomId, Long msgId) {
+    public void readMsg(Integer uid, Integer roomId, Integer msgId) {
         contactDao.updateReading(uid, roomId, msgId);
     }
 

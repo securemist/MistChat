@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class FriendApplyHandleRequest {
-    private Long applyId;
+    private Integer applyId;
     @NotNull
     private Boolean pass;
     private String msg;
