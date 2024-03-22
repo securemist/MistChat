@@ -6,8 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class BlockRequest {
-    @NotBlank
-    private Integer uid;
+public class BlackRequest {
+    private Integer targetUid;
     private BlackType type;
 }

@@ -6,58 +6,28 @@ import cc.xmist.mistchat.server.user.dao.UserDao;
 import cc.xmist.mistchat.server.user.entity.IpInfo;
 import cc.xmist.mistchat.server.user.model.entity.Black;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BlackService {
-    @Resource
-    private BlackDao blackDao;
-    @Resource
-    private UserDao userDao;
+    private final BlackDao blackDao;
 
     /**
      * 拉黑用户
-     *
-     * @param uid  用户id
-     * @param type 类型
+     * @param uid
+     * @param targetUid
+     * @param blackType
      */
-    public void block(Integer uid, BlackType blackType) {
-        String target;
-        if (blackType.equals(BlackType.UID)) {
-            target = uid.toString();
-        } else {
-            IpInfo ipInfo = userDao.getByUid(uid).getIpInfo();
-            if (ipInfo == null) return; // 没有ip记录
-            target = ipInfo.getLastIp();
-        }
+    public void block(Integer uid, Integer targetUid, BlackType blackType) {
+        String target = switch (blackType) {
+            case UID -> targetUid.toString();
+        };
         blackDao.addBlack(uid, blackType, target);
-    }
-
-    /**
-     * 获取所有被拉黑的uid
-     *
-     * @return
-     */
-    public List<Integer> getBlockedUid() {
-        List<Black> blacks = blackDao.getBlacks(BlackType.UID);
-        return blacks.stream()
-                .map(Black::getTarget)
-                .map(ip -> Integer.valueOf(ip))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * 获取所有被拉黑的ip
-     *
-     * @return
-     */
-    public List<String> getBlockedIp() {
-        List<Black> blacks = blackDao.getBlacks(BlackType.IP);
-        return blacks.stream()
-                .map(Black::getTarget)
-                .collect(Collectors.toList());
     }
 }

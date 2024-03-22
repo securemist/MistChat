@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum BlackType implements BaseEnum {
-    IP(0),
+//    IP(0),
     UID(1);
     @JsonValue
     @EnumValue
