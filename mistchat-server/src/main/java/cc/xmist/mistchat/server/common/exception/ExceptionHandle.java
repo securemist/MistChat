@@ -23,8 +23,8 @@ public class ExceptionHandle {
         return R.commonError(e.getMessage());
     }
 
-    @ExceptionHandler(value = {IlleglaException.class})
-    public R illgelaExceptionHandle(IlleglaException e) {
+    @ExceptionHandler(value = {IllegalParamException.class})
+    public R illegalParamException(IllegalParamException e) {
         return R.commonError(e.getMessage());
     }
 

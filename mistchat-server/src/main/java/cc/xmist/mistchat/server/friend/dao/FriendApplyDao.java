@@ -2,6 +2,7 @@ package cc.xmist.mistchat.server.friend.dao;
 
 import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import cc.xmist.mistchat.server.common.enums.ApplyType;
+import cc.xmist.mistchat.server.common.exception.IllegalParamException;
 import cc.xmist.mistchat.server.friend.entity.FriendApply;
 import cc.xmist.mistchat.server.friend.mapper.FriendApplyMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -78,5 +79,14 @@ public class FriendApplyDao extends ServiceImpl<FriendApplyMapper, FriendApply> 
                 .eq(FriendApply::getUid, uid)
                 .or(wrapper -> wrapper.eq(FriendApply::getTargetUid, uid))
                 .list();
+    }
+
+    public void read(Integer uid, Integer applyId) {
+        boolean ok = lambdaUpdate()
+                .set(FriendApply::getReadTime, LocalDateTime.now())
+                .eq(FriendApply::getTargetUid, uid)
+                .eq(FriendApply::getId, applyId)
+                .update();
+        if (!ok) throw new IllegalParamException();
     }
 }

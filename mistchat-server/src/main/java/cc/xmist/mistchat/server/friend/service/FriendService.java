@@ -106,4 +106,8 @@ public class FriendService {
         List<FriendApply> applyList = friendApplyDao.list(uid);
         return FriendApplyResponse.build(uid, applyList);
     }
+
+    public void readApply(Integer uid, Integer applyId) {
+        friendApplyDao.read(uid, applyId);
+    }
 }

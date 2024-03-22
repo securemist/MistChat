@@ -2,7 +2,7 @@ package cc.xmist.mistchat.server.chat.dao;
 
 import cc.xmist.mistchat.server.chat.entity.Contact;
 import cc.xmist.mistchat.server.chat.mapper.ContactMapper;
-import cc.xmist.mistchat.server.common.exception.IlleglaException;
+import cc.xmist.mistchat.server.common.exception.IllegalParamException;
 import cc.xmist.mistchat.server.friend.entity.Friend;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -44,7 +44,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
                 .eq(Contact::getUid, uid)
                 .eq(Contact::getRoomId, roomId)
                 .update();
-        if (!ok) throw new IlleglaException();
+        if (!ok) throw new IllegalParamException();
     }
 
 

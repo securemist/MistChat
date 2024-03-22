@@ -46,6 +46,14 @@ public class FriendController {
         return R.ok(response);
     }
 
+    @GetMapping("/apply/read")
+    @Operation(summary = "已读申请")
+    public R readApply(@RequestBody Integer applyId) {
+        Integer uid = RequestContext.getUid();
+        friendService.readApply(uid, applyId);
+        return R.ok();
+    }
+
     @GetMapping("/list")
     @Operation(summary = "获取好友列表")
     public R<List<Integer>> getFriendList() {
