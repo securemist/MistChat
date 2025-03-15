@@ -1,6 +1,5 @@
 package cc.xmist.mistchat.server.chat.resp;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 

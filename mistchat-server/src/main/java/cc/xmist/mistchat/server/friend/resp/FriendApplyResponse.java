@@ -4,7 +4,6 @@ import cc.xmist.mistchat.server.common.config.convert.BaseEnum;
 import cc.xmist.mistchat.server.common.enums.ApplyStatus;
 import cc.xmist.mistchat.server.friend.entity.FriendApply;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
